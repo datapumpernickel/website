@@ -231,7 +231,9 @@ ggplot(milex_regional) +
   scale_y_continuous(breaks = seq(0,2500,500), limit = c(0, 2500), expand = c(0,0))
 ```
 
+
 ## Putting it on a map, 'cause everybody loves maps... 
+
 
 Lets do a map of EU countries and the respective share of GDP they spend on defence. Here we use a few more packages to match the actual country codes to their geo-spatial files. 
 
