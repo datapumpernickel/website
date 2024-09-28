@@ -1,1 +1,1 @@
-Sitemap: https://datapumpernickel.github.io/website/sitemap.xml
+Sitemap: https://www.paulbochtler.de/sitemap.xml
