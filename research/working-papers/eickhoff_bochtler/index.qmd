@@ -1,0 +1,35 @@
+---
+title: "Communicating Strategically about What? Europe and China in the Kenyan Media"
+date: 2024-09-04
+author:
+  - name: Karoline Eickhoff
+  - name: Paul Bochtler
+    url: https://www.paulbochtler.de/
+    orcid: 0000-0002-9146-6185
+    affiliation: Stiftung Wissenschaft und Politik
+  - name: Hesbon Hansen Owilla
+categories:
+  - Foreign Policy
+  - Text analysis
+pub-info:
+  reference:  >-
+    Karoline Eickhoff, <strong>Paul Bochtler</strong> and Hesbon Hansen Owilla, 2024,“Communicating Strategically about What? Europe and China in the Kenyan Media,” <em>Megatrends Policy Brief</em> 27, doi: <a href="https://doi.org/10.18449/2024MTA-PB27"><code>https:/doi.org/10.18449/2024MTA-PB27</code></a>
+
+---
+
+## Abstract
+European actors are increasingly relying on strategic communication tools in their external relations, especially in key partner countries like Kenya. Based on a large-scale media screening and interviews with media experts, this paper examines which issues related to the EU/Europe and China have received the most media coverage in Kenya over the past decade (2013–2023). The paper finds, among other things, that European actors involved in communication efforts increasingly need to communicate about the EU’s role in global affairs and the impact of European decisions, products, and standards on African markets, without resorting to a “West versus China” framing.
+
+
+## Citation
+
+```bibtex
+@article{https://doi.org/10.18449/2024mta-pb27,
+  doi = {10.18449/2024MTA-PB27},
+  url = {https://www.megatrends-afrika.de/publikation/policy-brief-27-communicating-strategically-about-what-europe-and-china-in-the-kenyan-media},
+  author = {Eickhoff,  Karoline and Bochtler,  Paul and Owilla,  Hesbon Hansen},
+  title = {Communicating strategically about what?},
+  publisher = {German Institute for International and Security Affairs ; German Institute of Sustainability and Development (IDOS) ; Kiel Institute for the World Economy (IfW)},
+  year = {2024}
+}
+```

@@ -1,0 +1,35 @@
+---
+title: "United Nations General Assembly Resolutions: Voting Data and Issue Categories"
+date: 2024-01-01
+author:
+  - name: Daniel Voelsen
+  - name: Paul Bochtler
+    orcid: 0000-0002-9146-6185
+  - name: Rebecca Majewski
+categories: 
+  - UN General Assembly
+  - Co-voting
+pub-info:
+  reference: >-
+      Voelsen, Daniel, <strong>Paul Bochtler</strong>, & Rebecca Majewski. “United Nations General Assembly Resolutions: Voting Data and Issue Categories,” SWP - Stiftung Wissenschaft und Politik, Version 1.2.0, Dataset, doi: <a href="https://doi.org/10.7802/2702"><code>10.7802/2702</code> </a>.
+  extra: >-
+    Version 1.2.0
+---
+
+## Abstract
+
+The dataset contains all resolutions of the United Nations between session 49 (1995/1996) and 78 (2023/2024) until January 2024 as well as newly developed issue categories that allow for in-depth analysis of voting patterns in the United Nations General Assembly. The issue categories are based on the subjects used by the UN. Metadata for each resolution, such as information on the authorship, as well as corresponding draft resolutions were collected through webscraping and subsequently cleaned from the UN Digital Library website.
+
+
+## Citation
+
+```bibtex
+@misc{SDN-10.7802-2702,
+author = "Voelsen, Daniel and Bochtler, Paul and Majewski, Rebecca",
+title = "United Nations General Assembly Resolutions: Voting Data and Issue Categories",
+year = "2024",
+howpublished = "SWP - Stiftung Wissenschaft und Politik. Datenfile Version 1.2, https://doi.org/10.7802/2702",
+doi = "10.7802/2702",
+}
+```
+  

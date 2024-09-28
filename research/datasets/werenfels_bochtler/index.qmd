@@ -1,0 +1,34 @@
+---
+title: "Friends and Foes: the instrumentalisation of Israel and Iran in the Maghreb"
+date: 2024-03-01
+author:
+  - name: Isabelle Werenfels
+  - name: Paul Bochtler
+    orcid: 0000-0002-9146-6185
+categories: 
+  - Authoritarianism
+  - Social Media
+  - Text analysis
+pub-info:
+  reference: >-
+      Isabelle Werenfels <strong>Paul Bochtler</strong>, “Friends and Foes: the instrumentalisation of Israel and Iran in the Maghreb,” SWP - Stiftung Wissenschaft und Politik, Version 1.0.0, Dataset, doi: <a href="https://doi.org/10.7802/2691"><code>10.7802/2691</code> </a>.
+  extra: >-
+    Version 1.0.0
+---
+
+## Abstract
+
+The research data described below was collected as part of the SWP study "Friends and Foes: the instrumentalisation of Israel and Iran in the Maghreb". The period of qualitative research and data collection was from 1.1.2020 to 31.1.2024. The project was designed to be exploratory. The central research question that emerged was how decision-makers in the three Maghreb states of Algeria, Morocco and Tunisia attempt to influence attitudes and discourses on Israel and Iran and use them for domestic and foreign policy purposes. Further, subordinate research questions can be derived from this: How are Israel and Iran portrayed in official discourses and sources? What public moods and resonance does the respective state control encounter? Where does it reach its limits and what domestic and foreign policy risks are associated with the instrumentalization of Israel and/or Iran? To this end, texts from the news agencies of Algeria and Morocco were collected, coded and analyzed for the official framing. Arabic language Twitter data was collected and analyzed in order to depict public and political moods. Qualitative interviews were conducted, Facebook pages were qualitatively evaluated and opinion polls from the region were used for a comparison. These qualitative analysis are not included in the data set.
+
+## Citation
+
+```bibtex
+@misc{SDN-10.7802-2691,
+author = "Werenfels, Isabelle and Bochtler, Paul",
+title = "Friends and Foes: the instrumentalisation of Israel and Iran in the Maghreb",
+year = "2024",
+howpublished = "SWP - Stiftung Wissenschaft und Politik. Datenfile Version 1.0.0, https://doi.org/10.7802/2691",
+doi = "10.7802/2691",
+}
+```
+  

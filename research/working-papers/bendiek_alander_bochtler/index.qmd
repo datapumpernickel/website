@@ -1,0 +1,86 @@
+---
+title: "A Critical Perspective on Data Transparency in the Common Foreign and Security Policy of the European Union: Methodological Challenges in Foreign Policy Research"
+date: 2020-11-01
+author:
+  - name: Minna Ålander
+  - name: Annegret Bendiek
+  - name: Paul Bochtler
+    url: https://www.paulbochtler.de/
+    orcid: 0000-0002-9146-6185
+    affiliation: Stiftung Wissenschaft und Politik
+categories:
+  - Data Transparency
+  - Open Data
+  - Foreign Policy
+pub-info:
+  reference:  >-
+    Minna Ålander, Annegret Bendiek, <strong>Paul Bochtler</strong>, 2020, “A Critical Perspective on Data Transparency in the Common Foreign and Security Policy of the European Union: Methodological Challenges in Foreign Policy Research,” <em>SWP - Working Paper: Research Division EU/Europe</em> 02, doi: <a href="https://doi.org/10.18449/2020WP11"><code>https:/doi.org/10.18449/2020WP11</code></a>
+
+---
+
+## Abstract
+The aim of this data collection is to examine the output of the European Union (EU) in the
+area of Common Foreign and Security Policy (CFSP) since the entry into force of the Lis-
+bon Treaty in 2009. To date, European academic research has been lacking a comprehen-
+sive quantitative record of CFSP output. Individual data sets, such as on the sanctions im-
+posed by the EU, are an exception and already well documented and analysed in detail.
+However, a documentation of the CFSP, such as published by the German Federal Foreign
+Office in the 1990s, has been discontinued. The unique feature of this analysis is there-
+fore the ambition to systematically collect all public data on various areas of the CFSP.
+The intergovernmental nature of the CFSP is distinct from other communitarised EU
+policies. Member states are bound by the principle of unanimity unless there are clearly
+defined exceptions. Decision-making in the Council of the EU takes place largely behind
+closed doors and in the non-legislative area. The issues discussed in the European Council
+or the Foreign Affairs Council (FAC) are confidential and often classified. The CFSP falls
+within the sphere of national security and executive ownership, where secrecy is tolerated
+as a necessity for government executive action. This "functional" secrecy may well open
+up new negotiating spaces for diplomatic successes. Trust forms the basis for negotia-
+tions at the EU level and is created through personal exchanges between representatives
+of the member states. The EU's multi-level system reinforces the requirements of confi-
+dentiality in the CFSP, as it is not only the sum of national foreign and security policies, but also creates its own dynamics of confidentiality at the EU level.
+
+Secrecy stands in a complicated relation to transparency, which the EU has committed
+itself to in the Lisbon Treaty. Documents are published in almost unmanageable numbers -
+the Council claims to make some 25 000 documents available to the public every year.
+However, the amount of data is insufficiently processed and it is left to the users to sys-
+tematise it. This makes a quantitative analysis of the CFSP as a separate policy area con-
+siderably more difficult. Moreover, despite the transparency requirement, a number of
+CFSP-relevant documents are still kept under lock and key due to the confidentiality of the
+policy area. Functional secrecy in diplomacy may be necessary to a certain extent for the
+functioning of foreign policy, but it ought to be accompanied by functional transparency of
+policy results. In order to locate political responsibility, more than the mere publication ofunprocessed data is needed. Low-threshold access for users to the information contained
+in documents is essential for functional transparency; for example, through machine-read-
+able formatting and user-friendly filter functions.
+
+Given the current data availability, research is dependent on close cooperation with the
+EU Council Secretariat in order to obtain systematic access to data for a quantitative anal-
+ysis of the CFSP. A further complicating factor is that EU documents that are relevant for
+research do not automatically have to be published and released by the responsible au-
+thorities. The final decision on publication remains with the EU decision-makers, who
+have a gatekeeper function. The information that the EU provides, for example through its
+website, is therefore inevitably incomplete and only represents a selection. The contents
+of the press releases of the European External Action Service (EEAS), which in principle
+are easily accessible sources of information, are also carefully selected. The present data
+collection and output analysis of the CFSP based on it are therefore limited by default.
+In a first step, the methodological approach to data collection chosen here is presented.
+SPARQL queries were used as well as an automated collection of raw data by means of
+web scraping of the Council websites. In a subsequent step, a descriptive analysis of the
+data on CFSP output follows. Council decisions, sanctions and minutes of Council meetings
+as well as press releases are examined. The pilot study on CFSP output carried out here
+makes it possible to formulate recommendations for improved functional transparency,
+which is a necessary step for further research.
+
+## Citation
+
+```bibtex
+@article{https://doi.org/10.18449/2020wp11,
+  doi = {10.18449/2020WP11},
+  url = {https://www.swp-berlin.org/10.18449/2020WP11/},
+  author = {Ålander,  Minna and Bendiek,  Annegret and Bochtler,  Paul and {Stiftung Wissenschaft Und Politik}},
+  language = {en},
+  title = {A critical perspective on data transparency in the Common Foreign and Security Policy of the European Union},
+  journal = {Working Paper / Research Division EU/Europe},
+  publisher = {Stiftung Wissenschaft und Politik (SWP),  German Institute for International and Security Affairs},
+  year = {2020}
+}
+```

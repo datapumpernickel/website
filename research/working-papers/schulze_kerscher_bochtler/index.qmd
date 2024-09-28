@@ -1,0 +1,62 @@
+---
+title: "Cyber Escalation: The conflict dyad USA/Iran as a test case"
+date: 2020-12-01
+author:
+  - name: Matthias Schulze
+  - name: Josephine Kerscher
+  - name: Paul Bochtler
+    url: https://www.paulbochtler.de/
+    orcid: 0000-0002-9146-6185
+    affiliation: Stiftung Wissenschaft und Politik
+categories:
+  - Cyber escalation
+pub-info:
+  reference:  >-
+    Matthias Schulze, Josephine Kerscher, <strong>Paul Bochtler</strong>, 2020, “Cyber Escalation: The conflict dyad USA/Iran as a test case,” <em>SWP - Working Paper: RESEARCH DIVISION INTERNATIONAL SECURITY</em> 01, doi: <a href="https://doi.org/10.18449/2020WP13"><code>https:/doi.org/10.18449/2020WP13</code></a>
+
+---
+
+## Abstract
+
+At the beginning of July 2020, a series of detonations in the Iranian nuclear fuel enrich-
+ment plant in Natanz triggered fears of a Stuxnet 2.0.1 The Stuxnet computer worm, which
+physically destroyed Iranian nuclear centrifuges in 2010, is considered by many as the
+starting point for the smoldering cyber conflict between Iran and the USA.2 Stuxnet is still
+considered to be one of the most aggressive cyber attacks to date because it was the first
+digital malware to cause damage in physical space, thus reaching a new level of intensity.
+In the words of former NSA director Gen. Michael Hayden, “someone crossed the Rubicon”
+with Stuxnet.3
+
+The conflict dyad USA-Iran is particularly interesting from the perspective of cyber secu-
+rity research and international relations since disputes are carried out in the cyber- and
+information space as well as in the conventional, physical domain. The interaction be-
+tween the two cyber powers has a “cross-domain” dimension, which has been rarely stud-
+ied so far.
+
+Since 2018, the USA has a new cyber security policy of "persistent engagement" that some
+regard as potentially escalating.4 In addition, the conflict escalated in early 2020 as a con-
+sequence of the targeted killing of Iranian General Soleimani in January. In view of the US
+presidential elections in 2020, many security experts expected costly and destructive
+cyber retaliatory strikes by Iran as the Islamic Republic is now considered a serious cyber
+power that does not shy away from aggressive, destructive attacks. Since Iran has shown
+interest in targeting critical infrastructures in the US, a potentially damaging retaliatory
+cyber attack cannot be ruled out completely.5 The likelihood of a destructive cyber retalia-
+tion in response to a conventional attack is uncertain and research on escalation dynamics
+in cyberspace and across domains is still in its infancy.
+
+
+
+## Citation
+
+```bibtex
+@article{https://doi.org/10.18449/2020wp13,
+  doi = {10.18449/2020WP13},
+  url = {https://www.swp-berlin.org/publications/products/arbeitspapiere/WP_Schulze_December20_Cyber_Escalation_Research_01.pdf},
+  author = {Schulze,  Matthias and Kerscher,  Josephine and Bochtler,  Paul and {Stiftung Wissenschaft Und Politik}},
+  language = {en},
+  title = {Cyber escalation},
+  journal = {Working Paper / Research Division International Security},
+  publisher = {Stiftung Wissenschaft und Politik (SWP),  German Institute for International and Security Affairs},
+  year = {2020}
+}
+```

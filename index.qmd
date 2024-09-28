@@ -1,0 +1,29 @@
+---
+about:
+  id: hero-heading
+  template: jolla
+  image: /files/profiles/Bochtler_Paul_presse.jpg
+pagetitle: "Paul Bochtler"
+---
+
+:::{#hero-heading}
+
+## Paul Bochtler 
+Hi, I am Paul. I work as a Data Analyst at the German Institute for International and Security Affairs at the intersection of political science and data science. 
+
+My general interests lie in the area of authoritarian regimes and their behavior on the international stage, such as at the United Nations. I am convinced that qualitative and quantitative methods should go hand in hand, within the latter I oftentimes use text analysis. 
+
+I am a passionate user of R, although python is a part of a lot of what I do. 
+In an effort save myself and others future headaches, I sometimes package things. 
+
+:::
+
+
+```{=html}
+<p class="text-center">
+  <a class="btn btn-primary btn-lg cv-download" href="cv/bochtler_cv.pdf" target="_blank">
+    <i class="fa-solid fa-file-arrow-down"></i>&ensp;Download current CV
+  </a>
+</p>
+```
+

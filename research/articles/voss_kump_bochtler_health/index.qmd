@@ -1,0 +1,48 @@
+---
+title: "Unpacking the framing of health in the United Nations Security Council"
+date: 2022-02-03
+author:
+  - name: Maike Voss
+    orcid: 0000-0002-7534-6722
+    affiliation: German Alliance for Climate Change and Health
+  - name: Isabell Kump
+  - name: Paul Bochtler
+    url: https://www.paulbochtler.de/
+    orcid: 0000-0002-9146-6185
+    affiliation: Stiftung Wissenschaft und Politik
+categories: 
+  - UN Security Council
+  - health
+pub-info:
+  reference: >-
+    Maike Voss, Isabell Kump & <strong>Paul Bochtler</strong>,  “Unpacking the framing of health in the United Nations Security Council,” <em>Australian Journal of International Affairs</em> 84 (2022): 4-10, doi: <a href="https://doi.org/10.1080/10357718.2021.2017845"><code>10.1080/10357718.2021.2017845</code> </a>
+---
+
+## Abstract
+
+Traditionally falling under the remit of the World Health Organization (WHO), health issues such as health emergencies or access to healthcare have been addressed more frequently in debates and resolutions of the UN Security Council (UNSC) since 2000. As the UNSC is the UN's principal body dealing with threats and endangerments to international peace and security, this points to a certain degree of the securitisation of health. By means of a statistical analysis of UNSC speeches between 1995 and 2019 as well as by examining health-related UNSC resolutions, this research explores by whom and how health is treated as a security issue in UNSC debates. This article argues that health is increasingly paid attention to during health emergencies, displaying a narrow framing of health that follows a health security paradigm. However, health is also addressed with a focus on health systems, the wider determinants of health as well as with respect to the access to healthcare and hospitals and the protection of healthcare personnel. This points to the UNSC considering a broader understanding of public health issues to be relevant for its security agenda.
+
+
+## Important figure
+
+Figure 1 illustrates descriptively, when health was mentioned in the UNSC and how this was usually around health emergencies. 
+
+![Figure 1: Relative keyword count in UNSC meetings (2009–2020).](fig_1.jpg)
+
+
+
+## Citation
+
+```bibtex
+@article{doi:10.1080/10357718.2021.2017845,
+author = {Maike Voss, Isabell Kump and Paul Bochtler},
+title = {Unpacking the framing of health in the United Nations Security Council},
+journal = {Australian Journal of International Affairs},
+volume = {76},
+number = {1},
+pages = {4--10},
+year = {2022},
+publisher = {Routledge},
+doi = {10.1080/10357718.2021.2017845}
+}
+```

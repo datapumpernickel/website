@@ -1,0 +1,45 @@
+---
+title: "Authoritarian Member States of the UN: Determinants of Autocratic Co-Sponsorship of Draft Resolututions as a Signal of Foreign Policy Coordination at the United Nations"
+date: 2021-04-01
+author:
+  - name: Paul Bochtler
+    url: https://www.paulbochtler.de/
+    orcid: 0000-0002-9146-6185
+    affiliation: Humboldt-University of Berlin
+categories: 
+  - UN General Assembly
+  - authoritarianism
+pub-info:
+  reference: >-
+    <strong>Paul Bochtler</strong>, “Authoritarian Member States of the UN: Determinants of Autocratic Co-Sponsorship of Draft Resolututions as a Signal of Foreign Policy Coordination at the United Nations,” <em>Arbeitspapiere des Osteuropa-Instituts der Freien Universität Berlin</em> 84 (2021): 70 S., doi: <a href="https://nbn-resolving.org/urn:nbn:de:0168-ssoar-83787-6"><code>https://nbn-resolving.org/urn:nbn:de:0168-ssoar-83787-6</code></a>
+  links:
+---
+
+## Abstract
+
+Do autocracies cooperate internationally? This working paper investigates whether regime-type explains co-sponsorship patterns at the United Nations General Assembly. Co-sponsorship is a relatively costly signal of international cooperation at the UN, which is analyzed based on a novel dataset, including newly validated issue categories and co-sponsorship behavior on 14.995 draft resolutions. Theoretically, the paper unifies three strands of literature: the recent literature on autocratic regional organizations, the growing literature on foreign policy of autocratic regimes and the traditional analysis of the United Nations. The results suggest that regime-type plays a strong role in co-sponsorship behavior: democracies co-sponsor with their peers, whereas autocracies, in line with existing findings, cooperate overall less at the UN. They do, however, prefer to co-sponsor with one another over partners of other regime-types. This seems to be particularly true in issue areas where autocratic regimes could attempt to counter democratic norm-setting, such as human rights. There is mixed results concerning the effect of autocratic regional organizations on autocratic co-sponsorship. Preliminary results suggest at least some positive effect on autocracies and highlight the need for further research.
+
+## Important figure
+
+Figure 10 illustrates, how two democratic states (facet *democratic dyad*), who are both members of a democratic regional organization (x-axis *democratic*) are much more likely to co-sponsor a resolution than a mixed dyad, whereas this effect is not true for memberships in 
+autocratic ROs. However, for autocratic states, there is a slight increase in the likelihood of cooperation. 
+
+![Figure 10: Average Marginal Effect of the Co-membership type of a dyad, over different values of dyad regime types. The confidence intervals were obtained from 100 bootstrapped samples with replacement of the full Model 6 in 6 and show 90% of the samples in the distribution. In the plot reported are also the absolute occurences of each combination of co-variates.](ame_ro_regime.png)
+
+
+
+## Citation
+
+```bibtex
+@book{ Bochtler2021,
+ title = {Authoritarian Member States of the UN: Determinants of Autocratic Co-Sponsorship of Draft Resolututions as a Signal of Foreign Policy Coordination at the United Nations},
+ author = {Bochtler, Paul},
+ year = {2021},
+ series = {Arbeitspapiere des Osteuropa-Instituts der Freien Universität Berlin, Arbeitsschwerpunkt Politik},
+ pages = {70},
+ volume = {84},
+ address = {Berlin},
+ publisher = {Freie Universität Berlin, Osteuropa-Institut Abt. Politik},
+ urn = {https://nbn-resolving.org/urn:nbn:de:0168-ssoar-83787-6},
+ keywords = {UNO-Generalversammlung; UN General Assembly; Mitgliedschaft; membership; autoritäres System; authoritarian system; Außenpolitik; foreign policy; internationale Zusammenarbeit; international cooperation}}
+```

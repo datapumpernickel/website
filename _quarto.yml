@@ -1,0 +1,82 @@
+project:
+  type: website
+
+  preview: 
+    port: 5555
+    browser: true
+    watch-inputs: true
+    navigate: true
+
+  render:
+    - "*.qmd"
+    - "*.md"
+    - "!etc/"
+
+  resources:
+    - "files/**"
+    - "etc/**"
+
+    # Things that need to be at the site root
+    - ".htaccess"
+    - "LiveSearchSiteAuth.xml"
+
+freeze: true
+
+bibliography: files/bib/references.bib
+csl: files/bib/chicago-author-date.csl
+
+# Metadata stuff
+pagetitle: "{{< meta title >}} | Paul Bochtler"
+author-meta: "Paul Bochtler"
+
+website:
+  title: "Paul Bochtler"
+  description: "Paul Bochtler is Data Analyst at the German Institute for International and Security Affairs (SWP)."
+  favicon: "/files/favicon.png"
+  site-url: "https://www.paulbochtler.de"
+
+  navbar:
+    pinned: true
+
+    left:
+      - text: "About"
+        href: "index.qmd"
+      - text: "Blog"
+        file: blog/index.qmd
+      - text: "Research"
+        file: research/index.qmd      
+      - text: "Software"
+        file: software/index.qmd
+    
+    right:
+      - text: "{{< iconify bi github size=1.1em title='GitHub' >}}"
+        href: https://github.com/datapumpernickel
+        rel: me
+      - text: "{{< iconify bi linkedin size=1.1em title='LinkedIn' >}}"
+        href: https://www.linkedin.com/in/paul-bochtler-8424a1149/
+        rel: me
+  
+  page-footer:
+    left: |
+      <span class="faux-block">All content licensed under
+      <br>[{{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} Creative Commons CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+      <br>Theme and Quarto Project by [Andrew Heiss](https://www.andrewheiss.com)</span>      
+    center: |
+      <span class="faux-block">{{< fa brands orcid >}} <strong>ORCID</strong> [{{< var orcid >}}](https://orcid.org/{{< var orcid >}})</span>
+    right: |
+      <span class="faux-block">Made with {{< fa brands r-project >}} and [Quarto](https://quarto.org/)</span>
+      <span class="faux-block">[View the source at {{< fa brands github >}} GitHub]({{< var github-url >}})</span>
+
+format:
+  html:
+    theme: 
+      - html/pb.scss
+    grid: 
+      body-width: 900px
+    toc: false
+    code-link: true
+    anchor-sections: true
+    fig-cap-location: margin
+    reference-location: margin
+    footnotes-hover: true
+    highlight-style: monokai

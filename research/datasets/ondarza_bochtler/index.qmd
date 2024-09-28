@@ -1,0 +1,33 @@
+---
+title: "Public Voting Data of the Council of the EU"
+date: 2023-12-01
+author:
+  - name: Nicolai von Ondarza
+  - name: Paul Bochtler
+    orcid: 0000-0002-9146-6185
+categories: 
+  - Council of the EU
+  - Co-voting
+pub-info:
+  reference: >-
+      Nicolai von Ondarza, <strong>Paul Bochtler</strong>, “Public Voting Data of the Council of the EU,” SWP - Stiftung Wissenschaft und Politik, Version 1.0.0, Dataset, doi: <a href="https://doi.org/10.7802/2560"><code>10.7802/2560</code> </a>.
+  extra: >-
+    Version 2.0.0
+---
+
+## Abstract
+
+This data set contains the voting behaviour of EU member states in public votes of the Council of the EU from 2010 to 2023. Particular attention was given to the following issues: How often did the Council adopt decision by consensus despite voting under qualified majority? Which member states are most often outvoted? Did these pattern change during the Covid-19 pandemic, when the Council had to resort to video meetings? To answer these questions, a new dataset of public data from the EU was cleaned for easy access and analysis. This dataset encompasses all voting data from the public votes in the Council of the EU from January 2010 to March 2023. Due to the rules of procedure of the Council of the EU, only legislative votes are made public. The collected data therefore necessarily encompasses only a limited, self-selected number from all votes in the Council. As of April 12 2023, 1.397 votes are available.
+
+## Citation
+
+```bibtex
+@misc{SDN-10.7802-2560,
+author = "Ondarza, Nicolai von and Bochtler, Paul",
+title = "Public Voting Data of the Council of the EU",
+year = "2023",
+howpublished = "SWP - Stiftung Wissenschaft und Politik. Datenfile Version 2.0.0, https://doi.org/10.7802/2560",
+doi = "10.7802/2560",
+}
+```
+  

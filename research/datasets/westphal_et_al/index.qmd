@@ -1,0 +1,38 @@
+---
+title: "Interconnectors and Power Transmission Lines Dataset"
+date: 2020-12-01
+author:
+  - name: Kirsten Westphal
+  - name: Corinna Templin
+  - name: Rebecca Majewski
+  - name: Maximiliane Schneider
+  - name: Maria Pastukhova
+  - name: Jacopo Pepe
+  - name: Paul Bochtler
+    orcid: 0000-0002-9146-6185
+categories: 
+  - Power Transmission Lines
+pub-info:
+  reference: >-
+      <strong>Paul Bochtler</strong>, Rebecca Majewski, Maria Pastukhova, Jacopo Pepe, Maximiliane Schneider, Corinna Templin, & Kirsten Westphal. “Interconnectors and Power Transmission Lines Dataset,” SWP - Stiftung Wissenschaft und Politik, Version 1.0.0, Dataset, doi: <a href="https://doi.org/10.7802/2354"><code>10.7802/2354</code> </a>.
+  extra: >-
+    Version 1.0.0
+---
+
+## Abstract
+
+The project “Interconnectors and Power Transmission Lines” was realised within the framework of the SWP Research Paper “Geopolitik des Stroms – Netz, Raum und Macht” (SWP-Studie 2021/S 14, 07.09.2021) and had the objective of identifying and visualising all interconnecting power lines in Europe, Africa and Asia regardless of their primary source of energy that are of relevance on the transmission grid level. As of 2020, no comprehensive data or database on transmission lines and interconnectors were available. Hence, this dataset contributes to filling this gap. It comprises merged and harmonised data from three different sources, namely from the OpenStreetMap (OSM, https://www.openstreetmap.org), the Open Infrastructure Map (OIM, https://openinframap.org), and the World Bank (WB, https://energydata.info), complemented by further research, including the updating and adding of information. 
+
+
+
+## Citation
+
+```bibtex
+@misc{SDN-10.7802-2354,
+author = "Bochtler, Paul and Majewski, Rebecca and Pastukhova, Maria and Pepe, Jacopo and Schneider, Maximiliane and Templin, Corinna and Westphal, Kirsten",
+title = "Interconnectors and Power Transmission Lines Dataset",
+year = "2021",
+howpublished = "SWP - Stiftung Wissenschaft und Politik. Datenfile Version 1.0.0, https://doi.org/10.7802/2354",
+doi = "10.7802/2354",
+}
+```
