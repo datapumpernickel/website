@@ -1,1 +1,1 @@
-Sitemap: www.paulbochtler.de/sitemap.xml
+Sitemap: http://www.paulbochtler.de/sitemap.xml
