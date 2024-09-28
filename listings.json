@@ -1,0 +1,20 @@
+[
+  {
+    "listing": "/blog/index.html",
+    "items": []
+  },
+  {
+    "listing": "/research/index.html",
+    "items": [
+      "/research/articles/voss_kump_bochtler_health/index.html",
+      "/research/articles/bochtler_authoritarian_regimes/index.html",
+      "/research/working-papers/eickhoff_bochtler/index.html",
+      "/research/working-papers/schulze_kerscher_bochtler/index.html",
+      "/research/working-papers/bendiek_alander_bochtler/index.html",
+      "/research/datasets/werenfels_bochtler/index.html",
+      "/research/datasets/voelsen_majewski_bochtler/index.html",
+      "/research/datasets/ondarza_bochtler/index.html",
+      "/research/datasets/westphal_et_al/index.html"
+    ]
+  }
+]
