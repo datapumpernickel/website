@@ -1,6 +1,6 @@
 ---
 title: "Military Expenditure Data from SIPRI"
-date: 2024-03-21
+date: 2024-08-21
 description: "How to work with the basic SIPRI indicators."
 image: "index_files/figure-html/fig-1-regional-exp-nice-1.png"
 categories:
