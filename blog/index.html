@@ -77,9 +77,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: [{ data: ['index'] },{ data: ['categories'] }],
+      valueNames: ['listing-project','listing-freeze','listing-bibliography','listing-csl','listing-pagetitle','listing-author-meta','listing-website','listing-format','listing-_quarto-vars','listing-language','listing-date-format','listing-title-block-banner','listing-toc','listing-toc-title','listing-toc-location','listing-execute','listing-author','listing-title','listing-date','listing-description','listing-image','listing-categories','listing-include-before-body','listing-citation','listing-path','listing-outputHref','listing-date-modified','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: [],
+      searchColumns: ["listing-project","listing-freeze","listing-bibliography","listing-csl","listing-pagetitle","listing-author-meta","listing-website","listing-format","listing-_quarto-vars","listing-language","listing-date-format","listing-title-block-banner","listing-toc","listing-toc-title","listing-toc-location","listing-execute","listing-author","listing-title","listing-date","listing-description","listing-image","listing-categories","listing-include-before-body","listing-citation","listing-path","listing-outputHref","listing-date-modified","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -155,6 +155,10 @@ window.Quarto = {
     <a class="nav-link" href="../software/index.html"> 
 <span class="menu-text">Software</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../blog/index.html" aria-current="page"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
 </ul>
 <ul class="navbar-nav navbar-nav-scroll ms-auto">
 <li class="nav-item">
@@ -199,7 +203,7 @@ window.Quarto = {
   <ul>
 <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section">2024</a></li>
   </ul></nav>
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(0)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="military expenditure">military expenditure <span class="quarto-category-count">(1)</span></div><div class="category" data-category="r">r <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content"><div class="cell">
 <style type="text/css">
@@ -211,6 +215,38 @@ window.Quarto = {
 <section id="section" class="level2"><h2 class="anchored" data-anchor-id="section">2024</h2>
 <div id="listing-posts_2024" class="quarto-listing quarto-listing-container-custom">
 <div class="list blog">
+    
+    <div class="blog-entry" data-index="0" data-categories="r,military expenditure" data-listing-date-sort="1710975600000" data-listing-file-modified-sort="1727532773537" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2378">
+        <div class="metadata">          
+            <p class="date listing-date">March 21, 2024</p>
+        </div>
+        <div class="body">
+            <p class="title listing-title"><a href="../blog/2024/01/index.html">Military Expenditure Data from SIPRI</a></p>
+
+            
+            <div class="post-categories listing-categories">
+                
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('r'); return false;">
+                    r
+                </div>
+                
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('military expenditure'); return false;">
+                    military expenditure
+                </div>
+                
+            </div>
+            
+
+            <p class="description listing-description">How to work with the basic SIPRI indicators.</p>
+            
+            
+        </div>
+        
+        <div class="thumbnail">
+            <img src="../blog/2024/01/index_files/figure-html/fig-1-regional-exp-nice-1.png" alt="Military Expenditure Data from SIPRI" title="Military Expenditure Data from SIPRI">
+</div>
+        
+    </div>
     
 </div>
 <div class="listing-no-matching d-none">
