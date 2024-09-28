@@ -1,0 +1,390 @@
+---
+title: "Military Expenditure Data from SIPRI"
+date: 2024-03-21
+description: "How to work with the basic SIPRI indicators."
+image: "index_files/figure-html/fig-1-regional-exp-nice-1.png"
+categories:
+  - r
+  - military expenditure
+format:
+  html: 
+    shift-heading-level-by: 1
+include-before-body:
+  text: |
+    <style>
+      .no-stripe .gt_table tr.odd {
+        --bs-table-striped-bg: transparent;
+      }
+      
+      .gt_footnote {
+        text-align: left !important;
+      }
+    </style>
+citation: true
+---
+
+
+```{r}
+#| label: setup
+#| include: false
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.height = 6 * 0.618,
+  fig.retina = 3,
+  dev = "ragg_png",
+  fig.align = "center",
+  out.width = "90%",
+  collapse = TRUE,
+  cache.extra = 1234  # Change number to invalidate cache
+)
+
+options(
+  digits = 4,
+  width = 300,
+  dplyr.summarise.inform = FALSE
+)
+```
+
+## SIPRI data 
+
+Data from the [Stockholm International Peace Research Institute](https://www.sipri.org/databases/milex) is the only source on military expenditure that is entirely open source. Most research on military expenditure relies on their yearly updates. 
+
+When working with their data, I realised that the `xlsx` files they provide are sometimes a little complicated to parse, because they include information in footnotes, as well as additional columns and rows that are not read in properly by the classic functions for reading in excel files. 
+
+![Excel file that can be downloaded on the website](sipri_xlsx.png)
+
+Hence, when parsing this file for the first time, I thought it would be handy to have a package for R, that queries their database, downloads the excel file and directly parses it nicely into the classic format for R, a `tibble()`.
+
+## Installing milRex
+
+The resulting package, `milRex` is currently not on CRAN, because the submission process is somewhat of a hussle and it is quite straight-forward to install adn then load it from github. For that you need the package `devtools`.
+
+```{r}
+#| eval: false
+
+# install.packages("devtools")
+devtools::install_github("datapumpernickel/milRex")
+library(milRex)
+```
+
+```{r}
+#| echo: false
+library(milRex)
+```
+
+Now you have access to the following indicators from the package: 
+
+```{r}
+#| echo: false
+#| message: false
+library(gt)
+dplyr::tribble(
+  ~Description, ~unit,~skip,~indicator,
+  "Constant (2022) US$", 2, 5,'constantUSD',
+  "Current US$", 2, 5,'currentUSD',
+  "Share of GDP", 1, 5,'shareOfGDP',
+  "Share of Govt. spending", 3, 7,'shareGovt',
+  "Regional totals", 2, 13,'regionalTotals',
+  "Local currency financial years", 2, 7,'currencyFY',
+  "Local currency calendar years", 2, 6,'currencyCY',
+  "Per capita", 2, 6,'perCapita',
+  "all of the above", 2, 6,'all'
+  ) |> 
+  dplyr::select(Description, indicator) |> 
+  gt::gt() |>
+  gt::tab_header(
+    title = "Available Indicators",
+    subtitle = gt::md("in the *SIPRI* database")
+  )|>
+  gt::tab_source_note(
+    source_note = gt::md("Source: Information from the Stockholm International Peace Research Institute (SIPRI) Military Expenditure Database, https://doi.org/10.55163/CQGC9685.")
+  )|>
+  gt::cols_label(
+    indicator = gt::md("**Indicator**"),
+    Description = gt::md("**Description**")
+  )
+```
+
+## Getting data
+
+Actually downloading the data is quite straight-forward, just do: 
+
+```{r}
+#| label: "Getting data"
+milex <- sipri_get_data(indicator = "constantUSD")
+```
+
+
+```{r}
+#| message: false
+
+library(dplyr)
+glimpse(milex)
+```
+
+
+Looking at the data, it becomes apparent, that there is a few columns that are returned, we know the indicator we downloaded, the country name, as well as supposed iso codes and values, as well as a column for missing. However, the iso codes by SIPRI often do not match the official ISO codes, we will see below. 
+
+As we can see from the glimpse above, some of the data is not available. 
+
+```{r}
+#| echo: false
+milex |> dplyr::count(missing) |> 
+  dplyr::filter(!is.na(missing)) |> 
+  gt::gt() |>
+  gt::tab_header(
+    title = "Reasons for missing data",
+    subtitle = gt::md("in the *SIPRI* database")
+  )|>
+  gt::tab_source_note(
+    source_note = gt::md("Source: Information from the Stockholm International Peace Research Institute (SIPRI) Military Expenditure Database, https://doi.org/10.55163/CQGC9685.")
+  )|>
+  gt::cols_label(
+    missing = gt::md("**Specified Reason**"),
+    n = gt::md("**# missing**")
+  )
+```
+
+As we can see, most missings are there, because the data is simply not available, whereas some are originating from countries that simply did not exist at the time. The database dates military expenditure back to 1945. 
+
+## Plotting Data
+
+For starters, lets try to replicate the yearly graph that SIPRI published about overall military expenditure in constant USD. At SIPRI it looks like this: 
+
+![Original Graph in the yearly publication by SIPRI](sipri_graph.png)
+
+We need to aggregate data by regions, which is easily done with a dataset included in the package, that contains the regions with machted country codes. 
+
+We need a few libraries for that, which we will load, afterwards we join the region names to our data, we then sum up the values, excluding the missing values. We also limit the data to years after 1988 and exclude the year 1991, as recommended by SIPRI. Afterwards we format the date column to a nice yearly date for the plot.  
+
+
+```{r}
+#| label: aggregating sipri data
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+
+
+milex_regional <- milex |> 
+  dplyr::left_join(milRex::sipri_regions) |>  ## join data
+  dplyr::summarise(value = sum(value, na.rm = T), 
+                   .by = c(region, year)) |> ## sum up 
+  dplyr::filter(year >= 1988)|> ## exclude values pre-1988
+  dplyr::mutate(value = if_else(year == 1991, 0, value)) |> # exclude 1991
+  dplyr::mutate(year = paste(year, "01-01") |> 
+                  lubridate::ymd()) # format dates nicely 
+```
+
+Now we can plot this, by using `ggplot2`. However, the resulting plot, without any further formatting does not look too nice. 
+
+```{r}
+#| fig-cap: "This is a bare-bones replication, but does not look nice."
+#| fig-width: 6
+#| fig-height: 3.75
+ggplot2::ggplot(milex_regional) +
+  ggplot2::geom_col(ggplot2::aes(year, value/1000, 
+                                 fill = reorder(region, value)))
+```
+
+
+When we apply some additional formatting we get pretty far in approximating the SIPRI plot! 
+
+
+```{r}
+#| label: fig-1-regional-exp-nice
+#| fig-cap: "Nicer version with additional formatting"
+#| fig-width: 6
+#| fig-height: 3.75
+
+ggplot(milex_regional) +
+  geom_col(aes(year, value/1000, fill = reorder(region, value))) +
+  labs(y = "Militarxy expenditure\n (constant 2022 USD billion)",
+       caption = "1991 not present because no values for Soviet Union.\n See https://www.sipri.org/sites/default/files/2024-04/2404_fs_milex_2023.pdf", 
+       fill = "Region",
+       x = "") + 
+  theme_bw() +
+  theme(plot.background = element_rect(fill = rgb(215, 229, 221, 
+                                                  maxColorValue = 255)),
+        panel.background = element_rect(fill = rgb(215, 229, 221, 
+                                                  maxColorValue = 255)),
+        legend.background = element_rect(fill = rgb(215, 229, 221, 
+                                                  maxColorValue = 255)),
+        legend.position = "top",
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 6,face  = "bold"),
+        panel.border = element_blank(),
+        axis.line.x = element_line(),
+        text = element_text(size = 9),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.key.size = unit(0.05, 'in'))+
+  scale_fill_manual(values = 
+                      c(
+                        rgb(83,50,82, maxColorValue = 255),
+                        rgb(118,81,116, maxColorValue = 255),
+                        rgb(186,144,177, maxColorValue = 255),
+                        rgb(154,173,164, maxColorValue = 255),
+                        rgb(100,156,136, maxColorValue = 255)
+                      ))+
+  scale_x_date(breaks = "4 years",date_labels = "%Y")+
+  scale_y_continuous(breaks = seq(0,2500,500), limit = c(0, 2500), expand = c(0,0))
+```
+
+
+Lets do a map of EU countries and their respective share of GDP they spend on defence. Here we use a few more packages to match the actual country codes to their geo-spatial files. 
+
+We also use a bounding box (`bbox`), to crop the geo-spatial files, so we don´t plot some French islands in the global south. 
+
+
+```{r}
+#| message: false
+#| warning: false
+
+library(sf)
+library(giscoR)
+library(countrycode)
+
+eu_countries <- giscoR::gisco_countrycode |> dplyr::filter(eu) |> dplyr::pull(ISO3_CODE)
+bounds <- st_bbox(c(xmin = -20, xmax = 35, ymin = 34, ymax = 70))
+
+eu_map <- giscoR::gisco_get_countries() |> dplyr::filter(ISO3_CODE %in% eu_countries) |> sf::st_crop(bounds)
+world_map <- giscoR::gisco_get_countries() |> sf::st_crop(bounds)
+
+
+eu_share_gdp <- sipri_get_data(indicator = "shareOfGDP") |> 
+  dplyr::mutate(iso3c = countrycode::countrycode(country, origin = "country.name.en", destination = "iso3c")) |> 
+  dplyr::filter(iso3c %in% eu_countries) |> 
+  dplyr::filter(year == 2023) |> 
+  dplyr::left_join(eu_map, by = c("iso3c" = "ISO3_CODE")) |> 
+  sf::st_as_sf()
+```
+
+It becomes quite clear, how the countries bordering or close to Russia dedicate a much higher share of their GDP to defence. In addition, of course Greece, which has high geopolitical tensions with Turkey spends a high share. 
+
+```{r}
+#| label: share of gdp v2
+#| fig-cap: "Share of Money spent on military expenditure as share of GDP"
+#| fig-width: 6
+#| fig-height: 8
+library(ggplot2)
+library(grid)  # For using inset layout
+
+ggplot(eu_share_gdp) +
+  geom_sf(data = world_map, fill = "grey60") +
+  geom_sf(aes(fill = value * 100)) +
+  theme_void() +  
+  theme(
+    panel.background = element_rect(fill = "lightblue", color = NA),
+    plot.background = element_rect(fill = rgb(215, 229, 221, maxColorValue = 255)),
+    legend.background = element_blank(),
+    legend.position = "inside",
+    legend.position.inside = c(0.1, 0.3),
+    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 8, face = "bold"),
+    legend.key.size = unit(0.3, 'in'),
+    title = element_blank(),
+    plot.margin = margin(
+      t = -10,
+      r = -1,
+      b = -1,
+      l = -1
+    )  
+  ) +
+  coord_sf(expand = FALSE, ylim = c(34, 65)) + 
+  scale_fill_gradient2(
+    low = rgb(100, 156, 136, maxColorValue = 255),
+    mid = "white",
+    midpoint = 2,
+    high = rgb(118, 40, 116, maxColorValue = 255)
+  ) +
+  labs(fill = "% of GDP") +
+  annotate(
+    geom = "label",
+    x = -10,
+    y = 60,
+    label = "Military Expenditure \n as share of GDP in 2023",
+    fill = "grey10",
+    color = "white",
+    fontface = "bold",
+    label.size = NA
+  ) +
+  annotate(
+    geom = "label",
+    x = 7.8,
+    y = 34.3,
+    label = "  Source: Information from the Stockholm International Peace Research Institute (SIPRI) Military Expenditure Database, https://doi.org/10.55163/CQGC9685.            ",
+    size = 2,
+    fill = "white",
+    color = "grey10",
+    fontface = "bold",
+    label.size = NA
+  )
+```
+
+This becomes even clearer, if we check whether countries reach the spending target of 2% of GDP by the NATO. 
+
+```{r}
+#| label: nato spending target
+#| fig-cap: "NATO Spending target reached"
+#| fig-width: 6
+#| fig-height: 8
+#| echo: false
+library(ggplot2)
+library(grid)  # For using inset layout
+
+
+ggplot(eu_share_gdp) +
+  geom_sf(data = world_map, fill = "grey60") +
+  geom_sf(aes(fill = dplyr::if_else(value >= 0.02, "yes", "no"))) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "lightblue", color = NA),
+    plot.background = element_rect(fill = rgb(215, 229, 221, maxColorValue = 255)),
+    legend.background = element_blank(),
+    legend.position = "inside",
+    legend.position.inside = c(0.1, 0.3),
+    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 8, face = "bold"),
+    legend.key.size = unit(0.3, 'in'),
+    title = element_blank(),
+    plot.margin = margin(
+      t = -10,
+      r = -1,
+      b = -1,
+      l = -1
+    )
+  ) +
+  coord_sf(expand = FALSE, ylim = c(34, 65)) +
+  scale_fill_manual(values = c(
+    rgb(140, 100, 140, maxColorValue = 255),
+    rgb(100, 156, 136, maxColorValue = 255)
+    
+  )) +
+  labs(fill = "") +
+  annotate(
+    geom = "label",
+    x = -10,
+    y = 60,
+    label = "NATO spending target \nof 2% reached",
+    fill = "grey10",
+    color = "white",
+    fontface = "bold",
+    label.size = NA
+  ) +
+  annotate(
+    geom = "label",
+    x = 7.8,
+    y = 34.3,
+    label = "  Source: Information from the Stockholm International Peace Research Institute (SIPRI) Military Expenditure Database, https://doi.org/10.55163/CQGC9685.            ",
+    size = 2,
+    fill = "white",
+    color = "grey10",
+    fontface = "bold",
+    label.size = NA
+  )
+```
+
+
+
+

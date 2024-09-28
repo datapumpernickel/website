@@ -43,7 +43,9 @@ website:
         file: research/index.qmd      
       - text: "Software"
         file: software/index.qmd
-    
+      - text: "Blog"
+        file: blog/index.qmd
+
     right:
       - text: "{{< iconify bi github size=1.1em title='GitHub' >}}"
         href: https://github.com/datapumpernickel
