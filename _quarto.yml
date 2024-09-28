@@ -41,8 +41,8 @@ website:
     left:
       - text: "About"
         href: "index.qmd"
-      - text: "Blog"
-        file: blog/index.qmd
+      # - text: "Blog"
+      #   file: blog/index.qmd
       - text: "Research"
         file: research/index.qmd      
       - text: "Software"
