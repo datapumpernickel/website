@@ -33,7 +33,7 @@ website:
   title: "Paul Bochtler"
   description: "Paul Bochtler is Data Analyst at the German Institute for International and Security Affairs (SWP)."
   favicon: "/files/favicon.png"
-  site-url: "https://www.paulbochtler.de"
+  # site-url: "https://www.paulbochtler.de"
 
   navbar:
     pinned: true

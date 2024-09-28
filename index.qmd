@@ -2,7 +2,7 @@
 about:
   id: hero-heading
   template: jolla
-  image: /files/profiles/Bochtler_Paul_presse.jpg
+  image: files/profiles/Bochtler_Paul_presse.jpg
 pagetitle: "Paul Bochtler"
 ---
 
