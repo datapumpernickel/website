@@ -231,10 +231,12 @@ ggplot(milex_regional) +
   scale_y_continuous(breaks = seq(0,2500,500), limit = c(0, 2500), expand = c(0,0))
 ```
 
+## Putting it on a map, 'cause everybody loves maps... 
 
-Lets do a map of EU countries and their respective share of GDP they spend on defence. Here we use a few more packages to match the actual country codes to their geo-spatial files. 
+Lets do a map of EU countries and the respective share of GDP they spend on defence. Here we use a few more packages to match the actual country codes to their geo-spatial files. 
 
-We also use a bounding box (`bbox`), to crop the geo-spatial files, so we don´t plot some French islands in the global south. 
+We also use a bounding box (`bbox`), to crop the geo-spatial files, so we don´t plot some French islands in the Atlantic ocean. 
+
 
 
 ```{r}
@@ -245,17 +247,26 @@ library(sf)
 library(giscoR)
 library(countrycode)
 
+## this gets us a vector of iso3codes for EU countries
 eu_countries <- giscoR::gisco_countrycode |> dplyr::filter(eu) |> dplyr::pull(ISO3_CODE)
+
+## this is a bounding box, figuring out the limits can be a bit tricky
+## there is a pretty good tutorial on this here: https://datascience.blog.wzb.eu/2019/04/30/zooming-in-on-maps-with-sf-and-ggplot2/ 
 bounds <- st_bbox(c(xmin = -20, xmax = 35, ymin = 34, ymax = 70))
 
+### giscoR lets us get the official shape files used by Eurostat
 eu_map <- giscoR::gisco_get_countries() |> dplyr::filter(ISO3_CODE %in% eu_countries) |> sf::st_crop(bounds)
+
+## lets get them also for other countries for a nice backdrop
 world_map <- giscoR::gisco_get_countries() |> sf::st_crop(bounds)
 
-
+## now we get the sipri data
 eu_share_gdp <- sipri_get_data(indicator = "shareOfGDP") |> 
+  ## next we transform the country cdoes to actual iso codes (e.g. SIPRI uses AST for Austria...)
   dplyr::mutate(iso3c = countrycode::countrycode(country, origin = "country.name.en", destination = "iso3c")) |> 
   dplyr::filter(iso3c %in% eu_countries) |> 
-  dplyr::filter(year == 2023) |> 
+  ## restrict to EU countries and the last available year
+  dplyr::filter(year == max(year)) |> 
   dplyr::left_join(eu_map, by = c("iso3c" = "ISO3_CODE")) |> 
   sf::st_as_sf()
 ```
@@ -266,7 +277,7 @@ It becomes quite clear, how the countries bordering or close to Russia dedicate 
 #| label: share of gdp v2
 #| fig-cap: "Share of Money spent on military expenditure as share of GDP"
 #| fig-width: 6
-#| fig-height: 8
+#| fig-height: 5
 library(ggplot2)
 library(grid)  # For using inset layout
 
@@ -328,7 +339,7 @@ This becomes even clearer, if we check whether countries reach the spending targ
 #| label: nato spending target
 #| fig-cap: "NATO Spending target reached"
 #| fig-width: 6
-#| fig-height: 8
+#| fig-height: 5
 #| echo: false
 library(ggplot2)
 library(grid)  # For using inset layout
