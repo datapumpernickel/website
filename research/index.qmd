@@ -20,9 +20,7 @@ include-back-link: false
 toc-location: right
 ---
 
-My research spans ...
-
-
+My research is mostly related to international relations and foreign policy. It started from the behavior of authoritarian regimes in international organizations, to the more general question of agenda setting in the foreign policy domain, as well as co-voting behavior at international or regional organizations, such as the United Nations or the European Union. 
 
 ## Articles
 

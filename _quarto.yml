@@ -15,10 +15,8 @@ project:
   resources:
     - "files/**"
     - "etc/**"
-
-    # Things that need to be at the site root
+    - CNAME
     - ".htaccess"
-    - "LiveSearchSiteAuth.xml"
 
 freeze: true
 
