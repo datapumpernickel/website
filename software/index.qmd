@@ -72,7 +72,7 @@ frame. You need a (free) API key from the UN. Maintained in the rOpenSci Univers
       <img src="ceu_votes.png" alt="Council Monitor Screenshot" style="float: left; margin: 0 15px 15px 0;";> 
       </a>   
      <p><strong>EU Council Monitor</strong></p>
-    <p><a href="https://data.swp-berlin/ceu_votes" target="_blank"> <em>The EU Council Monitor</em></a> is not a package, but a dashboard I wrote, which I usually use as a template, because it is modularized and lends itself to easy extension for simple visualizations.</p>
+    <p><a href="https://data.swp-berlin.org/ceu_votes" target="_blank"> <em>The EU Council Monitor</em></a> is not a package, but a dashboard I wrote, which I usually use as a template, because it is modularized and lends itself to easy extension for simple visualizations.</p>
   </div>
 
 
