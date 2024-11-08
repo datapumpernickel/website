@@ -1,12 +1,11 @@
 ---
-title: "Setting up a PostgreSQL DB"
-date: 2024-08-21
-description: "Setting up a Docker Container with a PostgreSQL database for use in R"
+title: "Military Expenditure Data from SIPRI"
+date: 2024-09-20
+description: "How to work with the basic SIPRI indicators."
 image: "index_files/figure-html/fig-1-regional-exp-nice-1.png"
 categories:
   - r
-  - database
-  - docker
+  - military expenditure
 format:
   html: 
     shift-heading-level-by: 1
@@ -25,307 +24,379 @@ citation: true
 ---
 
 
-### What this is: 
+```{r}
+#| label: setup
+#| include: false
 
-I struggled to find a nice tutorial for setting up a postgreSQL Database in a Docker container that was both: 
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.height = 6 * 0.618,
+  fig.retina = 3,
+  dev = "ragg_png",
+  fig.align = "center",
+  out.width = "90%",
+  collapse = TRUE,
+  cache.extra = 1234  # Change number to invalidate cache
+)
 
-- complying with basic security measures for a database
-- easy to setup, a.k.a using a pre-configured docker container
-
-### What this is not: 
-
-I won´t be going into the nitty gritty details of databases, networking, linux servers and docker in general. One, because I do not have the expertise, two, because it would be too much for this short blog entry. 
-
-### What I assume you got: 
-
-- access to the terminal of a linux server (ssh access to be sure)
-- some knowledge of docker and the linux command line
-- a firewall to protect your server that is not ufw or firewalld or anything else that docker might circumvent - if you have a server at home you should check that your internet router does not allow devices to expose ports to the internet, if you are renting a server with a provider, make sure you activate the firewall even before packages reach your server
-
-
-## Step 1: We need docker
-
-I used the official [docker documentation](https://docs.docker.com/engine/install/ubuntu/
-) to install docker for ubuntu. We will also need to install [docker-compose](https://docs.docker.com/compose/install/linux/).
-
-Secondly, we will run our stuff from a new user on our server, which is not going to be a sudo user, or root, to make things more safe. 
-
-Hence we add a new user in Linux and add them to the docker group.
-
-```{.bash}
-sudo adduser postgres
-## now we activate ssh-login for that new user as per usual
-sudo groupadd docker
-sudo gpasswd -a postgres docker
+options(
+  digits = 4,
+  width = 300,
+  dplyr.summarise.inform = FALSE
+)
 ```
 
-Make sure that you can run docker without a sudo command: 
+## SIPRI data 
 
-```{.bash}
-docker run hello-world
+Data from the [Stockholm International Peace Research Institute](https://www.sipri.org/databases/milex) is the only source on military expenditure that is entirely open source. Most research on military expenditure relies on their yearly updates. 
+
+When working with their data, I realised that the `xlsx` files they provide are sometimes a little complicated to parse, because they include information in footnotes, as well as additional columns and rows that are not read in properly by the classic functions for reading in excel files. 
+
+![Excel file that can be downloaded on the website](sipri_xlsx.png)
+
+Hence, when parsing this file for the first time, I thought it would be handy to have a package for R, that queries their database, downloads the excel file and directly parses it nicely into the classic format for R, a `tibble()`.
+
+## Installing milRex
+
+The resulting package, `milRex` is currently not on CRAN, because the submission process is somewhat of a hussle and it is quite straight-forward to install adn then load it from github. For that you need the package `devtools`.
+
+```{r}
+#| eval: false
+
+# install.packages("devtools")
+devtools::install_github("datapumpernickel/milRex")
+library(milRex)
 ```
 
-
-## Step 2: We need the respective config files and stuff
-
-I saved all the necessary config-files in a github, repo, which you can simply clone in your home directory, or any other relevant directory on your server doing: 
-
-```{.bash}
-git clone https://github.com/datapumpernickel/postgres_config.git
-```
-You will now have the following files: 
-
-```{.bash}
-postgres_config/
-├── .gitignore
-├── README.md
-├── conf
-│   ├── hostname
-│   ├── hosts
-│   ├── my-postgres.conf 
-│   └── resolv.conf
-├── docker-compose.yml
-├── hba
-│   └── pg_hba.conf ## this is a configuration file, which allows us to protect the db from unwanted connections
-├── init
-└── └── filldb.sh ## this sets up our user and the initial database
+```{r}
+#| echo: false
+library(milRex)
 ```
 
+Now you have access to the following indicators from the package: 
 
-## Step 3: Modify the configuration for our use-cases.
-
-When creating a PostgreSQL database, we are essentially making a server that accepts connections and has users with different levels of access. 
-
-In order to secure our database, we will create a superuser, which we can use to administrate our database and then a second user, which we will use to actually work with our database and which has lower access levels. Since all of this will be an automated process happening through initialization scripts, we will set the values for this as secrets on our server. 
-
-We will fill out these scripts: 
-
-- `postgres_user.secret`     --> put the superuser name, usually this is "postgres"
-- `postgres_password.secret` --> put the password for the superuser
-- `db_user.secret`           --> make a new personal user name that you plan on using in the future
-- `db_password.secret`       --> set a password for your personal user
-- `db_database.secret`       --> set the name of the personal database you want to use in the future
-
-
-#### Setting the superuser secrets
-
-This value is usually "postgres".
-
-```{.bash}
-nano postgres_user.secret
+```{r}
+#| echo: false
+#| message: false
+library(gt)
+dplyr::tribble(
+  ~Description, ~unit,~skip,~indicator,
+  "Constant (2022) US$", 2, 5,'constantUSD',
+  "Current US$", 2, 5,'currentUSD',
+  "Share of GDP", 1, 5,'shareOfGDP',
+  "Share of Govt. spending", 3, 7,'shareGovt',
+  "Regional totals", 2, 13,'regionalTotals',
+  "Local currency financial years", 2, 7,'currencyFY',
+  "Local currency calendar years", 2, 6,'currencyCY',
+  "Per capita", 2, 6,'perCapita',
+  "all of the above", 2, 6,'all'
+  ) |> 
+  dplyr::select(Description, indicator) |> 
+  gt::gt() |>
+  gt::tab_header(
+    title = "Available Indicators",
+    subtitle = gt::md("in the *SIPRI* database")
+  )|>
+  gt::tab_source_note(
+    source_note = gt::md("Source: Information from the Stockholm International Peace Research Institute (SIPRI) Military Expenditure Database, https://doi.org/10.55163/CQGC9685.")
+  )|>
+  gt::cols_label(
+    indicator = gt::md("**Indicator**"),
+    Description = gt::md("**Description**")
+  )
 ```
 
-```{.bash filename="postgres_user.secret"}
-postgres
-```
+## Getting data
 
-This should be a safe password.
+Actually downloading the data is quite straight-forward, just do: 
 
-```{.bash}
-nano postgres_password.secret
-```
-
-```{.bash filename="postgres_password.secret"}
-postgres_password ## replace this value
-```
-
-#### Setting values for our own database
-
-Setting up our own user that will have limited access.
-```{.bash}
-nano db_user.secret
+```{r}
+#| label: "Getting data"
+milex <- sipri_get_data(indicator = "constantUSD")
 ```
 
 
-```{.bash filename="db_user.secret"}
-paul ## replace this value
-```
+```{r}
+#| message: false
 
-Giving this user a sefe password as well.
-```{.bash}
-nano db_password.secret
-```
-
-```{.bash filename="db_password.secret"}
-pauls_password ## replace this value
-```
-
-Now we can make a database which we will use for our project. 
-
-```{.bash}
-nano db_database.secret
-```
-
-```{.bash filename="db_database.secret"}
-pauls_database ## replace this value
-```
-
-Our file directory now should look like this: 
-
-```{.bash}
-postgres_config/
-├── .gitignore
-├── README.md
-├── conf
-│   ├── hostname
-│   ├── hosts
-│   ├── my-postgres.conf
-│   └── resolv.conf
-├── db_database.secret
-├── db_password.secret
-├── db_user.secret
-├── docker-compose.yml
-├── hba
-│   └── pg_hba.conf
-├── init
-│   └── filldb.sh
-├── postgres_password.secret
-└── postgres_user.secret
+library(dplyr)
+glimpse(milex)
 ```
 
 
-#### Setting access rights for the different users
+Looking at the data, it becomes apparent, that there is a few columns that are returned, we know the indicator we downloaded, the country name, as well as supposed iso codes and values, as well as a column for missing. However, the iso codes by SIPRI often do not match the official ISO codes, we will see below. 
 
-Now we want to modify the configuration file to block connections to the superuser, that do not come from inside our docker container, making any changes to the configuration of the postgres impossible, unless the user accessing it already is inside of the docker container. 
+As we can see from the glimpse above, some of the data is not available. 
 
-For that we modify the file `pg_hba.conf`: 
-```{.bash filename="pg_hba.conf"}
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-host pauls_database paul 172.20.0.1/16 scram-sha-256
-local all all  scram-sha-256
+```{r}
+#| echo: false
+milex |> dplyr::count(missing) |> 
+  dplyr::filter(!is.na(missing)) |> 
+  gt::gt() |>
+  gt::tab_header(
+    title = "Reasons for missing data",
+    subtitle = gt::md("in the *SIPRI* database")
+  )|>
+  gt::tab_source_note(
+    source_note = gt::md("Source: Information from the Stockholm International Peace Research Institute (SIPRI) Military Expenditure Database, https://doi.org/10.55163/CQGC9685.")
+  )|>
+  gt::cols_label(
+    missing = gt::md("**Specified Reason**"),
+    n = gt::md("**# missing**")
+  )
 ```
 
-This basically says: 
+As we can see, most missings are there, because the data is simply not available, whereas some are originating from countries that simply did not exist at the time. The database dates military expenditure back to 1945. 
 
-- host: A remote connection
-- all: has access to pauls_database 
-- paul: if it is user paul
-- 172.0.0.0/8: and comes from ip-ranges 172.0.0.0-172.255.255.255, (because docker lives somewhere here)
-- scram-sha-256: if it provides a password
+## Plotting Data
 
-The full sentence is: A remote connection has access to pauls_database if it is user paul and comes from ip-ranges 172.0.0.0-172.255.255.255, (because docker lives here) if it provides a password.
+For starters, lets try to replicate the yearly graph that SIPRI published about overall military expenditure in constant USD. At SIPRI it looks like this: 
 
-The line starting with local basically says that a local connection can be used with any user, if the password is provided. So here we can also login with the superuser to later on make changes, e.g. add more databases.
+![Original Graph in the yearly publication by SIPRI](sipri_graph.png)
 
-## Step 4: Spinning up the docker-container
+We need to aggregate data by regions, which is easily done with a dataset included in the package, that contains the regions with machted country codes. 
 
-Now that we have all this setup, all we need to do is run the docker compose file. 
+We need a few libraries for that, which we will load, afterwards we join the region names to our data, we then sum up the values, excluding the missing values. We also limit the data to years after 1988 and exclude the year 1991, as recommended by SIPRI. Afterwards we format the date column to a nice yearly date for the plot.  
 
-```{.bash filename="docker-compose.yml"}
-services:
-  db:
-    image: postgres:latest ## get the latest postgres container
-    command:
-      - -c
-      - config_file=/etc/postgresconf/my-postgres.conf ## set the config file 
-      - -c
-      - hba_file=/etc/postgresconf_hba/pg_hba.conf ## set the pg_hab config file
-    restart: always ## restart if the server reboots
-    environment: ## set the secrets that should be available
-      DB_USER: /run/secrets/db_user 
-      DB_PASSWORD: /run/secrets/db_password
-      DB_DATABASE:  /run/secrets/db_database
-      POSTGRES_USER_FILE: /run/secrets/postgres_user
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-    ports: ## set the ports that we will share, notice the 127.0.0.1 to only deploy locally!
-      - '127.0.0.1:5432:5432'
-    volumes: ## set a volume to persist data and copy the configuration dilfes
-      - db:/var/lib/postgresql/data
-      - ./conf/:/etc/postgresconf/
-      - ./hba/:/etc/postgresconf_hba/
-      - ./init/:/docker-entrypoint-initdb.d/
-    secrets:
-      - postgres_user
-      - postgres_password
-      - db_user
-      - db_password
-      - db_database
-volumes:
-  db:
-    driver: local
 
-secrets:
-  postgres_user:
-    file: ./postgres_user.secret
-  postgres_password:
-    file: ./postgres_password.secret
-  db_user:
-    file: ./db_user.secret
-  db_password:
-    file: ./db_password.secret
-  db_database:
-    file: ./db_database.secret
+```{r}
+#| label: aggregating sipri data
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+
+
+milex_regional <- milex |> 
+  dplyr::left_join(milRex::sipri_regions) |>  ## join data
+  dplyr::summarise(value = sum(value, na.rm = T), 
+                   .by = c(region, year)) |> ## sum up 
+  dplyr::filter(year >= 1988)|> ## exclude values pre-1988
+  dplyr::mutate(value = if_else(year == 1991, 0, value)) |> # exclude 1991
+  dplyr::mutate(year = paste(year, "01-01") |> 
+                  lubridate::ymd()) # format dates nicely 
+```
+
+Now we can plot this, by using `ggplot2`. However, the resulting plot, without any further formatting does not look too nice. 
+
+```{r}
+#| fig-cap: "This is a bare-bones replication, but does not look nice."
+#| fig-width: 6
+#| fig-height: 3.75
+ggplot2::ggplot(milex_regional) +
+  ggplot2::geom_col(ggplot2::aes(year, value/1000, 
+                                 fill = reorder(region, value)))
 ```
 
 
-```{.bash}
-docker compose up
+When we apply some additional formatting we get pretty far in approximating the SIPRI plot! 
+
+
+```{r}
+#| label: fig-1-regional-exp-nice
+#| fig-cap: "Nicer version with additional formatting"
+#| fig-width: 6
+#| fig-height: 3.75
+
+ggplot(milex_regional) +
+  geom_col(aes(year, value/1000, fill = reorder(region, value))) +
+  labs(y = "Militarxy expenditure\n (constant 2022 USD billion)",
+       caption = "1991 not present because no values for Soviet Union.\n See https://www.sipri.org/sites/default/files/2024-04/2404_fs_milex_2023.pdf", 
+       fill = "Region",
+       x = "") + 
+  theme_bw() +
+  theme(plot.background = element_rect(fill = rgb(215, 229, 221, 
+                                                  maxColorValue = 255)),
+        panel.background = element_rect(fill = rgb(215, 229, 221, 
+                                                  maxColorValue = 255)),
+        legend.background = element_rect(fill = rgb(215, 229, 221, 
+                                                  maxColorValue = 255)),
+        legend.position = "top",
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 6,face  = "bold"),
+        panel.border = element_blank(),
+        axis.line.x = element_line(),
+        text = element_text(size = 9),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.key.size = unit(0.05, 'in'))+
+  scale_fill_manual(values = 
+                      c(
+                        rgb(83,50,82, maxColorValue = 255),
+                        rgb(118,81,116, maxColorValue = 255),
+                        rgb(186,144,177, maxColorValue = 255),
+                        rgb(154,173,164, maxColorValue = 255),
+                        rgb(100,156,136, maxColorValue = 255)
+                      ))+
+  scale_x_date(breaks = "4 years",date_labels = "%Y")+
+  scale_y_continuous(breaks = seq(0,2500,500), limit = c(0, 2500), expand = c(0,0))
 ```
 
 
-## Step 5: Verify everything is up and set up correctly
+## Putting it on a map, 'cause everybody loves maps... 
 
-Now we will install a postgresql client on our server and try to connect to our server using the password set up above. We will directly try to connect to the database with the superuser, which should fail. 
 
-```{.bash}
-## install psql clinent
-sudo apt install postgresql-client
+Lets do a map of EU countries and the respective share of GDP they spend on defence. Here we use a few more packages to match the actual country codes to their geo-spatial files. 
 
-## check that it is online
-## this automatically tries to go to port 5432 which we use above
-psql -U postgres postgres -c "SELECT version();" 
+We also use a bounding box (`bbox`), to crop the geo-spatial files, so we don´t plot some French islands in the Atlantic ocean. 
 
-## this should fail, because we only allow connections to postgres from local with:
-> connection to server at "localhost" (127.0.0.1), port 5432 failed: FATAL:  no pg_hba.conf entry for host 
+
+
+```{r}
+#| message: false
+#| warning: false
+
+library(sf)
+library(giscoR)
+library(countrycode)
+
+## this gets us a vector of iso3codes for EU countries
+eu_countries <- giscoR::gisco_countrycode |> dplyr::filter(eu) |> dplyr::pull(ISO3_CODE)
+
+## this is a bounding box, figuring out the limits can be a bit tricky
+## there is a pretty good tutorial on this here: https://datascience.blog.wzb.eu/2019/04/30/zooming-in-on-maps-with-sf-and-ggplot2/ 
+bounds <- st_bbox(c(xmin = -20, xmax = 35, ymin = 34, ymax = 70))
+
+### giscoR lets us get the official shape files used by Eurostat
+eu_map <- giscoR::gisco_get_countries() |> dplyr::filter(ISO3_CODE %in% eu_countries) |> sf::st_crop(bounds)
+
+## lets get them also for other countries for a nice backdrop
+world_map <- giscoR::gisco_get_countries() |> sf::st_crop(bounds)
+
+## now we get the sipri data
+eu_share_gdp <- sipri_get_data(indicator = "shareOfGDP") |> 
+  ## next we transform the country cdoes to actual iso codes (e.g. SIPRI uses AST for Austria...)
+  dplyr::mutate(iso3c = countrycode::countrycode(country, origin = "country.name.en", destination = "iso3c")) |> 
+  dplyr::filter(iso3c %in% eu_countries) |> 
+  ## restrict to EU countries and the last available year
+  dplyr::filter(year == max(year)) |> 
+  dplyr::left_join(eu_map, by = c("iso3c" = "ISO3_CODE")) |> 
+  sf::st_as_sf()
 ```
 
-However this should work from inside our container: 
+It becomes quite clear, how the countries bordering or close to Russia dedicate a much higher share of their GDP to defence. In addition, of course Greece, which has high geopolitical tensions with Turkey spends a high share. 
 
-Lets get the id of our container, attach the shell and connect again - this should succeed!
-```{.bash}
-docker ps
-> 879a91d16b51   postgres:latest   "docker-entrypoint.s…"   22 minutes ago   Up 15 minutes   127.0.0.1:5432->5432/tcp   postgres_config-db-1
+```{r}
+#| label: share of gdp v2
+#| fig-cap: "Share of Money spent on military expenditure as share of GDP"
+#| fig-width: 6
+#| fig-height: 5
+library(ggplot2)
+library(grid)  # For using inset layout
 
-docker exec -it 879a91d16b51 bash
-
-psql -U postgres postgres -c "SELECT version();" 
-## put the password when prompted
+ggplot(eu_share_gdp) +
+  geom_sf(data = world_map, fill = "grey60") +
+  geom_sf(aes(fill = value * 100)) +
+  theme_void() +  
+  theme(
+    panel.background = element_rect(fill = "lightblue", color = NA),
+    plot.background = element_rect(fill = rgb(215, 229, 221, maxColorValue = 255)),
+    legend.background = element_blank(),
+    legend.position = "inside",
+    legend.position.inside = c(0.1, 0.3),
+    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 8, face = "bold"),
+    legend.key.size = unit(0.3, 'in'),
+    title = element_blank(),
+    plot.margin = margin(
+      t = -10,
+      r = -1,
+      b = -1,
+      l = -1
+    )  
+  ) +
+  coord_sf(expand = FALSE, ylim = c(34, 65)) + 
+  scale_fill_gradient2(
+    low = rgb(100, 156, 136, maxColorValue = 255),
+    mid = "white",
+    midpoint = 2,
+    high = rgb(118, 40, 116, maxColorValue = 255)
+  ) +
+  labs(fill = "% of GDP") +
+  annotate(
+    geom = "label",
+    x = -10,
+    y = 60,
+    label = "Military Expenditure \n as share of GDP in 2023",
+    fill = "grey10",
+    color = "white",
+    fontface = "bold",
+    label.size = NA
+  ) +
+  annotate(
+    geom = "label",
+    x = 7.8,
+    y = 34.3,
+    label = "  Source: Information from the Stockholm International Peace Research Institute (SIPRI) Military Expenditure Database, https://doi.org/10.55163/CQGC9685.            ",
+    size = 2,
+    fill = "white",
+    color = "grey10",
+    fontface = "bold",
+    label.size = NA
+  )
 ```
 
-Now since we configured our database to also be used remotely, the connection to our database should function even from outside the docker shell. So from the linux terminal on your server you can try: 
-```{.bash}
-psql -h localhost -p 5432 -U paul pauls_database -c "SELECT version();"
-## put the password when prompted
+This becomes even clearer, if we check whether countries reach the spending target of 2% of GDP by the NATO. 
+
+```{r}
+#| label: nato spending target
+#| fig-cap: "NATO Spending target reached"
+#| fig-width: 6
+#| fig-height: 5
+#| echo: false
+library(ggplot2)
+library(grid)  # For using inset layout
+
+
+ggplot(eu_share_gdp) +
+  geom_sf(data = world_map, fill = "grey60") +
+  geom_sf(aes(fill = dplyr::if_else(value >= 0.02, "yes", "no"))) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "lightblue", color = NA),
+    plot.background = element_rect(fill = rgb(215, 229, 221, maxColorValue = 255)),
+    legend.background = element_blank(),
+    legend.position = "inside",
+    legend.position.inside = c(0.1, 0.3),
+    legend.text = element_text(size = 7),
+    legend.title = element_text(size = 8, face = "bold"),
+    legend.key.size = unit(0.3, 'in'),
+    title = element_blank(),
+    plot.margin = margin(
+      t = -10,
+      r = -1,
+      b = -1,
+      l = -1
+    )
+  ) +
+  coord_sf(expand = FALSE, ylim = c(34, 65)) +
+  scale_fill_manual(values = c(
+    rgb(140, 100, 140, maxColorValue = 255),
+    rgb(100, 156, 136, maxColorValue = 255)
+    
+  )) +
+  labs(fill = "") +
+  annotate(
+    geom = "label",
+    x = -10,
+    y = 60,
+    label = "NATO spending target \nof 2% reached",
+    fill = "grey10",
+    color = "white",
+    fontface = "bold",
+    label.size = NA
+  ) +
+  annotate(
+    geom = "label",
+    x = 7.8,
+    y = 34.3,
+    label = "  Source: Information from the Stockholm International Peace Research Institute (SIPRI) Military Expenditure Database, https://doi.org/10.55163/CQGC9685.            ",
+    size = 2,
+    fill = "white",
+    color = "grey10",
+    fontface = "bold",
+    label.size = NA
+  )
 ```
-
-
-## Step 6: connect R to our database
-
-Now we are working on our local computer and want to access the remote database. Since for security reasons, we do not want to expose the database to the overall internet, we need to create what is called a SSH-Tunnel to our remote machine, which forwards everything from a certain port (door to our server) directly to our local computer. 
-
-For that we will use the terminal, which you can use even from inside RStudio. 
-
-The syntax is: `ssh -L [LOCAL_IP:]LOCAL_PORT:DESTINATION:DESTINATION_PORT [USER@]SSH_SERVER`. To read up on this a bit more, see for example [here](https://linuxize.com/post/how-to-setup-ssh-tunneling/). 
-
-```{.bash}
-ssh -L localhost:5432:localhost:5432 postgres@raspi
-```
-
-This can now run in the background. It is also possible to do this directly from R, but since it is dependent on more configuration overload, I will leave this part out for now and focus on the straight-forward route, by using the terminal, as above. 
-
-And now, the actual magic happens and you can actually connect to your database in R! 
-
-
-```{r, eval=F}
-con <- DBI::dbConnect(RPostgreSQL::PostgreSQL(),
-                      dbname = 'pauls_database', ## fill in the database name you chose in db_user.secret
-                      host = "localhost", 
-                      port = "5432", 
-                      user = "paul", ## fill in the database user you chose in db_database.secret
-                      password = "pauls_password") ## fill in the password you chose in db_password.secret
-```
-
-That is it. You made it! 
 
 
 
