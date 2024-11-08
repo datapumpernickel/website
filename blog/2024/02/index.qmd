@@ -1,0 +1,332 @@
+---
+title: "Setting up a PostgreSQL DB"
+date: 2024-08-21
+description: "Setting up a Docker Container with a PostgreSQL database for use in R"
+image: "index_files/figure-html/fig-1-regional-exp-nice-1.png"
+categories:
+  - r
+  - database
+  - docker
+format:
+  html: 
+    shift-heading-level-by: 1
+include-before-body:
+  text: |
+    <style>
+      .no-stripe .gt_table tr.odd {
+        --bs-table-striped-bg: transparent;
+      }
+      
+      .gt_footnote {
+        text-align: left !important;
+      }
+    </style>
+citation: true
+---
+
+
+### What this is: 
+
+I struggled to find a nice tutorial for setting up a postgreSQL Database in a Docker container that was both: 
+
+- complying with basic security measures for a database
+- easy to setup, a.k.a using a pre-configured docker container
+
+### What this is not: 
+
+I won´t be going into the nitty gritty details of databases, networking, linux servers and docker in general. One, because I do not have the expertise, two, because it would be too much for this short blog entry. 
+
+### What I assume you got: 
+
+- access to the terminal of a linux server (ssh access to be sure)
+- some knowledge of docker and the linux command line
+- a firewall to protect your server that is not ufw or firewalld or anything else that docker might circumvent - if you have a server at home you should check that your internet router does not allow devices to expose ports to the internet, if you are renting a server with a provider, make sure you activate the firewall even before packages reach your server
+
+
+## Step 1: We need docker
+
+I used the official [docker documentation](https://docs.docker.com/engine/install/ubuntu/
+) to install docker for ubuntu. We will also need to install [docker-compose](https://docs.docker.com/compose/install/linux/).
+
+Secondly, we will run our stuff from a new user on our server, which is not going to be a sudo user, or root, to make things more safe. 
+
+Hence we add a new user in Linux and add them to the docker group.
+
+```{.bash}
+sudo adduser postgres
+## now we activate ssh-login for that new user as per usual
+sudo groupadd docker
+sudo gpasswd -a postgres docker
+```
+
+Make sure that you can run docker without a sudo command: 
+
+```{.bash}
+docker run hello-world
+```
+
+
+## Step 2: We need the respective config files and stuff
+
+I saved all the necessary config-files in a github, repo, which you can simply clone in your home directory, or any other relevant directory on your server doing: 
+
+```{.bash}
+git clone https://github.com/datapumpernickel/postgres_config.git
+```
+You will now have the following files: 
+
+```{.bash}
+postgres_config/
+├── .gitignore
+├── README.md
+├── conf
+│   ├── hostname
+│   ├── hosts
+│   ├── my-postgres.conf 
+│   └── resolv.conf
+├── docker-compose.yml
+├── hba
+│   └── pg_hba.conf ## this is a configuration file, which allows us to protect the db from unwanted connections
+├── init
+└── └── filldb.sh ## this sets up our user and the initial database
+```
+
+
+## Step 3: Modify the configuration for our use-cases.
+
+When creating a PostgreSQL database, we are essentially making a server that accepts connections and has users with different levels of access. 
+
+In order to secure our database, we will create a superuser, which we can use to administrate our database and then a second user, which we will use to actually work with our database and which has lower access levels. Since all of this will be an automated process happening through initialization scripts, we will set the values for this as secrets on our server. 
+
+We will fill out these scripts: 
+
+- `postgres_user.secret`     --> put the superuser name, usually this is "postgres"
+- `postgres_password.secret` --> put the password for the superuser
+- `db_user.secret`           --> make a new personal user name that you plan on using in the future
+- `db_password.secret`       --> set a password for your personal user
+- `db_database.secret`       --> set the name of the personal database you want to use in the future
+
+
+#### Setting the superuser secrets
+
+This value is usually "postgres".
+
+```{.bash}
+nano postgres_user.secret
+```
+
+```{.bash filename="postgres_user.secret"}
+postgres
+```
+
+This should be a safe password.
+
+```{.bash}
+nano postgres_password.secret
+```
+
+```{.bash filename="postgres_password.secret"}
+postgres_password ## replace this value
+```
+
+#### Setting values for our own database
+
+Setting up our own user that will have limited access.
+```{.bash}
+nano db_user.secret
+```
+
+
+```{.bash filename="db_user.secret"}
+paul ## replace this value
+```
+
+Giving this user a sefe password as well.
+```{.bash}
+nano db_password.secret
+```
+
+```{.bash filename="db_password.secret"}
+pauls_password ## replace this value
+```
+
+Now we can make a database which we will use for our project. 
+
+```{.bash}
+nano db_database.secret
+```
+
+```{.bash filename="db_database.secret"}
+pauls_database ## replace this value
+```
+
+Our file directory now should look like this: 
+
+```{.bash}
+postgres_config/
+├── .gitignore
+├── README.md
+├── conf
+│   ├── hostname
+│   ├── hosts
+│   ├── my-postgres.conf
+│   └── resolv.conf
+├── db_database.secret
+├── db_password.secret
+├── db_user.secret
+├── docker-compose.yml
+├── hba
+│   └── pg_hba.conf
+├── init
+│   └── filldb.sh
+├── postgres_password.secret
+└── postgres_user.secret
+```
+
+
+#### Setting access rights for the different users
+
+Now we want to modify the configuration file to block connections to the superuser, that do not come from inside our docker container, making any changes to the configuration of the postgres impossible, unless the user accessing it already is inside of the docker container. 
+
+For that we modify the file `pg_hba.conf`: 
+```{.bash filename="pg_hba.conf"}
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host pauls_database paul 172.20.0.1/16 scram-sha-256
+local all all  scram-sha-256
+```
+
+This basically says: 
+
+- host: A remote connection
+- all: has access to pauls_database 
+- paul: if it is user paul
+- 172.0.0.0/8: and comes from ip-ranges 172.0.0.0-172.255.255.255, (because docker lives somewhere here)
+- scram-sha-256: if it provides a password
+
+The full sentence is: A remote connection has access to pauls_database if it is user paul and comes from ip-ranges 172.0.0.0-172.255.255.255, (because docker lives here) if it provides a password.
+
+The line starting with local basically says that a local connection can be used with any user, if the password is provided. So here we can also login with the superuser to later on make changes, e.g. add more databases.
+
+## Step 4: Spinning up the docker-container
+
+Now that we have all this setup, all we need to do is run the docker compose file. 
+
+```{.bash filename="docker-compose.yml"}
+services:
+  db:
+    image: postgres:latest ## get the latest postgres container
+    command:
+      - -c
+      - config_file=/etc/postgresconf/my-postgres.conf ## set the config file 
+      - -c
+      - hba_file=/etc/postgresconf_hba/pg_hba.conf ## set the pg_hab config file
+    restart: always ## restart if the server reboots
+    environment: ## set the secrets that should be available
+      DB_USER: /run/secrets/db_user 
+      DB_PASSWORD: /run/secrets/db_password
+      DB_DATABASE:  /run/secrets/db_database
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    ports: ## set the ports that we will share, notice the 127.0.0.1 to only deploy locally!
+      - '127.0.0.1:5432:5432'
+    volumes: ## set a volume to persist data and copy the configuration dilfes
+      - db:/var/lib/postgresql/data
+      - ./conf/:/etc/postgresconf/
+      - ./hba/:/etc/postgresconf_hba/
+      - ./init/:/docker-entrypoint-initdb.d/
+    secrets:
+      - postgres_user
+      - postgres_password
+      - db_user
+      - db_password
+      - db_database
+volumes:
+  db:
+    driver: local
+
+secrets:
+  postgres_user:
+    file: ./postgres_user.secret
+  postgres_password:
+    file: ./postgres_password.secret
+  db_user:
+    file: ./db_user.secret
+  db_password:
+    file: ./db_password.secret
+  db_database:
+    file: ./db_database.secret
+```
+
+
+```{.bash}
+docker compose up
+```
+
+
+## Step 5: Verify everything is up and set up correctly
+
+Now we will install a postgresql client on our server and try to connect to our server using the password set up above. We will directly try to connect to the database with the superuser, which should fail. 
+
+```{.bash}
+## install psql clinent
+sudo apt install postgresql-client
+
+## check that it is online
+## this automatically tries to go to port 5432 which we use above
+psql -U postgres postgres -c "SELECT version();" 
+
+## this should fail, because we only allow connections to postgres from local with:
+> connection to server at "localhost" (127.0.0.1), port 5432 failed: FATAL:  no pg_hba.conf entry for host 
+```
+
+However this should work from inside our container: 
+
+Lets get the id of our container, attach the shell and connect again - this should succeed!
+```{.bash}
+docker ps
+> 879a91d16b51   postgres:latest   "docker-entrypoint.s…"   22 minutes ago   Up 15 minutes   127.0.0.1:5432->5432/tcp   postgres_config-db-1
+
+docker exec -it 879a91d16b51 bash
+
+psql -U postgres postgres -c "SELECT version();" 
+## put the password when prompted
+```
+
+Now since we configured our database to also be used remotely, the connection to our database should function even from outside the docker shell. So from the linux terminal on your server you can try: 
+```{.bash}
+psql -h localhost -p 5432 -U paul pauls_database -c "SELECT version();"
+## put the password when prompted
+```
+
+
+## Step 6: connect R to our database
+
+Now we are working on our local computer and want to access the remote database. Since for security reasons, we do not want to expose the database to the overall internet, we need to create what is called a SSH-Tunnel to our remote machine, which forwards everything from a certain port (door to our server) directly to our local computer. 
+
+For that we will use the terminal, which you can use even from inside RStudio. 
+
+The syntax is: `ssh -L [LOCAL_IP:]LOCAL_PORT:DESTINATION:DESTINATION_PORT [USER@]SSH_SERVER`. To read up on this a bit more, see for example [here](https://linuxize.com/post/how-to-setup-ssh-tunneling/). 
+
+```{.bash}
+ssh -L localhost:5432:localhost:5432 postgres@raspi
+```
+
+This can now run in the background. It is also possible to do this directly from R, but since it is dependent on more configuration overload, I will leave this part out for now and focus on the straight-forward route, by using the terminal, as above. 
+
+And now, the actual magic happens and you can actually connect to your database in R! 
+
+
+```{r, eval=F}
+con <- DBI::dbConnect(RPostgreSQL::PostgreSQL(),
+                      dbname = 'pauls_database', ## fill in the database name you chose in db_user.secret
+                      host = "localhost", 
+                      port = "5432", 
+                      user = "paul", ## fill in the database user you chose in db_database.secret
+                      password = "pauls_password") ## fill in the password you chose in db_password.secret
+```
+
+That is it. You made it! 
+
+
+
+
