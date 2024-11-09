@@ -58,11 +58,11 @@ library(purrr)
 
 ## The replication problem
 
-When doing data analysis one of the problems we face is to make sure that our analysis is replicable. In a quantitative study, in which many of the outcomes are produced by code from pre-coded data, in theory, this should be easily achieved. However, the ongoing replication crisis in different scientific fields has shown to be rather durable. In the following I will address two broad topics in this field, the one of retrospective changes in the data and better maintainable code. In Part I, only a broad overview of these changes will be provided, in Part II I want to explore those changes a bit more across regions. 
+When doing data analysis one of the problems we face is to make sure that our analysis is replicable. In a quantitative study, in which many of the outcomes are produced by code from pre-existing data, in theory, this should be easily achieved. However, the ongoing replication crisis in different scientific fields has shown to be rather durable. In the following I will address this topic with an example of Uppsala Conflict Data Center datasets. In Part I, only a broad overview of changes in their datasets will be provided, in Part II I want to explore those changes a bit more across regions. 
 
-### 1 Retrospective changes
+### Retrospective changes
 
-While working with data, I have more often than not come across the issue that I download some dataset and work on the analysis. A few month go by where I work on other things and when getting back to the project I download the data again, except now the results have changed! Not only was the data possibly extended to the present day, which would be expectable, but there might also be retrospective changes to existing datasets. This is very common in datasets in political science, where good data is hard to come by and new information might change how we code past events. 
+While working with data, I have more often than not come across the issue that I download some dataset and work on the analysis. A few month go by where I work on other things and when getting back to the project I download the data again, except now the results have changed! This is very common in datasets in political science, where good data is hard to come by and new information might change how we code past events. 
 
 One case that I came across recently is conflict data, so information on how many conflicts take place in a given time frame and area and also how many fatalities are associated with these. 
 
@@ -73,7 +73,7 @@ UCDP offers us a nice insight into this problem, because they properly version t
 ![Versioning Example from UCDP](versioning_example.png)
 
 
-### 2 Code that is understandable, reproducable and hence helps to replicate
+### Sidenote: Code that is understandable, reproducable and hence helps to replicate
 
 When writing code that makes data available that I use frequently, I try to make my code reproducible. This is firstly to save myself work in the future, but it will also make it easier for others to use my code to replicate my results. One great way of doing this is to package code into an actual R-package. If you are interested in doing this, the single-most helpful and wonderful resource is this book [here](https://r-pkgs.org) by Hadley Wickham and Jennifer Bryan. 
 
@@ -81,7 +81,7 @@ When writing code that makes data available that I use frequently, I try to make
 
 Specifically with the resource above, I have found that the two packages which promised to allow access to the API in R where not fully functional for my use-case (either because they did not allow filtering and contributions in a [private gitlab](https://gitlab.com/dante-sttr/conflictr) were complicated or because the package actually was [not fully developed](https://github.com/chris-dworschak/ucdp.api) and seemed stale). Hence I quickly wrote my own code, which I then packaged, so I can use it again in the future and others can use it to access the same data. 
 
-You can find the package at: [https://github.com/datapumpernickel/conflictoR](https://github.com/datapumpernickel/conflictoR) and install it as follows: 
+You can find the [conflictoR](https://github.com/datapumpernickel/conflictoR) package on github and install it as follows: 
 
 ```{r, installation-package}
 #| eval: false
