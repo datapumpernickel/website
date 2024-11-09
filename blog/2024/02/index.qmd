@@ -303,6 +303,7 @@ It becomes quite evident that not too seldomly the number of conflicts is change
 #| message: false
 #| warning: false
 #| fig-height: 7
+#| fig-cap: "Changing counts of conflict episodes across different datasets and versions"
 
 library(tidyverse)
 
@@ -410,6 +411,8 @@ I found `r nrow(changes_analysis)` periods were data was corrected ex post. A ma
 #| echo: false
 #| message: false
 #| warning: false
+#| fig-cap: "Direction of change in corrections across different versions"
+
 library(patchwork)
 p1 <- ggplot(changes_analysis)+
   geom_boxplot(aes(biased_downward, perc_change)) +
