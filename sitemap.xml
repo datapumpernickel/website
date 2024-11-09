@@ -2,42 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.paulbochtler.de/blog/2024/01/index.html</loc>
-    <lastmod>2024-09-28T15:18:50.098Z</lastmod>
+    <lastmod>2024-10-05T21:34:47.708Z</lastmod>
   </url>
   <url>
-    <loc>https://www.paulbochtler.de/index.html</loc>
-    <lastmod>2024-09-28T09:58:54.581Z</lastmod>
+    <loc>https://www.paulbochtler.de/software/index.html</loc>
+    <lastmod>2024-11-09T16:58:02.274Z</lastmod>
   </url>
   <url>
-    <loc>https://www.paulbochtler.de/research/working-papers/schulze_kerscher_bochtler/index.html</loc>
-    <lastmod>2024-09-28T09:54:49.733Z</lastmod>
+    <loc>https://www.paulbochtler.de/blog/index.html</loc>
+    <lastmod>2024-09-28T09:54:49.726Z</lastmod>
   </url>
   <url>
-    <loc>https://www.paulbochtler.de/research/working-papers/bendiek_alander_bochtler/index.html</loc>
-    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.paulbochtler.de/research/datasets/westphal_et_al/index.html</loc>
-    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.paulbochtler.de/research/datasets/voelsen_majewski_bochtler/index.html</loc>
-    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.paulbochtler.de/research/articles/voss_kump_bochtler_health/index.html</loc>
-    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.paulbochtler.de/research/articles/bochtler_authoritarian_regimes/index.html</loc>
-    <lastmod>2024-09-28T09:54:49.730Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.paulbochtler.de/research/datasets/ondarza_bochtler/index.html</loc>
-    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.paulbochtler.de/research/datasets/werenfels_bochtler/index.html</loc>
+    <loc>https://www.paulbochtler.de/research/working-papers/eickhoff_bochtler/index.html</loc>
     <lastmod>2024-09-28T09:54:49.732Z</lastmod>
   </url>
   <url>
@@ -45,15 +21,43 @@
     <lastmod>2024-09-28T11:15:36.565Z</lastmod>
   </url>
   <url>
-    <loc>https://www.paulbochtler.de/research/working-papers/eickhoff_bochtler/index.html</loc>
+    <loc>https://www.paulbochtler.de/research/datasets/werenfels_bochtler/index.html</loc>
     <lastmod>2024-09-28T09:54:49.732Z</lastmod>
   </url>
   <url>
-    <loc>https://www.paulbochtler.de/blog/index.html</loc>
-    <lastmod>2024-09-28T09:54:49.726Z</lastmod>
+    <loc>https://www.paulbochtler.de/research/datasets/ondarza_bochtler/index.html</loc>
+    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
   </url>
   <url>
-    <loc>https://www.paulbochtler.de/software/index.html</loc>
+    <loc>https://www.paulbochtler.de/research/articles/bochtler_authoritarian_regimes/index.html</loc>
+    <lastmod>2024-09-28T09:54:49.730Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.paulbochtler.de/research/articles/voss_kump_bochtler_health/index.html</loc>
+    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.paulbochtler.de/research/datasets/voelsen_majewski_bochtler/index.html</loc>
+    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.paulbochtler.de/research/datasets/westphal_et_al/index.html</loc>
+    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.paulbochtler.de/research/working-papers/bendiek_alander_bochtler/index.html</loc>
+    <lastmod>2024-09-28T09:54:49.732Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.paulbochtler.de/research/working-papers/schulze_kerscher_bochtler/index.html</loc>
     <lastmod>2024-09-28T09:54:49.733Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.paulbochtler.de/index.html</loc>
+    <lastmod>2024-09-28T09:58:54.581Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.paulbochtler.de/blog/2024/02/index.html</loc>
+    <lastmod>2024-11-09T16:58:02.272Z</lastmod>
   </url>
 </urlset>

@@ -1,5 +1,12 @@
 [
   {
+    "listing": "/blog/index.html",
+    "items": [
+      "/blog/2024/02/index.html",
+      "/blog/2024/01/index.html"
+    ]
+  },
+  {
     "listing": "/research/index.html",
     "items": [
       "/research/articles/voss_kump_bochtler_health/index.html",
@@ -11,12 +18,6 @@
       "/research/datasets/voelsen_majewski_bochtler/index.html",
       "/research/datasets/ondarza_bochtler/index.html",
       "/research/datasets/westphal_et_al/index.html"
-    ]
-  },
-  {
-    "listing": "/blog/index.html",
-    "items": [
-      "/blog/2024/01/index.html"
     ]
   }
 ]
