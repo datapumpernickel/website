@@ -254,6 +254,7 @@ ggplot(data = clean_full_data |>
 
 Now in order to look at how these numbers change across different versions, lets get the datasets for all versions. The below code uses `tidyr` to expand our unique combinations of datasets and versions to one dataset. We then use the handy `map2()` function from the `map()` family of `purrr` to iterate over the two columns of the data. We could have also achieved this with `pmap()`, but `map2()` makes it a bit more explicit how the variables were passed on. 
 
+
 ```{r}
 #| eval: false
 ## making a dataframe with all combinations of datasets and versions
