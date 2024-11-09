@@ -252,7 +252,7 @@ ggplot(data = clean_full_data |>
 
 ## Tracking changes across different versions
 
-Now in order to look at how these numbers change across different versions, lets get the datasets for all versions: 
+Now in order to look at how these numbers change across different versions, lets get the datasets for all versions. The below code uses `tidyr` to expand our unique combinations of datasets and versions to one dataset. We then use the handy `map2()` function from the `map()` family of `purrr` to iterate over the two columns of the data. We could have also achieved this with `pmap()`, but `map2()` makes it a bit more explicit how the variables were passed on. 
 
 ```{r}
 #| eval: false
@@ -278,7 +278,7 @@ full_data <- map2(
 
 ```
 
-Now that we queried all the dataset-version combinations, we can bind the datasets together and actually count the conflicts in each year for each version and dataset. 
+Now that we queried all the dataset-version combinations, we can bind the datasets together and actually count the conflicts in each year for each version and dataset. For each dataset-year combination, we also get the maximum and minimum count, to be able to plot this range as well. 
 
 ```{r}
 #| eval: false
@@ -292,8 +292,6 @@ clean_full_data <- full_data |>
          n_min = min(n)) |> 
   mutate(year = as.numeric(year))
 ```
-
-It becomes quite evident that not too seldomly the number of conflicts is changed from one version to another, even if the actual conflict is quite some years back! This should probably not come as a surprise, since areas of violent conflict are usually hard to gain access to and collecting information in this environment is dangerous and news articles about these incidents are probably often not accurate, until some time has passed to allow for thorough investigation. It speaks to the dedication of researchers at UCDP that they incorporate changes so far back into their datasets. 
 
 ::: {.panel-tabset}
 
@@ -378,12 +376,16 @@ ggplot(data = clean_full_data |>
 ```
 :::
 
+It becomes quite evident that not too seldomly the number of conflicts is changed from one version to another, even if the actual conflict is quite some years back! This should probably not come as a surprise, since areas of violent conflict are usually hard to gain access to and collecting information in this environment is dangerous and news articles about these incidents are probably often not accurate, until some time has passed to allow for thorough investigation. It speaks to the dedication of researchers at UCDP that they incorporate changes so far back into their datasets. 
+
 The fact that we can see the largest amount of changes in the last 10 years, might be due to the fact, that the API only allows us to query the last 7 versions dating back to 2017. 
+
+#### Overestimation or Underestimation?
 
 Intuitively, one would assume that lack of information leads to a systematic underestimation of conflict data. 
 Hence, one question I wanted to answer was: **Are conflicts usually underestimated and then corrected upwards or are conflict periods also overestimated?**
 
-To answer this question, for each dataset I compared the changes between current and previous version and checked if the previous year-dataset-version tryad was smaller than the current one or if there was no change at all. 
+To answer this question, for each dataset I compared the changes between current and previous version and checked if the previous year-dataset-version triad was smaller than the current one or if there was no change at all. 
 
 
 ```{r}
