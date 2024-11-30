@@ -1,0 +1,3835 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Paul Bochtler">
+<meta name="description" content="Using embeddings and cosine similarity, comparing the coalition agreement with party programs, I try to determine who wrote the largest part of the last coalition agreement.">
+<title>Part I: Who wrote the last coalition agreement in Germany? | Paul Bochtler – Paul Bochtler</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../..//files/favicon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-contrib/iconify-2.0.0/iconify-icon.min.js"></script><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><style>
+
+      .quarto-title-block .quarto-title-banner {
+        background: #4f7b53;
+      }
+</style>
+</head>
+<body class="floating nav-fixed slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Paul Bochtler</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../software/index.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="https://github.com/datapumpernickel" rel="me"> 
+<span class="menu-text"><iconify-icon inline="" icon="bi:github" style="font-size: 1.1em;" aria-label="Icon github from bi Iconify.design set." title="GitHub"></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.linkedin.com/in/paul-bochtler-8424a1149/" rel="me"> 
+<span class="menu-text"><iconify-icon inline="" icon="bi:linkedin" style="font-size: 1.1em;" aria-label="Icon linkedin from bi Iconify.design set." title="LinkedIn"></iconify-icon></span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Part I: Who wrote the last coalition agreement in Germany?</h1>
+                  <div>
+        <div class="description">
+          Using embeddings and cosine similarity, comparing the coalition agreement with party programs, I try to determine who wrote the largest part of the last coalition agreement.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">r</div>
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">sentence-transformer</div>
+                <div class="quarto-category">nlp</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="https://www.paulbochtler.de/">Paul Bochtler</a> <a href="https://orcid.org/0000-0002-9146-6185" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">Friday, November 8, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul>
+<li><a href="#the-idea" id="toc-the-idea" class="nav-link active" data-scroll-target="#the-idea">The idea</a></li>
+  <li><a href="#why-are-coalition-agreements-important" id="toc-why-are-coalition-agreements-important" class="nav-link" data-scroll-target="#why-are-coalition-agreements-important">Why are coalition agreements important?</a></li>
+  <li><a href="#reading-in-the-pdfs" id="toc-reading-in-the-pdfs" class="nav-link" data-scroll-target="#reading-in-the-pdfs">Reading in the PDFs</a></li>
+  <li><a href="#embedding-the-sentences" id="toc-embedding-the-sentences" class="nav-link" data-scroll-target="#embedding-the-sentences">Embedding the sentences</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  </ul></nav>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><style>
+  .no-stripe .gt_table tr.odd {
+    --bs-table-striped-bg: transparent;
+  }
+
+  .gt_footnote {
+    text-align: left !important;
+  }
+</style>
+<section id="the-idea" class="level3"><h3 class="anchored" data-anchor-id="the-idea">The idea</h3>
+<p>In the following blog entry, I will try to find out which of the parties taking part in the recently broken up coalition wrote which part of the agreement that now lies in shambles. For that I will read out the party programs of each party, embed them together with the coalition agreement in a common vector space and calculate a sentence-wise cosine-similarity. This allows us to find for each sentence in the coalition agreement the most similar sentence in each party program.</p>
+<p>Part II will look at whether the content of the sentences that we can attribute to single parties lies in what we would determine to be their core-issues, such as ecology for the greens. For that we will us a pretrained transformer model of the manifesto project to classify all sentences of the agreement.</p>
+</section><section id="why-are-coalition-agreements-important" class="level3"><h3 class="anchored" data-anchor-id="why-are-coalition-agreements-important">Why are coalition agreements important?</h3>
+<p>In Germany, two factors make it a frequent phenomenon that coalitions of different parties govern the country. Firstly, Germany has a proportional voting system, following the decades old Duverger´s law making it a candidate for a more or less fragmented multi-party system <span class="citation" data-cites="Chapman1955">(<a href="#ref-Chapman1955" role="doc-biblioref">Chapman 1955</a>)</span>, hence seldomly does one party gain a majority to govern with sovereignty, and secondly, Germany is a parlamentarian government system, which makes functioning governments without a majority in the legislative chamber unlikely <span class="citation" data-cites="Steffani1979">(<a href="#ref-Steffani1979" role="doc-biblioref">Steffani 1979</a>)</span>. Hence, multiple parties need to agree on a coalition to establish a majority to form a government.</p>
+<p>The coalition agreement is a legally non-binding contract between the participating parties as to which legislative projects they are going to develop in the years they will govern together. It also establishes the division of portfolios, which parties gets which ministries. We will focus on the content of the coalition agreement and try to see, which party might have “dominated” the coalition agreement in terms of textual contributions and similarity to their party program.</p>
+<p>There is obvious limits to this, as we can establish textual similarity, but we cannot establish the importance of given sentences. Having introduced a sentence that promises to “<em>make state actions more efficient and faster</em>” (Wir wollen staatliches Handeln schneller und effektiver machen und besser auf künftige Krisen vorbereiten., p.5) is clearly not as significant as a sentence that reads: “<em>We want 30 percent organic farming by 2030</em>” (Wir wollen 30 Prozent Ökolandbau bis zum Jahr 2030 erreichen., p.&nbsp;46), which includes a very tangible goal.</p>
+</section><section id="reading-in-the-pdfs" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="reading-in-the-pdfs">Reading in the PDFs</h3>
+<p>We are going to read in the texts, using the <code>tabulapdf</code> package, because it does a really good job at detecting and correctly reading in two-column pdfs. We do some basic cleaning, taking out some PDF footnotes, headers and repeating titles that are not very interesting to us.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## get a list of pdf files</span></span>
+<span><span class="va">pdfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="st">'raw_data'</span>, full.names <span class="op">=</span> <span class="cn">T</span>, pattern <span class="op">=</span> <span class="st">".pdf"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## read in each of the pdfs</span></span>
+<span><span class="va">texts</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">map_dfr</span><span class="op">(</span><span class="va">pdfs</span>, <span class="op">~</span> <span class="op">{</span></span>
+<span>    <span class="fu">tabulapdf</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/tabulapdf/reference/extract_text.html">extract_text</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">tibble</span><span class="op">(</span>text <span class="op">=</span> <span class="va">.</span>, party <span class="op">=</span> <span class="va">.x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">clean_text</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">text</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># First, replace only the problematic "- " cases with a placeholder</span></span>
+<span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_replace_all</span><span class="op">(</span><span class="va">text</span>, <span class="st">"- (?=[a-z])"</span>, <span class="st">"PLACEHOLDER"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Restore legitimate cases where it should be retained</span></span>
+<span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_replace_all</span><span class="op">(</span><span class="va">text</span>, <span class="st">"PLACEHOLDER(?=als\\b|auch\\b|sondern\\b|oder\\b|noch\\b|wie\\b|und\\b)"</span>, <span class="st">"- "</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Remove the placeholder from other positions</span></span>
+<span>  <span class="va">text</span> <span class="op">&lt;-</span> <span class="fu">str_replace_all</span><span class="op">(</span><span class="va">text</span>, <span class="st">"PLACEHOLDER"</span>, <span class="st">""</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">text</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">texts_clean</span> <span class="op">&lt;-</span> <span class="va">texts</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>text <span class="op">=</span> <span class="fu">str_squish</span><span class="op">(</span><span class="va">text</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>           <span class="fu">str_trim</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>           <span class="fu">str_remove_all</span><span class="op">(</span><span class="st">'Bereit, weil Ihr es seid.'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>           <span class="fu">str_remove_all</span><span class="op">(</span><span class="st">'Bundestagswahlprogramm 2021'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>           <span class="fu">str_remove_all</span><span class="op">(</span><span class="st">'Das Zukunftsprogramm der SPD'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>           <span class="fu">str_remove_all</span><span class="op">(</span><span class="st">'BÜNDNIS 90 / DIE GRÜNEN'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>           <span class="fu">str_remove_all</span><span class="op">(</span><span class="st">'SPD-Parteivorstand 2021'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>           <span class="fu">clean_text</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>party <span class="op">=</span> <span class="fu">str_remove_all</span><span class="op">(</span><span class="va">party</span>, <span class="st">'^raw_data/'</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">str_remove</span><span class="op">(</span><span class="va">.</span>,<span class="st">'\\.pdf'</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">texts_collapsed</span> <span class="op">&lt;-</span> <span class="va">texts_clean</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">party</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">text</span>, collapse <span class="op">=</span> <span class="st">' '</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="frequent-words" class="level4 page-columns page-full"><h4 class="anchored" data-anchor-id="frequent-words">Frequent words</h4>
+<p>Having these party programs in theory allows for a myriad of different interesting metrics, like how diverse is their vocabulary, how complicated is their language, how is their readibility rated, which topics are most prominently present and uncountable possibilities more. We are just going to look at the most frequent words to get a feel for the documents and some obvious differences in language between the parties.</p>
+<p><strong>Gendering:</strong> the first thing that is very evident, is the fact that “innen” is such a prominent word for SPD and GRUENE, but not for the FDP. This is not related to some form of domestic politics or inner-something, but the fact that SPD and GRUENE use gender-sensitive language, accounting for all genders in the word “citizen” in german reads as follow: “Bürger:innen” or “Bürger*innen”.</p>
+<p><strong>Fordern vs Fördern</strong> Words that seem similar, but are very different. The FDP puts an emphasis on “fordern”, which means “demanding”, whereas SPD and GRUENE put a stronger emphasis on “Fördern”, so “promote” or “foster”.</p>
+<p>Also tipical and something we would expect from the small government promoters FDP is the focus on companies, or “Unternehmen”.</p>
+<p><strong>EU vs europäisch vs.&nbsp;Europa</strong> The difference in the most frequent reference to the European Union versus the idea of a european identity also seems worth mentioning.</p>
+<p>All these observations need to be interpreted with care though, just looking at the (relative) frequency of words, can bear little meaning, but it gives us a feeling for the policy documents we are looking at.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset page-columns page-full">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Plot</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content page-columns page-full">
+<div id="tabset-1-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-1-freq_words" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-1-freq_words-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-1-freq_words-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-1-freq_words-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Most frequent word in party programs
+</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://juliasilge.github.io/tidytext/">tidytext</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">corpus</span><span class="op">(</span><span class="va">texts_collapsed</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">docnames</span><span class="op">(</span><span class="va">corpus</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">texts_collapsed</span><span class="op">$</span><span class="va">party</span></span>
+<span></span>
+<span><span class="va">tokens</span> <span class="op">&lt;-</span> <span class="fu">tokens</span><span class="op">(</span><span class="va">corpus</span>, remove_punct <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">tokens_remove</span><span class="op">(</span><span class="fu">stopwords</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span><span class="op">(</span><span class="st">'de'</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dfm</span> <span class="op">&lt;-</span> <span class="fu">dfm</span><span class="op">(</span><span class="va">tokens</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">excluded_words</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ka"</span>, <span class="st">"pi"</span>,<span class="st">"te"</span>,<span class="st">"l"</span>, <span class="st">"&gt;"</span>, <span class="st">"2021"</span>, <span class="st">"f"</span>, <span class="st">"ff"</span>, <span class="st">"seite"</span>, <span class="st">"kapitel"</span>, <span class="st">"dass"</span>,<span class="st">"ab"</span>, <span class="st">"demokraten"</span>, <span class="st">"freie"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">freq</span> <span class="op">&lt;-</span> <span class="fu">quanteda.textstats</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="va">dfm</span>, group<span class="op">=</span> <span class="va">party</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">feature</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">excluded_words</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">slice_max</span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">frequency</span>, n <span class="op">=</span> <span class="fl">15</span>,by <span class="op">=</span> <span class="va">group</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Prepare the data for plotting</span></span>
+<span><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="va">freq</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">group</span>, <span class="fu">desc</span><span class="op">(</span><span class="va">frequency</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">group</span> <span class="op">==</span><span class="st">"koalition"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">plot_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">frequency</span>, <span class="fu"><a href="https://juliasilge.github.io/tidytext/reference/reorder_within.html">reorder_within</a></span><span class="op">(</span><span class="va">feature</span>, <span class="va">frequency</span>, <span class="va">group</span><span class="op">)</span>, fill <span class="op">=</span> <span class="va">group</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_label</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">feature</span><span class="op">)</span>,</span>
+<span>    label.size <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>    fontface <span class="op">=</span> <span class="st">"bold"</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>    position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_stack.html">position_stack</a></span><span class="op">(</span>vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://juliasilge.github.io/tidytext/reference/reorder_within.html">scale_y_reordered</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">"free"</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
+<span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>    panel.spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"lines"</span><span class="op">)</span>,</span>
+<span>    axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    axis.ticks <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span>, face <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
+<span>    panel.grid.major.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>, <span class="co"># Remove vertical grid lines</span></span>
+<span>    panel.grid.minor.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Remove minor grid lines</span></span>
+<span>  <span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    <span class="st">"fdp"</span> <span class="op">=</span> <span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"LaCroixColoR::Pamplemousse"</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span>
+<span>    <span class="st">"gruene"</span> <span class="op">=</span> <span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"LaCroixColoR::Pamplemousse"</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span>
+<span>    <span class="st">"spd"</span> <span class="op">=</span> <span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"LaCroixColoR::Pamplemousse"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="fu">glue</span><span class="op">(</span><span class="st">"Excluded the words: {paste0(excluded_words, collapse = ', ')}"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">str_wrap</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<!-- ```{r} -->
+<!-- quanteda.textstats::textstat_simil(dfm, method = 'jaccard',margin = "documents") -->
+<!-- ``` -->
+</section><section id="splitting-sentences" class="level4"><h4 class="anchored" data-anchor-id="splitting-sentences">Splitting sentences</h4>
+<p>In the next step, since we want to determine authorship on the sentence-level, we need to split the entire text into single sentences. The <code>tidytext</code> package has a handy function for this, it is as simple as the following:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentences</span> <span class="op">&lt;-</span> <span class="va">texts_clean</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tidytext</span><span class="fu">::</span><span class="fu"><a href="https://juliasilge.github.io/tidytext/reference/unnest_sentences.html">unnest_sentences</a></span><span class="op">(</span>output <span class="op">=</span> <span class="st">"text"</span>, <span class="co">## specify the name of the output column</span></span>
+<span>                             input <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span>  <span class="co">## specify the name of the input column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can make a quick descriptive table, comparing the <strong>length of each single document</strong> in terms of sentences and see that the program of the greens is by far the longest (in terms of sentences).</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Table</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell" data-layout-align="center">
+<div id="tbl-sentence_count-table" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sentence_count-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Sentence Counts
+</figcaption><div aria-describedby="tbl-sentence_count-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="ndfheoiyob" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ndfheoiyob table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ndfheoiyob thead, #ndfheoiyob tbody, #ndfheoiyob tfoot, #ndfheoiyob tr, #ndfheoiyob td, #ndfheoiyob th {
+  border-style: none;
+}
+
+#ndfheoiyob p {
+  margin: 0;
+  padding: 0;
+}
+
+#ndfheoiyob .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ndfheoiyob .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ndfheoiyob .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ndfheoiyob .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ndfheoiyob .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ndfheoiyob .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ndfheoiyob .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ndfheoiyob .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ndfheoiyob .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ndfheoiyob .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ndfheoiyob .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ndfheoiyob .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ndfheoiyob .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ndfheoiyob .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ndfheoiyob .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndfheoiyob .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ndfheoiyob .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ndfheoiyob .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ndfheoiyob .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndfheoiyob .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ndfheoiyob .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndfheoiyob .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ndfheoiyob .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndfheoiyob .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ndfheoiyob .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ndfheoiyob .gt_left {
+  text-align: left;
+}
+
+#ndfheoiyob .gt_center {
+  text-align: center;
+}
+
+#ndfheoiyob .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ndfheoiyob .gt_font_normal {
+  font-weight: normal;
+}
+
+#ndfheoiyob .gt_font_bold {
+  font-weight: bold;
+}
+
+#ndfheoiyob .gt_font_italic {
+  font-style: italic;
+}
+
+#ndfheoiyob .gt_super {
+  font-size: 65%;
+}
+
+#ndfheoiyob .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ndfheoiyob .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ndfheoiyob .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ndfheoiyob .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ndfheoiyob .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ndfheoiyob .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ndfheoiyob .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#ndfheoiyob .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#ndfheoiyob div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header gt_heading">
+<th colspan="3" class="gt_heading gt_title gt_font_normal"><strong>Sentence Count</strong></th>
+</tr>
+<tr class="odd gt_heading">
+<th colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">by document</th>
+</tr>
+<tr class="header gt_col_headings">
+<th id="party" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Document</th>
+<th id="n" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sentence Count</th>
+<th id="DUPE_COLUMN_PLT" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">n</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">GRUENE Wahlprogramm</td>
+<td class="gt_row gt_right" headers="n">3725</td>
+<td class="gt_row gt_left" headers="DUPE_COLUMN_PLT"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17"><defs><style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="><rect x="0.00" y="0.00" width="113.39" height="14.17"></rect></clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="98.37" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #088BBE;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000016" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g></svg></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">Koalitionsvertrag</td>
+<td class="gt_row gt_right" headers="n">3257</td>
+<td class="gt_row gt_left" headers="DUPE_COLUMN_PLT"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17"><defs><style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="><rect x="0.00" y="0.00" width="113.39" height="14.17"></rect></clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="86.01" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #088BBE;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000016" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g></svg></td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">FDP Wahlprogramm</td>
+<td class="gt_row gt_right" headers="n">2247</td>
+<td class="gt_row gt_left" headers="DUPE_COLUMN_PLT"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17"><defs><style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="><rect x="0.00" y="0.00" width="113.39" height="14.17"></rect></clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="59.34" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #088BBE;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000016" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g></svg></td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">SPD Wahlprogramm</td>
+<td class="gt_row gt_right" headers="n">1577</td>
+<td class="gt_row gt_left" headers="DUPE_COLUMN_PLT"><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="113.39pt" height="14.17pt" viewbox="0 0 113.39 14.17"><defs><style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs><clippath id="cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw=="><rect x="0.00" y="0.00" width="113.39" height="14.17"></rect></clippath></defs><g clip-path="url(#cpMC4wMHwxMTMuMzl8MC4wMHwxNC4xNw==)"><rect x="5.02" y="0.89" width="41.65" height="12.40" style="stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #088BBE;"></rect><line x1="5.02" y1="14.17" x2="5.02" y2="0.0000000000000016" style="stroke-width: 1.07; stroke-linecap: butt;"></line></g></svg></td>
+</tr>
+</tbody>
+<tfoot class="gt_footnotes"><tr class="odd">
+<td colspan="3" class="gt_footnote"><em>Extracted with tabulapdf and tokenized into sentences with tidytext</em></td>
+</tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="tbl-sentence_count-code" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sentence_count-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Sentence Counts
+</figcaption><div aria-describedby="tbl-sentence_count-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode anchored" id="tbl-sentence_count-code" data-layout-align="center"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentences</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">count</span><span class="op">(</span><span class="va">party</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>party <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span></span>
+<span>    <span class="va">party</span> <span class="op">==</span> <span class="st">"koalition"</span>,</span>
+<span>    <span class="st">"Koalitionsvertrag"</span>,</span>
+<span>    <span class="fu">str_c</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="va">party</span><span class="op">)</span>, <span class="st">" Wahlprogramm"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">gt</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_header.html">tab_header</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Sentence Count**"</span><span class="op">)</span>, subtitle <span class="op">=</span> <span class="st">"by document"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/cols_label.html">cols_label</a></span><span class="op">(</span>party <span class="op">=</span> <span class="st">"Document"</span>, n <span class="op">=</span> <span class="st">"Sentence Count"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_footnote.html">tab_footnote</a></span><span class="op">(</span>footnote <span class="op">=</span>  <span class="fu">md</span><span class="op">(</span></span>
+<span>    <span class="st">"*Extracted with tabulapdf and tokenized into sentences with tidytext*"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">gtExtras</span><span class="fu">::</span><span class="fu"><a href="https://jthomasmock.github.io/gtExtras/reference/gt_plt_bar.html">gt_plt_bar</a></span><span class="op">(</span></span>
+<span>    column <span class="op">=</span> <span class="va">n</span>,</span>
+<span>    keep_column <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>    color <span class="op">=</span> <span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"LaCroixColoR::Pamplemousse"</span><span class="op">)</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section></section><section id="embedding-the-sentences" class="level3"><h3 class="anchored" data-anchor-id="embedding-the-sentences">Embedding the sentences</h3>
+<p>At this point, we are going to leave the r-universe and move over to python, because most state-of-the-art natural language processing libraries are being developed in python. Since this document is written in <code>quarto</code>, this is not an issue, as we can easily move back and forth between the different languages and even transfer objects and data.frames with ease!</p>
+<p>Sentence transformers are a model architecture that excels at representing semantic information of short text chunks (versus single-words). They are frequently used to find similar sentences among large collections of text, e.g.&nbsp;for search engines. They can also be used for paraphrase-mining or evaluating the textual similarity of two strings, taking into account the contextualized meaning of words (e.g.&nbsp;a <em>theatre play</em> being something different than a <em>word play</em>).</p>
+<p>For a documentation on the library we will use, see the <a href="https://sbert.net/docs/quickstart.html">docs</a>. For a more in-depth explanation of the SBERT architecture see <a href="https://www.marqo.ai/course/introduction-to-sentence-transformers">here</a> and <a href="https://medium.com/@jyotsna.a.choudhary/comprehensive-guide-to-embeddings-from-word-vectors-to-contextualized-representations-part-2-cfd6bc5154c5">here</a></p>
+<p>We will embed each sentence from the documents and then find the most similiar sentences for each party.</p>
+<section id="loading-the-model" class="level4"><h4 class="anchored" data-anchor-id="loading-the-model">Loading the model</h4>
+<p>To load the model, we use the <code>SentenceTransformer</code> Class and a model that is optimized for multilingual analysis, since our texts are in German, not in English.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sentence_transformers <span class="im">import</span> SentenceTransformer, util</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.tokenize <span class="im">import</span> sent_tokenize</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> SentenceTransformer(<span class="st">'sentence-transformers/paraphrase-multilingual-mpnet-base-v2'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="encoding-text" class="level4"><h4 class="anchored" data-anchor-id="encoding-text">Encoding text</h4>
+<p>Now we encode the coalition text, using the <code>.encode</code> method.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>coalition_text <span class="op">=</span> r.sentences[r.sentences[<span class="st">'party'</span>]<span class="op">==</span><span class="st">'koalition'</span>].reset_index().text</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>embedding_coal <span class="op">=</span> model.encode(coalition_text,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  convert_to_tensor<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  show_progress_bar <span class="op">=</span> <span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We transform these to a tensor. It then has a rectangular shape, where each sentence of the coalition agreement receives a numeric score on the 384 dimensions of the embedding vector from the model.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>embedding_coal.shape</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">## torch.Size([3257, 768])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>On dimension 1, sentence 106 (<em>für einen echten innovationsschub müssen wir ausgründungen vorantreiben.</em>) receives a value of 0.091, whereas sentence 200 (<em>wir werden hochschulen mittel des bundes zur schaffung einer gründungsinfrastruktur für technologisches wie soziales unternehmertum bereitstellen.</em>) receives a value of 0.0505. Since these embeddings and dimensions are fully computationally determined, we have no simple way of mapping this back to meaningful semantic dimensions, although there have been <a href="https://ceur-ws.org/Vol-3478/paper69.pdf">attempts</a> at doing so.</p>
+<p>When comparing the angle between these vectors in their multidimensional embedding space, the larger the value the more similar they are.</p>
+<p>We can do this using the simple <code>util.pytorch_cos_sim</code> function.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>diff1 <span class="op">=</span> util.pytorch_cos_sim(embedding_coal[<span class="dv">401</span>], embedding_coal[<span class="dv">402</span>]).cpu().numpy()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>diff2 <span class="op">=</span> util.pytorch_cos_sim(embedding_coal[<span class="dv">401</span>], embedding_coal[<span class="dv">105</span>]).cpu().numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The sentences:</p>
+<ul>
+<li><em>für einen echten innovationsschub müssen wir ausgründungen vorantreiben.</em></li>
+</ul>
+<p>and</p>
+<ul>
+<li><em>wir werden hochschulen mittel des bundes zur schaffung einer gründungsinfrastruktur für technologisches wie soziales unternehmertum bereitstellen.</em></li>
+</ul>
+<p>are not evaluated as very similar (cosine similarity of 0.7142), because they are quite different, but still a lot more similar than the following comparison.</p>
+<ul>
+<li><em>für einen echten innovationsschub müssen wir ausgründungen vorantreiben.</em></li>
+</ul>
+<p>and</p>
+<ul>
+<li><em>7 eine starke demokratie lebt von den menschen, die sie tragen.</em></li>
+</ul>
+<p>yields a lower cosine similarity of 0.2328, as these are semantically quite different.</p>
+</section><section id="encoding-all-texts-and-comparing-them" class="level4"><h4 class="anchored" data-anchor-id="encoding-all-texts-and-comparing-them">Encoding all texts and comparing them</h4>
+<p>In the following code-chunk, we will repeat the embedding process for each collection of party sentences, then create a matrix with a pair-wise cosine similarity calculation of each coalition sentence with each party sentence. We will keep only the most similar party sentence for each coalition agreement sentence.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sentence_transformers <span class="im">import</span> util</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming `coalition_text` and `embedding_coal` are precomputed</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> party <span class="kw">in</span> tqdm([<span class="st">'fdp'</span>, <span class="st">'spd'</span>, <span class="st">'gruene'</span>], desc<span class="op">=</span><span class="st">"Processing Parties"</span>):</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    party_text <span class="op">=</span> r.sentences[r.sentences[<span class="st">'party'</span>] <span class="op">==</span> party].reset_index(drop<span class="op">=</span><span class="va">True</span>).text</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    embedding_party <span class="op">=</span> model.encode(party_text, convert_to_tensor<span class="op">=</span><span class="va">True</span>, show_progress_bar<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute cosine similarity matrix</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    cosine_scores <span class="op">=</span> util.pytorch_cos_sim(embedding_party, embedding_coal).cpu().numpy()</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a DataFrame for all combinations using vectorized operations</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    rows, cols <span class="op">=</span> cosine_scores.shape</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">'party'</span>: party,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">'sentence'</span>: party_text.repeat(cols),</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">'sentence_coal'</span>: <span class="bu">list</span>(coalition_text) <span class="op">*</span> rows,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">'score'</span>: cosine_scores.flatten()</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Keep top match for each sentence in party_text</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    top_pair <span class="op">=</span> results.sort_values(<span class="st">'score'</span>, ascending<span class="op">=</span><span class="va">False</span>).groupby([<span class="st">'party'</span>, <span class="st">'sentence_coal'</span>]).head(<span class="dv">1</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.concat([data, top_pair], ignore_index<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Looking at the most similar sentences, this has worked remarkably well, the model has identified almost identical sentences that seem to have come from individual party programs.</p>
+<p>What is clearly visible from this extract is also one large caveat about what we can infer from these metrics. Just because a sentence was copied almost identically from a party program does not mean that the sentence has a high impact on policies.</p>
+<p>For example the sentence: “die prinzipien offenen regierungshandelns - transparenz, partizipation und zusammenarbeit sind für uns handlungsleitend.” - the principles of open government action - transparency, participation and cooperation are our guiding principles - is not policy related. This related to the above mentioned caveats. So we need to take care in the conclusions we draw from the following results.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Table</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell" data-layout-align="center">
+<div id="tbl-most_similar_sentences" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-most_similar_sentences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Most similar Sentences
+</figcaption><div aria-describedby="tbl-most_similar_sentences-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="mvhuypmgkl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mvhuypmgkl table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mvhuypmgkl thead, #mvhuypmgkl tbody, #mvhuypmgkl tfoot, #mvhuypmgkl tr, #mvhuypmgkl td, #mvhuypmgkl th {
+  border-style: none;
+}
+
+#mvhuypmgkl p {
+  margin: 0;
+  padding: 0;
+}
+
+#mvhuypmgkl .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mvhuypmgkl .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mvhuypmgkl .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mvhuypmgkl .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mvhuypmgkl .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mvhuypmgkl .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mvhuypmgkl .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mvhuypmgkl .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mvhuypmgkl .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mvhuypmgkl .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mvhuypmgkl .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mvhuypmgkl .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mvhuypmgkl .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mvhuypmgkl .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mvhuypmgkl .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mvhuypmgkl .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mvhuypmgkl .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mvhuypmgkl .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mvhuypmgkl .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mvhuypmgkl .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mvhuypmgkl .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mvhuypmgkl .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mvhuypmgkl .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mvhuypmgkl .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mvhuypmgkl .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mvhuypmgkl .gt_left {
+  text-align: left;
+}
+
+#mvhuypmgkl .gt_center {
+  text-align: center;
+}
+
+#mvhuypmgkl .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mvhuypmgkl .gt_font_normal {
+  font-weight: normal;
+}
+
+#mvhuypmgkl .gt_font_bold {
+  font-weight: bold;
+}
+
+#mvhuypmgkl .gt_font_italic {
+  font-style: italic;
+}
+
+#mvhuypmgkl .gt_super {
+  font-size: 65%;
+}
+
+#mvhuypmgkl .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mvhuypmgkl .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mvhuypmgkl .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mvhuypmgkl .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mvhuypmgkl .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mvhuypmgkl .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mvhuypmgkl .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mvhuypmgkl .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mvhuypmgkl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header gt_heading">
+<th colspan="4" class="gt_heading gt_title gt_font_normal"><strong>Top 10 most similar sentences</strong></th>
+</tr>
+<tr class="odd gt_heading">
+<th colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">by cosine similarity</th>
+</tr>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" id="party" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Party</strong></th>
+<th colspan="2" id="**Texts**" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+<strong>Texts</strong>
+</div></th>
+<th rowspan="2" id="score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><strong>Cosine Similarity</strong></th>
+</tr>
+<tr class="odd gt_col_headings">
+<th id="sentence" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><em>Party Program</em></th>
+<th id="sentence_coal" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><em>Coalition Agreement</em></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">alleinerziehende, die heute am stärksten von armut betroffen sind, entlasten wir mit einer steuergutschrift.</td>
+<td class="gt_row gt_left" headers="sentence_coal">alleinerziehende, die heute am stärksten von armut betroffen sind, entlasten wir mit einer steuergutschrift.</td>
+<td class="gt_row gt_right" headers="score">1.0000</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">sichere und leistungsfähige datenverarbeitung, kombiniert mit mobiler it und klar geregelten kompetenzen, ist dabei eine grundvoraussetzung moderner polizeiarbeit.</td>
+<td class="gt_row gt_left" headers="sentence_coal">sichere und leistungsfähige datenverarbeitung, kombiniert mit mobiler it und klar geregelten kompetenzen, sind grundvoraussetzung moderner polizeiarbeit.</td>
+<td class="gt_row gt_right" headers="score">0.9984</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">wir setzen uns dafür ein, die rechte von minderheiten auf internationaler ebene zu stärken – auch innerhalb der eu.</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir wollen die rechte von minderheiten auf internationaler ebene und insbesondere innerhalb der eu stärken.</td>
+<td class="gt_row gt_right" headers="score">0.9902</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">die prinzipien offenen regierungshandelns - transparenz, partizipation und zusammenarbeit sind für uns handlungsleitend.</td>
+<td class="gt_row gt_left" headers="sentence_coal">uns leiten die prinzipien offenen regierungshandelns – transparenz, partizipation und zusammenarbeit.</td>
+<td class="gt_row gt_right" headers="score">0.9855</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">die anhaltende bedrohung des staates israel und seiner souveränität in seiner nachbarschaft und den terror gegen seine bevölkerung verurteilen wir.</td>
+<td class="gt_row gt_left" headers="sentence_coal">die anhaltende bedrohung des staates israel und den terror gegen seine bevölkerung verurteilen wir.</td>
+<td class="gt_row gt_right" headers="score">0.9851</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">einseitige schritte von allen seiten erschweren die friedensbemühungen und müssen unterbleiben.</td>
+<td class="gt_row gt_left" headers="sentence_coal">einseitige schritte erschweren die friedensbemühungen und müssen unterbleiben.</td>
+<td class="gt_row gt_right" headers="score">0.9842</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_left" headers="sentence">im mittelpunkt stehen dabei der abbau von bürokratiepflichten, die prüfung von investitionsbezuschussungen für produktionsstätten, sowie die prüfung von zuschüssen zur gewährung der versorgungssicherheit.</td>
+<td class="gt_row gt_left" headers="sentence_coal">dazu gehören der abbau von bürokratie, die prüfung von investitionsbezuschussungen für produktionsstätten, sowie die prüfung von zuschüssen zur gewährung der versorgungssicherheit.</td>
+<td class="gt_row gt_right" headers="score">0.9807</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">wir werden die nationalen aktionspläne im rahmen der open government partnership deutschlands umsetzen und weiterentwickeln.</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir wollen die nationalen aktionspläne im rahmen der open-government- partnership (ogp) deutschlands umsetzen und weiterentwickeln.</td>
+<td class="gt_row gt_right" headers="score">0.9765</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_left" headers="sentence">wir setzen uns für einen leistungsstarken europäischen bankenmarkt ein, der durch wettbewerb und vielfalt der geschäftsmodelle geprägt ist.</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir setzen uns für einen leistungsstarken europäischen bankensowie kapitalmarkt ein, der durch wettbewerb und vielfalt der geschäftsmodelle geprägt ist.</td>
+<td class="gt_row gt_right" headers="score">0.9759</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">ziel sind 30 prozent ökolandbau bis 2030.</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir wollen 30 prozent ökolandbau bis zum jahr 2030 erreichen.</td>
+<td class="gt_row gt_right" headers="score">0.9732</td>
+</tr>
+</tbody>
+<tfoot class="gt_footnotes"><tr class="even">
+<td colspan="4" class="gt_footnote"><em>Excluding sentences shorter than 20 characters.</em></td>
+</tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div id="tbl-most_similar_sentences_code" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-most_similar_sentences_code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Most similar Sentences
+</figcaption><div aria-describedby="tbl-most_similar_sentences_code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section></section><section id="results" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>To systematically evaluate the impact of different party programs on the coalition agreement, I will take two simple metrics.</p>
+<ul>
+<li>how many sentences reach an arbitrary high threshold of similarity (<em>0.8</em> and <em>0.9</em> respectively)?</li>
+<li>how often does a party have the most similar sentence in a party program in a pairwise comparison with the coalition agreement</li>
+</ul>
+<p>In the following table, we can see that for very similar sentences with a similarity of higher than .9, all parties contributed an almost equal amount of sentences, about 30. If we lower this threshold, we can see that the greens contribute a significantly higher share of similar sentences, almost twice as many as the other coalition partners. This might be due to the party program of the greens being much longer and hence possible accounting for many more variations of similar policy areas or even covering policy areas much more exhaustively.</p>
+<p>If we look at the amount of times the Greens contributed the most fitting sentence for a given sentence in the coalition agreement, the difference is even more staggering. For more than 53% of sentences, the greens are the program that is most similar, with SPD and FDP contributing an almost equal share of the remaining ~ 46%.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Table</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell" data-layout-align="center">
+<div id="tbl-high_scoring_parties" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-high_scoring_parties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Highscoring Party Contributions
+</figcaption><div aria-describedby="tbl-high_scoring_parties-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="vemhhbnpex" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vemhhbnpex table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#vemhhbnpex thead, #vemhhbnpex tbody, #vemhhbnpex tfoot, #vemhhbnpex tr, #vemhhbnpex td, #vemhhbnpex th {
+  border-style: none;
+}
+
+#vemhhbnpex p {
+  margin: 0;
+  padding: 0;
+}
+
+#vemhhbnpex .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#vemhhbnpex .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vemhhbnpex .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vemhhbnpex .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#vemhhbnpex .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vemhhbnpex .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vemhhbnpex .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vemhhbnpex .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vemhhbnpex .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#vemhhbnpex .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#vemhhbnpex .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vemhhbnpex .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vemhhbnpex .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vemhhbnpex .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vemhhbnpex .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vemhhbnpex .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#vemhhbnpex .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#vemhhbnpex .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#vemhhbnpex .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vemhhbnpex .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#vemhhbnpex .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vemhhbnpex .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vemhhbnpex .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vemhhbnpex .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vemhhbnpex .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vemhhbnpex .gt_left {
+  text-align: left;
+}
+
+#vemhhbnpex .gt_center {
+  text-align: center;
+}
+
+#vemhhbnpex .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vemhhbnpex .gt_font_normal {
+  font-weight: normal;
+}
+
+#vemhhbnpex .gt_font_bold {
+  font-weight: bold;
+}
+
+#vemhhbnpex .gt_font_italic {
+  font-style: italic;
+}
+
+#vemhhbnpex .gt_super {
+  font-size: 65%;
+}
+
+#vemhhbnpex .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#vemhhbnpex .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#vemhhbnpex .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#vemhhbnpex .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#vemhhbnpex .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#vemhhbnpex .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#vemhhbnpex .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#vemhhbnpex .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#vemhhbnpex div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header gt_heading">
+<th colspan="4" class="gt_heading gt_title gt_font_normal"><strong>Party High Scores</strong></th>
+</tr>
+<tr class="odd gt_heading">
+<th colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">by cosine similarity</th>
+</tr>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" id="party" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Party</strong></th>
+<th colspan="2" id="**Similarity >=**" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+<strong>Similarity &gt;=</strong>
+</div></th>
+<th rowspan="2" id="highest_score_sentence" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><strong>Highest score across parties</strong></th>
+</tr>
+<tr class="odd gt_col_headings">
+<th id="score_over_80" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><em>.8</em></th>
+<th id="score_over_90" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><em>.9</em></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_right" headers="score_over_80">339</td>
+<td class="gt_row gt_right" headers="score_over_90">25</td>
+<td class="gt_row gt_right" headers="highest_score_sentence">744</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_right" headers="score_over_80">656</td>
+<td class="gt_row gt_right" headers="score_over_90">33</td>
+<td class="gt_row gt_right" headers="highest_score_sentence">1718</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_right" headers="score_over_80">386</td>
+<td class="gt_row gt_right" headers="score_over_90">36</td>
+<td class="gt_row gt_right" headers="highest_score_sentence">731</td>
+</tr>
+</tbody>
+<tfoot class="gt_footnotes"><tr class="odd">
+<td colspan="4" class="gt_footnote"><em>Of a total of 3193 sentences in the coalition agreement. Excluding sentences shorter than 20 characters.</em></td>
+</tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div id="tbl-high_scoring_parties_code" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-high_scoring_parties_code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Highscoring Party Contributions
+</figcaption><div aria-describedby="tbl-high_scoring_parties_code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode anchored" id="tbl-high_scoring_parties_code" data-layout-align="center"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="va">clean_data</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">sentence_coal</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>score_over_90<span class="op">=</span> <span class="va">score</span> <span class="op">&gt;=</span><span class="fl">.9</span>,</span>
+<span>         score_over_80<span class="op">=</span> <span class="va">score</span> <span class="op">&gt;=</span><span class="fl">.8</span>,</span>
+<span>         highest_score_sentence <span class="op">=</span> <span class="va">score</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">party</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>score_over_90 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">score_over_90</span><span class="op">)</span>,</span>
+<span>            score_over_80 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">score_over_80</span><span class="op">)</span>,</span>
+<span>            highest_score_sentence <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">highest_score_sentence</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="op">)</span><span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/cols_label.html">cols_label</a></span><span class="op">(</span></span>
+<span>    party <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Party**"</span><span class="op">)</span>, </span>
+<span>    score_over_80 <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"*.8*"</span><span class="op">)</span>,</span>
+<span>    score_over_90 <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"*.9*"</span><span class="op">)</span>,</span>
+<span>    highest_score_sentence <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Highest score across parties**"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_header.html">tab_header</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Party High Scores**"</span><span class="op">)</span>, subtitle <span class="op">=</span> <span class="st">"by cosine similarity"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tab_footnote</span><span class="op">(</span><span class="fu">md</span><span class="op">(</span><span class="fu">glue</span><span class="op">(</span><span class="st">"*Of a total of {nrow(clean_data)/3} sentences in the coalition agreement. Excluding sentences shorter than 20 characters.*"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">|&gt;</span></span>
+<span>  <span class="fu">tab_spanner</span><span class="op">(</span>label <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Similarity &gt;=**"</span><span class="op">)</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"score_over_80"</span>, <span class="st">"score_over_90"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>If we look at this through the lens of the distribution of similarity scores this picture becomes more nuanced. It is clearly visible that the greens have a higher median score, in 50% of the cases between 0.7 and 0.8 round about, but it becomes clear that the most similar sentence might not always be the most similar by far or the decision might be far from clear.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset page-columns page-full">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Plot</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content page-columns page-full">
+<div id="tabset-5-1" class="tab-pane active page-columns page-full" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="cell-output-display page-columns page-full">
+<div id="fig-1-density-plot" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full"><div aria-describedby="fig-1-density-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-1-density-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-1-density-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Distribution of sentence similarity scores
+</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">clean_data</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_violin.html">geom_violin</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="va">party</span><span class="op">)</span>, <span class="va">score</span>, fill <span class="op">=</span> <span class="va">party</span><span class="op">)</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="va">party</span><span class="op">)</span>, <span class="va">score</span><span class="op">)</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span></span>
+<span>                    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    <span class="st">"FDP"</span> <span class="op">=</span> <span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"lisa::FridaKahlo"</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span>
+<span>    <span class="st">"GRUENE"</span> <span class="op">=</span> <span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"lisa::FridaKahlo"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>    <span class="st">"SPD"</span> <span class="op">=</span> <span class="fu">paletteer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/paletteer/man/paletteer_d.html">paletteer_d</a></span><span class="op">(</span><span class="st">"lisa::FridaKahlo"</span><span class="op">)</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Distribution of sentence similarity scores"</span>, subtitle <span class="op">=</span> <span class="st">"across parties"</span>,  x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">"Similarity Score"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>If we want to validate this a bit further it makes sense to look at two groups of sentences. One, where the variance of scores in between the most similar sentence for each party is high, hence we would explain a clear winner of one party program that contributed. Two, where the variance is very little, to see how well our sentence similarity scores for cases where all three party programs are all related to the coalition agreement to a similar degree.</p>
+<p>For the first case, we look at three sentences, where the variance is high. In two, the greens win by far, because they simply contributed this specific sentence which does not even appear remotely related to any sentence in the other party programs. In the third case, related to a minimum wage, the SPD takes the crown by a small margin. This is actually not really true. Qualitatively the sentence of the greens is more similar, as it simply states the raising of a minimum wage to 12€ (although it mentions to so immediately, which is absent from the coalition agreement), the SPD goes much further to imply that they want to raise it beyond 12€ eventually, which in the wording of the coalition agreement is clearly ruled out (one-time raise). Hence I would qualitatively say the greens are closer, however this is an edge case where both parties have clearly contributed to the agreement.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">Table</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div class="cell" data-layout-align="center">
+<div id="tbl-highest-variance_table" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-highest-variance_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7: Highest variance in scores
+</figcaption><div aria-describedby="tbl-highest-variance_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="wgddxkdnec" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wgddxkdnec table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wgddxkdnec thead, #wgddxkdnec tbody, #wgddxkdnec tfoot, #wgddxkdnec tr, #wgddxkdnec td, #wgddxkdnec th {
+  border-style: none;
+}
+
+#wgddxkdnec p {
+  margin: 0;
+  padding: 0;
+}
+
+#wgddxkdnec .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wgddxkdnec .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wgddxkdnec .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wgddxkdnec .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wgddxkdnec .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wgddxkdnec .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wgddxkdnec .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wgddxkdnec .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wgddxkdnec .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#wgddxkdnec .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#wgddxkdnec .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wgddxkdnec .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wgddxkdnec .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wgddxkdnec .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wgddxkdnec .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wgddxkdnec .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#wgddxkdnec .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#wgddxkdnec .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#wgddxkdnec .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wgddxkdnec .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#wgddxkdnec .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wgddxkdnec .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wgddxkdnec .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wgddxkdnec .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wgddxkdnec .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wgddxkdnec .gt_left {
+  text-align: left;
+}
+
+#wgddxkdnec .gt_center {
+  text-align: center;
+}
+
+#wgddxkdnec .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wgddxkdnec .gt_font_normal {
+  font-weight: normal;
+}
+
+#wgddxkdnec .gt_font_bold {
+  font-weight: bold;
+}
+
+#wgddxkdnec .gt_font_italic {
+  font-style: italic;
+}
+
+#wgddxkdnec .gt_super {
+  font-size: 65%;
+}
+
+#wgddxkdnec .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#wgddxkdnec .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#wgddxkdnec .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#wgddxkdnec .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#wgddxkdnec .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#wgddxkdnec .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#wgddxkdnec .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#wgddxkdnec .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#wgddxkdnec div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header gt_heading">
+<th colspan="5" class="gt_heading gt_title gt_font_normal"><strong>Highest variance in scores</strong></th>
+</tr>
+<tr class="odd gt_heading">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">by variance of cosine similarity</th>
+</tr>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" id="party" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Party</strong></th>
+<th colspan="2" id="**Texts**" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+<strong>Texts</strong>
+</div></th>
+<th rowspan="2" id="score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><strong>Cosine Similarity</strong></th>
+<th rowspan="2" id="variance" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><strong>Variance</strong></th>
+</tr>
+<tr class="odd gt_col_headings">
+<th id="sentence" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><em>Party Program</em></th>
+<th id="sentence_coal" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><em>Coalition Agreement</em></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_left" headers="sentence">machen wir den weg frei für diese entwicklung!</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir treiben die un-dekade für menschen afrikanischer herkunft voran (z.</td>
+<td class="gt_row gt_right" headers="score">0.6156</td>
+<td class="gt_row gt_right" headers="variance">0.04478</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">die partnerschaft zwischen europa und afrika wollen wir politisch und wirtschaftlich deutlich ausbauen und auf ein neues level der zusammenarbeit heben.</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir treiben die un-dekade für menschen afrikanischer herkunft voran (z.</td>
+<td class="gt_row gt_right" headers="score">0.5927</td>
+<td class="gt_row gt_right" headers="variance">0.04478</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">deshalb wollen wir die un-dekade für menschen afrikanischer herkunft vorantreiben.</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir treiben die un-dekade für menschen afrikanischer herkunft voran (z.</td>
+<td class="gt_row gt_right" headers="score">0.9701</td>
+<td class="gt_row gt_right" headers="variance">0.04478</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_left" headers="sentence">wir brauchen land- und forstwirtschaft, die nachhaltig ist und flächen, die zusätzliche beiträge zum naturschutz leisten.</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir wollen 30 prozent ökolandbau bis zum jahr 2030 erreichen.</td>
+<td class="gt_row gt_right" headers="score">0.5922</td>
+<td class="gt_row gt_right" headers="variance">0.04361</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">dementsprechend werden wir im einklang mit den europäischen klimazielen unser minderungsziel für 2030 deutlich (auf 65 %) anheben; auch für 2040 werden wir ein minderungsziel festschreiben (88 %).</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir wollen 30 prozent ökolandbau bis zum jahr 2030 erreichen.</td>
+<td class="gt_row gt_right" headers="score">0.6347</td>
+<td class="gt_row gt_right" headers="variance">0.04361</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">ziel sind 30 prozent ökolandbau bis 2030.</td>
+<td class="gt_row gt_left" headers="sentence_coal">wir wollen 30 prozent ökolandbau bis zum jahr 2030 erreichen.</td>
+<td class="gt_row gt_right" headers="score">0.9732</td>
+<td class="gt_row gt_right" headers="variance">0.04361</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_left" headers="sentence">die mindest- und maximalbeträge wollen wir erhöhen, auch als inflationsausgleich.</td>
+<td class="gt_row gt_left" headers="sentence_coal">mindestlohn wir werden den gesetzlichen mindestlohn in einer einmaligen anpassung auf zwölf euro pro stunde erhöhen.</td>
+<td class="gt_row gt_right" headers="score">0.5519</td>
+<td class="gt_row gt_right" headers="variance">0.03752</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">wir werden den gesetzlichen mindestlohn zunächst auf mindestens zwölf euro erhöhen und die spielräume der mindestlohnkommission für künftige erhöhungen ausweiten.</td>
+<td class="gt_row gt_left" headers="sentence_coal">mindestlohn wir werden den gesetzlichen mindestlohn in einer einmaligen anpassung auf zwölf euro pro stunde erhöhen.</td>
+<td class="gt_row gt_right" headers="score">0.8980</td>
+<td class="gt_row gt_right" headers="variance">0.03752</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">den gesetzlichen mindestlohn werden wir sofort auf 12 euro anheben.</td>
+<td class="gt_row gt_left" headers="sentence_coal">mindestlohn wir werden den gesetzlichen mindestlohn in einer einmaligen anpassung auf zwölf euro pro stunde erhöhen.</td>
+<td class="gt_row gt_right" headers="score">0.8756</td>
+<td class="gt_row gt_right" headers="variance">0.03752</td>
+</tr>
+</tbody>
+<tfoot class="gt_footnotes"><tr class="odd">
+<td colspan="5" class="gt_footnote"><em>Excluding sentences shorter than 20 characters.</em></td>
+</tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div id="tbl-highest-variance_code" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-highest-variance_code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;8: Highest variance in scores
+</figcaption><div aria-describedby="tbl-highest-variance_code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode anchored" id="tbl-highest-variance_code" data-layout-align="center"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clean_data</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">sentence_coal</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>variance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">slice_max</span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">variance</span>, n <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="op">)</span><span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/cols_label.html">cols_label</a></span><span class="op">(</span></span>
+<span>    party <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Party**"</span><span class="op">)</span>, </span>
+<span>    sentence <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"*Party \nProgram*"</span><span class="op">)</span>,</span>
+<span>    sentence_coal <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"*Coalition \nAgreement*"</span><span class="op">)</span>,</span>
+<span>    score <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Cosine \nSimilarity**"</span><span class="op">)</span>,</span>
+<span>    variance <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Variance**"</span><span class="op">)</span>,</span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_header.html">tab_header</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Highest variance in scores**"</span><span class="op">)</span>, subtitle <span class="op">=</span> <span class="st">"by variance of cosine similarity"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tab_footnote</span><span class="op">(</span><span class="fu">md</span><span class="op">(</span><span class="st">"*Excluding sentences shorter than 20 characters.*"</span><span class="op">)</span><span class="op">)</span><span class="op">|&gt;</span></span>
+<span>  <span class="fu">tab_spanner</span><span class="op">(</span>label <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Texts**"</span><span class="op">)</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sentence"</span>, <span class="st">"sentence_coal"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>If we look at the sentences with the lowest variance, we would expect the estimation of perform even worse. When there is three sentences that are equally similar, it might not be possibly to predict from this a perfect match, the resulting sentence might be a mix of different sentences or be completely void of content or unrelated to any of the party programs. This is the case in the below three cases.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">Table</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Code</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="cell" data-layout-align="center">
+<div id="tbl-lowest-variance_table" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lowest-variance_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9: Lowest variance in scores
+</figcaption><div aria-describedby="tbl-lowest-variance_table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="qrdsiysptp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qrdsiysptp table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qrdsiysptp thead, #qrdsiysptp tbody, #qrdsiysptp tfoot, #qrdsiysptp tr, #qrdsiysptp td, #qrdsiysptp th {
+  border-style: none;
+}
+
+#qrdsiysptp p {
+  margin: 0;
+  padding: 0;
+}
+
+#qrdsiysptp .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qrdsiysptp .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qrdsiysptp .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qrdsiysptp .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qrdsiysptp .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qrdsiysptp .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qrdsiysptp .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qrdsiysptp .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qrdsiysptp .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qrdsiysptp .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qrdsiysptp .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qrdsiysptp .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qrdsiysptp .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qrdsiysptp .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qrdsiysptp .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qrdsiysptp .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qrdsiysptp .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qrdsiysptp .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qrdsiysptp .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qrdsiysptp .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qrdsiysptp .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qrdsiysptp .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qrdsiysptp .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qrdsiysptp .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qrdsiysptp .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qrdsiysptp .gt_left {
+  text-align: left;
+}
+
+#qrdsiysptp .gt_center {
+  text-align: center;
+}
+
+#qrdsiysptp .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qrdsiysptp .gt_font_normal {
+  font-weight: normal;
+}
+
+#qrdsiysptp .gt_font_bold {
+  font-weight: bold;
+}
+
+#qrdsiysptp .gt_font_italic {
+  font-style: italic;
+}
+
+#qrdsiysptp .gt_super {
+  font-size: 65%;
+}
+
+#qrdsiysptp .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qrdsiysptp .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qrdsiysptp .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qrdsiysptp .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qrdsiysptp .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qrdsiysptp .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qrdsiysptp .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#qrdsiysptp .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#qrdsiysptp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header gt_heading">
+<th colspan="5" class="gt_heading gt_title gt_font_normal"><strong>Lowest variance in scores</strong></th>
+</tr>
+<tr class="odd gt_heading">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">by variance of cosine similarity</th>
+</tr>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" id="party" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Party</strong></th>
+<th colspan="2" id="**Texts**" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+<strong>Texts</strong>
+</div></th>
+<th rowspan="2" id="score" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><strong>Cosine Similarity</strong></th>
+<th rowspan="2" id="variance" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col"><strong>Variance</strong></th>
+</tr>
+<tr class="odd gt_col_headings">
+<th id="sentence" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><em>Party Program</em></th>
+<th id="sentence_coal" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><em>Coalition Agreement</em></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_left" headers="sentence">ebenso kann es sinnvoll sein, künftig stärker mit von der steuerschuld abzuziehenden - steuergutschriften zu arbeiten.</td>
+<td class="gt_row gt_left" headers="sentence_coal">entsprechend wird die befüllung eines sondervermögens als abfluss aus dem kernhaushalt den verschuldungsspielraum reduzieren.</td>
+<td class="gt_row gt_right" headers="score">0.7276</td>
+<td class="gt_row gt_right" headers="variance">4.171e-07</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">durch ausgeweitete vorsorgende beratungsmöglichkeiten soll der weg in die überschuldung am besten von vornherein vermieden werden.</td>
+<td class="gt_row gt_left" headers="sentence_coal">entsprechend wird die befüllung eines sondervermögens als abfluss aus dem kernhaushalt den verschuldungsspielraum reduzieren.</td>
+<td class="gt_row gt_right" headers="score">0.7269</td>
+<td class="gt_row gt_right" headers="variance">4.171e-07</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">überhöhte dispozinsen und gebühren, insbesondere für das basiskonto, werden wir begrenzen.</td>
+<td class="gt_row gt_left" headers="sentence_coal">entsprechend wird die befüllung eines sondervermögens als abfluss aus dem kernhaushalt den verschuldungsspielraum reduzieren.</td>
+<td class="gt_row gt_right" headers="score">0.7263</td>
+<td class="gt_row gt_right" headers="variance">4.171e-07</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_left" headers="sentence">das parlament kann ihr oder ihm durch die mehrheit seiner mitglieder das misstrauen aussprechen und eine andere person zum kommissionspräsidenten wählen.</td>
+<td class="gt_row gt_left" headers="sentence_coal">ihre leitung wird vom bundestag gewählt.</td>
+<td class="gt_row gt_right" headers="score">0.6308</td>
+<td class="gt_row gt_right" headers="variance">2.785e-06</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">für bestehende ehen werden wir zudem ein wahlrecht einführen.</td>
+<td class="gt_row gt_left" headers="sentence_coal">ihre leitung wird vom bundestag gewählt.</td>
+<td class="gt_row gt_right" headers="score">0.6336</td>
+<td class="gt_row gt_right" headers="variance">2.785e-06</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">das gilt erst recht für diese bundestagswahl am 26.</td>
+<td class="gt_row gt_left" headers="sentence_coal">ihre leitung wird vom bundestag gewählt.</td>
+<td class="gt_row gt_right" headers="score">0.6337</td>
+<td class="gt_row gt_right" headers="variance">2.785e-06</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">FDP</td>
+<td class="gt_row gt_left" headers="sentence">zukunftsfähige und starke europäische union europa muss bereit sein, die großen herausforderungen unserer zeit zu bewältigen – die folgen der coronapandemie, den klimawandel, terrorismus und migration.</td>
+<td class="gt_row gt_left" headers="sentence_coal">die großen herausforderungen unserer zeit lassen sich nur in internationaler kooperation und gemeinsam in einer starken europäischen union bewältigen.</td>
+<td class="gt_row gt_right" headers="score">0.8151</td>
+<td class="gt_row gt_right" headers="variance">3.400e-06</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="party">SPD</td>
+<td class="gt_row gt_left" headers="sentence">die europäische zusammenarbeit werden wir ausbauen.</td>
+<td class="gt_row gt_left" headers="sentence_coal">die großen herausforderungen unserer zeit lassen sich nur in internationaler kooperation und gemeinsam in einer starken europäischen union bewältigen.</td>
+<td class="gt_row gt_right" headers="score">0.8145</td>
+<td class="gt_row gt_right" headers="variance">3.400e-06</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="party">GRUENE</td>
+<td class="gt_row gt_left" headers="sentence">soweit europäische einigungen nicht gelingen, gehen wir voran, in verstärkter zusammenarbeit oder gemeinsam mit einzelnen staaten.</td>
+<td class="gt_row gt_left" headers="sentence_coal">die großen herausforderungen unserer zeit lassen sich nur in internationaler kooperation und gemeinsam in einer starken europäischen union bewältigen.</td>
+<td class="gt_row gt_right" headers="score">0.8179</td>
+<td class="gt_row gt_right" headers="variance">3.400e-06</td>
+</tr>
+</tbody>
+<tfoot class="gt_footnotes"><tr class="odd">
+<td colspan="5" class="gt_footnote"><em>Excluding sentences shorter than 20 characters.</em></td>
+</tr></tfoot>
+</table>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div id="tbl-lowest-variance_code" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lowest-variance_code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10: Lowest variance in scores
+</figcaption><div aria-describedby="tbl-lowest-variance_code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode anchored" id="tbl-lowest-variance_code" data-layout-align="center"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clean_data</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">sentence_coal</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>variance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">slice_min</span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">variance</span>, n <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="op">)</span><span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/cols_label.html">cols_label</a></span><span class="op">(</span></span>
+<span>    party <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Party**"</span><span class="op">)</span>, </span>
+<span>    sentence <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"*Party \nProgram*"</span><span class="op">)</span>,</span>
+<span>    sentence_coal <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"*Coalition \nAgreement*"</span><span class="op">)</span>,</span>
+<span>    score <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Cosine \nSimilarity**"</span><span class="op">)</span>,</span>
+<span>    variance <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Variance**"</span><span class="op">)</span>,</span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/tab_header.html">tab_header</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Lowest variance in scores**"</span><span class="op">)</span>, subtitle <span class="op">=</span> <span class="st">"by variance of cosine similarity"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tab_footnote</span><span class="op">(</span><span class="fu">md</span><span class="op">(</span><span class="st">"*Excluding sentences shorter than 20 characters.*"</span><span class="op">)</span><span class="op">)</span><span class="op">|&gt;</span></span>
+<span>  <span class="fu">tab_spanner</span><span class="op">(</span>label <span class="op">=</span> <span class="fu">md</span><span class="op">(</span><span class="st">"**Texts**"</span><span class="op">)</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sentence"</span>, <span class="st">"sentence_coal"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
+</div>
+<p>Hence we need to draw the conclusion that our metric of looking at a winner across the three parties probably overestimates the contribution of the greens by far, by artificially introducing a sort of winner takes it all mechanism that benefits longer party programs and larger lexical diversity.</p>
+<p>Nonetheless, we can say that the greens have, even though they were only the second largest coalition partner greatly contributed to the wording of the coalition agreement.</p>
+<p>In a follow-up blog entry, I will look at the issues at stake and look at how we can possibly extend this analysis.</p>
+
+
+</div>
+</div>
+</div>
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Chapman1955" class="csl-entry" role="listitem">
+Chapman, Brian. 1955. <span>“Political Parties: Their Organization and Activity in the Modern State.”</span> <em>International Affairs</em> 31 (2): 208–8. <a href="https://doi.org/10.2307/2604342">https://doi.org/10.2307/2604342</a>.
+</div>
+<div id="ref-Steffani1979" class="csl-entry" role="listitem">
+Steffani, Winfried. 1979. <em>Parlamentarische Und Präsidentielle Demokratie: Strukturelle Aspekte Westlicher Demokratien</em>. VS Verlag für Sozialwissenschaften. <a href="https://doi.org/10.1007/978-3-663-14351-2">https://doi.org/10.1007/978-3-663-14351-2</a>.
+</div>
+</div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{bochtler2024,
+  author = {Bochtler, Paul},
+  title = {Part {I:} {Who} Wrote the Last Coalition Agreement in
+    {Germany?}},
+  date = {2024-11-30},
+  url = {https://www.paulbochtler.de/blog/2024/03/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-bochtler2024" class="csl-entry quarto-appendix-citeas" role="listitem">
+Bochtler, Paul. 2024. <span>“Part I: Who Wrote the Last Coalition
+Agreement in Germany?”</span> November 30, 2024. <a href="https://www.paulbochtler.de/blog/2024/03/">https://www.paulbochtler.de/blog/2024/03/</a>.
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/www\.paulbochtler\.de");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block">All content licensed under <br><a href="https://creativecommons.org/licenses/by/4.0/"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> Creative Commons CC BY 4.0</a> <br>Theme and Quarto Project by <a href="https://www.andrewheiss.com">Andrew Heiss</a></span></p>
+</div>   
+    <div class="nav-footer-center">
+<p><span class="faux-block"><i class="fa-brands fa-orcid" aria-label="orcid"></i> <strong>ORCID</strong> <a href="https://orcid.org/0000-0002-9146-6185">0000-0002-9146-6185</a></span></p>
+</div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">Made with <i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a></span> <span class="faux-block"><a href="https://github.com/datapumpernickel/website">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>
