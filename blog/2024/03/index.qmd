@@ -196,7 +196,7 @@ ggplot(plot_data, aes(frequency, reorder_within(feature, frequency, group), fill
     color = "white",
     fontface = "bold",
     size = 5,
-    position = position_fill(vjust = 0),
+    position = position_stack(vjust = 0.5),
     show.legend = FALSE
   ) +
   scale_y_reordered() +
@@ -905,3 +905,4 @@ Hence we need to draw the conclusion that our metric of looking at a winner acro
 Nonetheless, we can say that the greens have, even though they were only the second largest coalition partner greatly contributed to the wording of the coalition agreement. 
 
 In a follow-up blog entry, I will look at the issues at stake and look at how we can possibly extend this analysis. 
+
