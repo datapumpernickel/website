@@ -1,0 +1,907 @@
+---
+title: "Part I: Who wrote the last coalition agreement in Germany?"
+date: 2024-11-30
+description: "Using embeddings and cosine similarity, comparing the coalition agreement with party programs, I try to determine who wrote the largest part of the last coalition agreement."
+image: "index_files/figure-html/fig-1-density-plot-1.png"
+categories:
+  - r
+  - python
+  - sentence-transformer
+  - nlp
+format:
+  html: 
+    shift-heading-level-by: 1
+include-before-body:
+  text: |
+    <style>
+      .no-stripe .gt_table tr.odd {
+        --bs-table-striped-bg: transparent;
+      }
+      
+      .gt_footnote {
+        text-align: left !important;
+      }
+    </style>
+citation: true
+bibliography: references.bib
+execute:
+  enabled: true
+---
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+#| include: false
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.height = 6 * 0.618,
+  fig.retina = 3,
+  dev = "ragg_png",
+  fig.align = "center",
+  out.width = "90%",
+  collapse = TRUE,
+  cache.extra = 1234  # Change number to invalidate cache
+)
+
+options(
+  digits = 4,
+  width = 300,
+  dplyr.summarise.inform = FALSE
+)
+```
+
+## The idea
+
+In the following blog entry, I will try to find out which of the parties taking part in the recently broken up coalition wrote which part of the agreement that now lies in shambles. For that I will read out the party programs of each party, embed them together with the coalition agreement in a common vector space and calculate a sentence-wise cosine-similarity. This allows us to find for each sentence in the coalition agreement the most similar sentence in each party program. 
+
+Part II will look at whether the content of the sentences that we can attribute to single parties lies in what we would determine to be their core-issues, such as ecology for the greens. For that we will us a pretrained transformer model of the manifesto project to classify all sentences of the agreement. 
+
+## Why are coalition agreements important?
+
+In Germany, two factors make it a frequent phenomenon that coalitions of different parties govern the country. Firstly, Germany has a proportional voting system, following the decades old Duverger´s law making it a candidate for a more or less fragmented multi-party system [@Chapman1955], hence seldomly does one party gain a majority to govern with sovereignty, and secondly, Germany is a parlamentarian government system, which makes functioning governments without a majority in the legislative chamber unlikely [@Steffani1979]. Hence, multiple parties need to agree on a coalition to establish a majority to form a government. 
+
+The coalition agreement is a legally non-binding contract between the participating parties as to which legislative projects they are going to develop in the years they will govern together. It also establishes the division of portfolios, which parties gets which ministries. We will focus on the content of the coalition agreement and try to see, which party might have "dominated" the coalition agreement in terms of textual contributions and similarity to their party program. 
+
+There is obvious limits to this, as we can establish textual similarity, but we cannot establish the importance of given sentences. Having introduced a sentence that promises to "*make state actions more efficient and faster*" (Wir wollen staatliches Handeln schneller und effektiver machen und besser auf künftige Krisen
+vorbereiten., p.5) is clearly not as significant as a sentence that reads: "*We want 30 percent organic farming by 2030*" (Wir wollen 30 Prozent Ökolandbau bis zum Jahr 2030 erreichen., p. 46), which includes a very tangible goal. 
+
+
+```{r}
+#| label: loading libraries
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(purrr)
+library(tidytext)
+library(quanteda)
+library(quanteda.textstats)
+library(tabulapdf)
+library(gt)
+library(gtExtras)
+library(paletteer)
+library(glue)
+library(reticulate)
+```
+
+## Reading in the PDFs
+
+We are going to read in the texts, using the `tabulapdf` package, because it does a really good job at detecting and correctly reading in two-column pdfs. We do some basic cleaning, taking out some PDF footnotes, headers and repeating titles that are not very interesting to us. 
+
+```{r}
+#| label: descriptives
+#| echo: true
+#| message: false
+#| warning: false
+#| code-fold: true
+#| code-summary: "Show the code"
+
+## get a list of pdf files
+pdfs <- list.files('raw_data', full.names = T, pattern = ".pdf")
+
+## read in each of the pdfs
+texts <-
+  map_dfr(pdfs, ~ {
+    tabulapdf::extract_text(.x) %>% tibble(text = ., party = .x)
+  })
+
+clean_text <- function(text) {
+  # First, replace only the problematic "- " cases with a placeholder
+  text <- str_replace_all(text, "- (?=[a-z])", "PLACEHOLDER")
+  
+  # Restore legitimate cases where it should be retained
+  text <- str_replace_all(text, "PLACEHOLDER(?=als\\b|auch\\b|sondern\\b|oder\\b|noch\\b|wie\\b|und\\b)", "- ")
+  
+  # Remove the placeholder from other positions
+  text <- str_replace_all(text, "PLACEHOLDER", "")
+  
+  return(text)
+}
+
+texts_clean <- texts %>%
+  mutate(text = str_squish(text) |> 
+           str_trim() |> 
+           str_remove_all('Bereit, weil Ihr es seid.') |> 
+           str_remove_all('Bundestagswahlprogramm 2021') |> 
+           str_remove_all('Das Zukunftsprogramm der SPD') |> 
+           str_remove_all('BÜNDNIS 90 / DIE GRÜNEN') |> 
+           str_remove_all('SPD-Parteivorstand 2021') |> 
+           clean_text()
+  ) %>%
+  mutate(party = str_remove_all(party, '^raw_data/') %>% str_remove(.,'\\.pdf'))
+
+texts_collapsed <- texts_clean %>%
+  group_by(party) %>%
+  summarise(text = paste0(text, collapse = ' '))
+```
+
+### Frequent words 
+
+Having these party programs in theory allows for a myriad of different interesting metrics, like how diverse is their vocabulary, how complicated is their language, how is their readibility rated, which topics are most prominently present and uncountable possibilities more. We are just going to look at the most frequent words to get a feel for the documents and some obvious differences in language between the parties. 
+
+**Gendering:** the first thing that is very evident, is the fact that "innen" is such a prominent word for SPD and GRUENE, but not for the FDP. This is not related to some form of domestic politics or inner-something, but the fact that SPD and GRUENE use gender-sensitive language, accounting for all genders in the word "citizen" in german reads as follow: "Bürger:innen" or "Bürger*innen". 
+
+**Fordern vs Fördern** Words that seem similar, but are very different. The FDP puts an emphasis on "fordern", which means "demanding", whereas SPD and GRUENE put a stronger emphasis on "Fördern", so "promote" or "foster". 
+
+Also tipical and something we would expect from the small government promoters FDP is the focus on companies, or "Unternehmen". 
+
+**EU vs europäisch vs. Europa** The difference in the most frequent reference to the European Union versus the idea of a european identity also seems worth mentioning. 
+
+All these observations need to be interpreted with care though, just looking at the (relative) frequency of words, can bear little meaning, but it gives us a feeling for the policy documents we are looking at. 
+
+
+::: {.panel-tabset}
+
+## Plot
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 14
+#| label: fig-1-freq_words
+#| fig-cap: "Most frequent word in party programs"
+#| fig-height: 10
+
+library(ggplot2)
+library(tidytext)
+
+corpus <- corpus(texts_collapsed)
+
+docnames(corpus) <- texts_collapsed$party
+
+tokens <- tokens(corpus, remove_punct = T) %>%
+  tokens_remove(stopwords::stopwords('de'))
+
+dfm <- dfm(tokens)
+
+excluded_words <- c("ka", "pi","te","l", ">", "2021", "f", "ff", "seite", "kapitel", "dass","ab", "demokraten", "freie")
+
+freq <- quanteda.textstats::textstat_frequency(dfm, group= party) |> 
+  filter(!feature %in% excluded_words) |> 
+  slice_max(order_by = frequency, n = 15,by = group) 
+
+# Prepare the data for plotting
+plot_data <- freq %>%
+  arrange(group, desc(frequency)) |> 
+  filter(!group =="koalition")
+
+# Plot
+ggplot(plot_data, aes(frequency, reorder_within(feature, frequency, group), fill = group)) +
+  geom_col(show.legend = FALSE) +
+  geom_label(
+    aes(label = feature),
+    label.size = NA,
+    color = "white",
+    fontface = "bold",
+    size = 5,
+    position = position_fill(vjust = 0),
+    show.legend = FALSE
+  ) +
+  scale_y_reordered() +
+  facet_wrap(~ toupper(group), scales = "free", ncol = 3) +
+  theme_minimal(base_size = 14) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    panel.spacing = unit(1, "lines"),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.major.y = element_blank(), # Remove vertical grid lines
+    panel.grid.minor.y = element_blank() # Remove minor grid lines
+  )+
+  scale_fill_manual(values = list(
+    "fdp" = paletteer::paletteer_d("lisa::FridaKahlo")[4],
+    "gruene" = paletteer::paletteer_d("lisa::FridaKahlo")[2],
+    "spd" = paletteer::paletteer_d("lisa::FridaKahlo")[5]
+  )) +
+  labs(caption = glue("Excluded the words: {paste0(excluded_words, collapse = ', ')}") |> str_wrap(50))
+```
+## Code
+
+```{r}
+#| eval: false
+
+
+library(ggplot2)
+library(tidytext)
+
+corpus <- corpus(texts_collapsed)
+
+docnames(corpus) <- texts_collapsed$party
+
+tokens <- tokens(corpus, remove_punct = T) %>%
+  tokens_remove(stopwords::stopwords('de'))
+
+dfm <- dfm(tokens)
+
+excluded_words <- c("ka", "pi","te","l", ">", "2021", "f", "ff", "seite", "kapitel", "dass","ab", "demokraten", "freie")
+
+freq <- quanteda.textstats::textstat_frequency(dfm, group= party) |> 
+  filter(!feature %in% excluded_words) |> 
+  slice_max(order_by = frequency, n = 15,by = group) 
+
+# Prepare the data for plotting
+plot_data <- freq %>%
+  arrange(group, desc(frequency)) |> 
+  filter(!group =="koalition")
+
+# Plot
+ggplot(plot_data, aes(frequency, reorder_within(feature, frequency, group), fill = group)) +
+  geom_col(show.legend = FALSE) +
+  geom_label(
+    aes(label = feature),
+    label.size = NA,
+    color = "white",
+    fontface = "bold",
+    size = 5,
+    position = position_stack(vjust = 0.5),
+    show.legend = FALSE
+  ) +
+  scale_y_reordered() +
+  facet_wrap(~ toupper(group), scales = "free", ncol = 3) +
+  theme_minimal(base_size = 14) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    panel.spacing = unit(1, "lines"),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.major.y = element_blank(), # Remove vertical grid lines
+    panel.grid.minor.y = element_blank() # Remove minor grid lines
+  )+
+  scale_fill_manual(values = list(
+    "fdp" = paletteer::paletteer_d("LaCroixColoR::Pamplemousse")[3],
+    "gruene" = paletteer::paletteer_d("LaCroixColoR::Pamplemousse")[4],
+    "spd" = paletteer::paletteer_d("LaCroixColoR::Pamplemousse")[1]
+  )) +
+  labs(caption = glue("Excluded the words: {paste0(excluded_words, collapse = ', ')}") |> str_wrap(50))
+```
+:::
+
+
+
+
+
+<!-- ```{r} -->
+<!-- quanteda.textstats::textstat_simil(dfm, method = 'jaccard',margin = "documents") -->
+<!-- ``` -->
+
+### Splitting sentences
+In the next step, since we want to determine authorship on the sentence-level, we need to split the entire text into single sentences. The `tidytext` package has a handy function for this, it is as simple as the following: 
+
+```{r}
+#| label: sentenize
+#| message: false
+#| warning: false
+
+sentences <- texts_clean |> 
+  tidytext::unnest_sentences(output = "text", ## specify the name of the output column
+                             input = "text")  ## specify the name of the input column
+
+```
+
+
+We can make a quick descriptive table, comparing the **length of each single document** in terms of sentences and see that the program of the greens is by far the longest (in terms of sentences). 
+
+::: {.panel-tabset}
+
+## Table
+```{r }
+#| label: tbl-sentence_count-table
+#| tbl-cap: Sentence Counts
+#| message: false
+#| warning: false
+#| echo: false
+
+sentences |> 
+  count(party) |> 
+  arrange(desc(n)) |> 
+  mutate(party = if_else(party =="koalition", "Koalitionsvertrag", str_c(toupper(party), " Wahlprogramm"))) |> 
+  gt() |> 
+  gt::tab_header(title = md("**Sentence Count**"), subtitle = "by document") |> 
+  gt::cols_label(party = "Document", n = "Sentence Count") |> 
+  gt::tab_footnote(footnote =  md("*Extracted with tabulapdf and tokenized into sentences with tidytext*")) |> 
+  gtExtras::gt_plt_bar(column = n, keep_column = T,color = paletteer::paletteer_d("LaCroixColoR::Pamplemousse")[5])
+
+```
+
+## Code
+```{r }
+#| label: tbl-sentence_count-code
+#| tbl-cap: Sentence Counts
+#| message: false
+#| warning: false
+#| eval: false
+
+sentences |>
+  count(party) |>
+  arrange(desc(n)) |>
+  mutate(party = if_else(
+    party == "koalition",
+    "Koalitionsvertrag",
+    str_c(toupper(party), " Wahlprogramm")
+  )) |>
+  gt() |>
+  gt::tab_header(title = md("**Sentence Count**"), subtitle = "by document") |>
+  gt::cols_label(party = "Document", n = "Sentence Count") |>
+  gt::tab_footnote(footnote =  md(
+    "*Extracted with tabulapdf and tokenized into sentences with tidytext*"
+  )) |>
+  gtExtras::gt_plt_bar(
+    column = n,
+    keep_column = T,
+    color = paletteer::paletteer_d("LaCroixColoR::Pamplemousse")[5]
+  )
+
+```
+
+::: 
+
+## Embedding the sentences
+
+At this point, we are going to leave the r-universe and move over to python, because most state-of-the-art natural language processing libraries are being developed in python. Since this document is written in `quarto`, this is not an issue, as we can easily move back and forth between the different languages and even transfer objects and data.frames with ease! 
+
+Sentence transformers are a model architecture that excels at representing semantic information of short text chunks (versus single-words). They are frequently used to find similar sentences among large collections of text, e.g. for search engines. They can also be used for paraphrase-mining or evaluating the textual similarity of two strings, taking into account the contextualized meaning of words (e.g. a *theatre play* being something different than a *word play*). 
+
+For a documentation on the library we will use, see the [docs](https://sbert.net/docs/quickstart.html). For a more in-depth explanation of the SBERT architecture see [here](https://www.marqo.ai/course/introduction-to-sentence-transformers) and [here](https://medium.com/@jyotsna.a.choudhary/comprehensive-guide-to-embeddings-from-word-vectors-to-contextualized-representations-part-2-cfd6bc5154c5)
+
+We will embed each sentence from the documents and then find the most similiar sentences for each party. 
+
+
+### Loading the model
+
+To load the model, we use the `SentenceTransformer` Class and a model that is optimized for multilingual analysis, since our texts are in German, not in English. 
+
+```{python}
+#| echo: false
+#| message: false
+#| warning: false
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+from nltk.tokenize import sent_tokenize
+
+```
+
+```{python}
+#| label: import model
+#| eval: false
+
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+from nltk.tokenize import sent_tokenize
+model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+
+```
+
+### Encoding text
+
+Now we encode the coalition text, using the `.encode` method. 
+
+```{python}
+#| label: encode coalition sentences
+#| message: false
+#| warning: false
+#| eval: false
+
+coalition_text = r.sentences[r.sentences['party']=='koalition'].reset_index().text
+embedding_coal = model.encode(coalition_text,
+  convert_to_tensor=True,
+  show_progress_bar = True)
+```
+We transform these to a tensor. It then has a rectangular shape, where each sentence of the coalition agreement receives a numeric score on the 384 dimensions of the  embedding vector from the model. 
+
+```{python}
+#| label: save intermediate result
+#| eval: false
+#| echo: false
+
+import torch
+
+# Save the tensor
+torch.save(embedding_coal, "embedding_coal.pt")
+```
+
+```{python}
+#| label: read intermediate result
+#| echo: false
+#| message: false
+#| warning: false
+import torch
+# Save the tensor
+embedding_coal = torch.load("embedding_coal.pt")
+```
+
+
+```{python}
+embedding_coal.shape
+```
+
+
+```{python}
+#| echo: false
+#| label: text_info_parts
+t_sentence1 = r.sentences[r.sentences['party']=='koalition'].reset_index().text[401]
+t_embedding1 = embedding_coal[401,1].cpu().numpy().item()
+t_sentence2 = r.sentences[r.sentences['party']=='koalition'].reset_index().text[402]
+t_embedding2 = embedding_coal[402,1].cpu().numpy().item()
+t_sentence3 = r.sentences[r.sentences['party']=='koalition'].reset_index().text[105]
+
+```
+
+
+On dimension 1, sentence 106 (*`{r} py$t_sentence1`*) receives a value of `{r} py$t_embedding1`, whereas sentence 200 (*`{r} py$t_sentence2`*) receives a value of `{r} py$t_embedding2`. Since these embeddings and dimensions are fully computationally determined, we have no simple way of mapping this back to meaningful semantic dimensions, although there have been [attempts](https://ceur-ws.org/Vol-3478/paper69.pdf) at doing so. 
+
+When comparing the angle between these vectors in their multidimensional embedding space, the larger the value the more similar they are. 
+
+We can do this using the simple `util.pytorch_cos_sim` function. 
+```{python}
+#| label: cosine_similarity
+diff1 = util.pytorch_cos_sim(embedding_coal[401], embedding_coal[402]).cpu().numpy()
+diff2 = util.pytorch_cos_sim(embedding_coal[401], embedding_coal[105]).cpu().numpy()
+```
+
+The sentences: 
+
+- *`{r} py$t_sentence1`*
+
+and 
+
+- *`{r} py$t_sentence2`*
+
+are not evaluated as very similar (cosine similarity of `r py$diff1`), because they are quite different, but still a lot more similar than the following comparison. 
+
+- *`{r} py$t_sentence1`*
+
+and 
+
+- *`{r} py$t_sentence3`*
+
+yields a lower cosine similarity of `r py$diff2`, as these are semantically quite different. 
+
+
+### Encoding all texts and comparing them
+
+In the following code-chunk, we will repeat the embedding process for each collection of party sentences, then create a matrix with a pair-wise cosine similarity calculation of each coalition sentence with each party sentence. We will keep only the most similar party sentence for each coalition agreement sentence. 
+
+```{python}
+#| label: encode party sentences
+#| message: false
+#| warning: false
+#| error: false
+#| eval: false
+
+from tqdm import tqdm
+import pandas as pd
+from sentence_transformers import util
+
+data = pd.DataFrame()
+
+
+# Assuming `coalition_text` and `embedding_coal` are precomputed
+for party in tqdm(['fdp', 'spd', 'gruene'], desc="Processing Parties"):
+    party_text = r.sentences[r.sentences['party'] == party].reset_index(drop=True).text
+    embedding_party = model.encode(party_text, convert_to_tensor=True, show_progress_bar=True)
+    
+    # Compute cosine similarity matrix
+    cosine_scores = util.pytorch_cos_sim(embedding_party, embedding_coal).cpu().numpy()
+
+    # Create a DataFrame for all combinations using vectorized operations
+    rows, cols = cosine_scores.shape
+    results = pd.DataFrame({
+        'party': party,
+        'sentence': party_text.repeat(cols),
+        'sentence_coal': list(coalition_text) * rows,
+        'score': cosine_scores.flatten()
+    })
+
+    # Keep top match for each sentence in party_text
+    top_pair = results.sort_values('score', ascending=False).groupby(['party', 'sentence_coal']).head(1)
+    data = pd.concat([data, top_pair], ignore_index=True)
+```
+
+```{python}
+#| label: save encoded party sentences
+#| message: false
+#| warning: false
+#| error: false
+#| eval: false
+#| echo: false
+
+
+data.to_csv("data.csv")
+
+```
+
+```{python}
+#| label: read encoded party sentences#
+#| echo: false
+#| message: false
+#| warning: false
+
+data = pd.read_csv("data.csv")
+
+```
+
+
+
+Looking at the most similar sentences, this has worked remarkably well, the model has identified almost identical sentences that seem to have come from individual party programs. 
+
+What is clearly visible from this extract is also one large caveat about what we can infer from these metrics. Just because a sentence was copied almost identically from a party program does not mean that the sentence has a high impact on policies. 
+
+For example the sentence: "die prinzipien offenen regierungshandelns - transparenz, partizipation und zusammenarbeit sind für uns handlungsleitend." - the principles of open government action - transparency, participation and cooperation are our guiding principles - is not policy related. This related to the above mentioned caveats. So we need to take care in the conclusions we draw from the following results. 
+
+
+::: {.panel-tabset}
+
+## Table
+
+```{r}
+#| include: false
+#| label: clean-data-averages
+
+data <- py$data |> 
+  select(-1)
+
+clean_data <- data |> 
+  filter(!str_length(sentence_coal)<20) |> 
+    mutate(party = toupper(party)) 
+
+average <- clean_data |> 
+  group_by(party) |> 
+  summarise(mean = mean(score), 
+            median = median(score))
+```
+
+
+```{r}
+#| label: tbl-most_similar_sentences
+#| tbl-cap: "Most similar Sentences"
+#| warning: false
+#| message: false
+#| echo: false
+
+
+clean_data |> 
+  group_by(sentence_coal) |> 
+  mutate(party = toupper(party)) |> 
+  filter(score == max(score)) |> 
+  ungroup() |> 
+  slice_max(order_by = score, n = 10) |> 
+  gt::gt() |> 
+  gt::cols_label(
+    party = md("**Party**"), 
+    sentence = md("*Party \nProgram*"),
+    sentence_coal = md("*Coalition \nAgreement*"),
+    score = md("**Cosine \nSimilarity**")
+  ) |> 
+  gt::tab_header(title = md("**Top 10 most similar sentences**"), subtitle = "by cosine similarity") |> 
+  tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
+  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+```
+
+## Code 
+
+
+```{r}
+#| label: tbl-most_similar_sentences_code
+#| tbl-cap: "Most similar Sentences"
+#| warning: false
+#| message: false
+#| echo: false
+#| eval: false
+
+data <- py$data
+
+clean_data <- data |> 
+  filter(!str_length(sentence_coal)<20) |> 
+    mutate(party = toupper(party)) 
+
+
+
+clean_data |> 
+  group_by(sentence_coal) |> 
+  mutate(party = toupper(party)) |> 
+  filter(score == max(score)) |> 
+  ungroup() |> 
+  slice_max(order_by = score, n = 10) |> 
+  gt::gt() |> 
+  gt::cols_label(
+    party = md("**Party**"), 
+    sentence = md("*Party \nProgram*"),
+    sentence_coal = md("*Coalition \nAgreement*"),
+    score = md("**Cosine \nSimilarity**")
+  ) |> 
+  gt::tab_header(title = md("**Top 10 most similar sentences**"), subtitle = "by cosine similarity") |> 
+  tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
+  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+```
+
+::: 
+
+
+# Results 
+
+To systematically evaluate the impact of different party programs on the coalition agreement, I will take two simple metrics. 
+
+- how many sentences reach an arbitrary high threshold of similarity (*0.8* and *0.9* respectively)? 
+- how often does a party have the most similar sentence in a party program in a pairwise comparison with the coalition agreement
+
+In the following table, we can see that for very similar sentences with a similarity of higher than .9, all parties contributed an almost equal amount of sentences, about 30. If we lower this threshold, we can see that the greens contribute a significantly higher share of similar sentences, almost twice as many as the other coalition partners. This might be due to the party program of the greens being much longer and hence possible accounting for many more variations of similar policy areas or even covering policy areas much more exhaustively. 
+
+If we look at the amount of times the Greens contributed the most fitting sentence for a given sentence in the coalition agreement, the difference is even more staggering. For more than 53% of sentences, the greens are the program that is most similar, with SPD and FDP contributing an almost equal share of the remaining ~
+46%. 
+
+::: {.panel-tabset}
+
+## Table
+
+```{r}
+#| label: tbl-high_scoring_parties
+#| tbl-cap: "Highscoring Party Contributions"
+#| warning: false
+#| message: false
+#| echo: false
+
+
+clean_data |> 
+  group_by(sentence_coal) |> 
+  mutate(score_over_90= score >=.9,
+         score_over_80= score >=.8,
+         highest_score_sentence = score == max(score)) |> 
+  group_by(party) |> 
+  summarise(score_over_90 = sum(score_over_90),
+            score_over_80 = sum(score_over_80),
+            highest_score_sentence = sum(highest_score_sentence)) |> 
+  gt::gt()|> 
+  gt::cols_label(
+    party = md("**Party**"), 
+    score_over_80 = md("*.8*"),
+    score_over_90 = md("*.9*"),
+    highest_score_sentence = md("**Highest score across parties**")
+  ) |> 
+  gt::tab_header(title = md("**Party High Scores**"), subtitle = "by cosine similarity") |> 
+  tab_footnote(md(glue("*Of a total of {nrow(clean_data)/3} sentences in the coalition agreement. Excluding sentences shorter than 20 characters.*")))|>
+  tab_spanner(label = md("**Similarity >=**"), columns = c("score_over_80", "score_over_90"))
+```
+## Code
+```{r}
+#| label: tbl-high_scoring_parties_code
+#| tbl-cap: "Highscoring Party Contributions"
+#| warning: false
+#| message: false
+#| eval: false
+
+
+clean_data |> 
+  group_by(sentence_coal) |> 
+  mutate(score_over_90= score >=.9,
+         score_over_80= score >=.8,
+         highest_score_sentence = score == max(score)) |> 
+  group_by(party) |> 
+  summarise(score_over_90 = sum(score_over_90),
+            score_over_80 = sum(score_over_80),
+            highest_score_sentence = sum(highest_score_sentence)) |> 
+  gt::gt()|> 
+  gt::cols_label(
+    party = md("**Party**"), 
+    score_over_80 = md("*.8*"),
+    score_over_90 = md("*.9*"),
+    highest_score_sentence = md("**Highest score across parties**")
+  ) |> 
+  gt::tab_header(title = md("**Party High Scores**"), subtitle = "by cosine similarity") |> 
+  tab_footnote(md(glue("*Of a total of {nrow(clean_data)/3} sentences in the coalition agreement. Excluding sentences shorter than 20 characters.*")))|>
+  tab_spanner(label = md("**Similarity >=**"), columns = c("score_over_80", "score_over_90"))
+```
+:::
+
+If we look at this through the lens of the distribution of similarity scores this picture becomes more nuanced. It is clearly visible that the greens have a higher median score, in 50% of the cases between 0.7 and 0.8 round about, but it becomes clear that the most similar sentence might not always be the most similar by far or the decision might be far from clear. 
+
+::: {.panel-tabset}
+
+## Plot
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 8
+#| label: fig-1-density-plot
+#| fig-cap: "Distribution of sentence similarity scores"
+#| fig-height: 7
+
+ggplot(clean_data)+
+  geom_violin(aes(toupper(party), score, fill = party), show.legend = FALSE) +
+  geom_boxplot(aes(toupper(party), score), show.legend = FALSE) +
+  theme_minimal()+
+  scale_fill_manual(
+                    values = list(
+    "FDP" = paletteer::paletteer_d("lisa::FridaKahlo")[4],
+    "GRUENE" = paletteer::paletteer_d("lisa::FridaKahlo")[2],
+    "SPD" = paletteer::paletteer_d("lisa::FridaKahlo")[5]
+  )) +
+  labs(title = "Distribution of sentence similarity scores", subtitle = "across parties",  x = "", y = "Similarity Score") +
+  scale_y_continuous(breaks = seq(0,1,0.1))
+```
+
+## Code
+
+```{r}
+#| eval: false
+#| message: false
+#| warning: false
+#| fig-width: 8
+#| label: fig-1-density-plot_code
+#| fig-cap: "Distribution of sentence similarity scores"
+#| fig-height: 7
+
+
+ggplot(clean_data)+
+  geom_violin(aes(toupper(party), score, fill = party), show.legend = FALSE) +
+  geom_boxplot(aes(toupper(party), score), show.legend = FALSE) +
+  theme_minimal()+
+  scale_fill_manual(
+                    values = list(
+    "FDP" = paletteer::paletteer_d("lisa::FridaKahlo")[4],
+    "GRUENE" = paletteer::paletteer_d("lisa::FridaKahlo")[2],
+    "SPD" = paletteer::paletteer_d("lisa::FridaKahlo")[5]
+  )) +
+  labs(title = "Distribution of sentence similarity scores", subtitle = "across parties",  x = "", y = "Similarity Score") +
+  scale_y_continuous(breaks = seq(0,1,0.1))
+```
+
+:::
+
+If we want to validate this a bit further it makes sense to look at two groups of sentences. One, where the variance of scores in between the most similar sentence for each party is high, hence we would explain a clear winner of one party program that contributed. Two, where the variance is very little, to see how well our sentence similarity scores for cases where all three party programs are all related to the coalition agreement to a similar degree. 
+
+For the first case, we look at three sentences, where the variance is high. In two, the greens win by far, because they simply contributed this specific sentence which does not even appear remotely related to any sentence in the other party programs. In the third case, related to a minimum wage, the SPD takes the crown by a small margin. This is actually not really true. Qualitatively the sentence of the greens is more similar, as it simply states the raising of a minimum wage to 12€ (although it mentions to so immediately, which is absent from the coalition agreement), the SPD goes much further to imply that they want to raise it beyond 12€ eventually, which in the wording of the coalition agreement is clearly ruled out (one-time raise). Hence I would qualitatively say the greens are closer, however this is an edge case where both parties have clearly contributed to the agreement. 
+
+::: {.panel-tabset}
+
+## Table
+
+```{r}
+#| label: tbl-highest-variance_table
+#| tbl-cap: "Highest variance in scores"
+#| warning: false
+#| message: false
+#| echo: false
+
+
+clean_data |> 
+  group_by(sentence_coal) |> 
+  mutate(variance = var(score)) |> 
+  ungroup() |> 
+  slice_max(order_by = variance, n = 7) |> 
+  gt::gt()|> 
+  gt::cols_label(
+    party = md("**Party**"), 
+    sentence = md("*Party \nProgram*"),
+    sentence_coal = md("*Coalition \nAgreement*"),
+    score = md("**Cosine \nSimilarity**"),
+    variance = md("**Variance**"),
+  ) |> 
+  gt::tab_header(title = md("**Highest variance in scores**"), subtitle = "by variance of cosine similarity") |> 
+  tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
+  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+```
+
+## Code
+
+```{r}
+#| label: tbl-highest-variance_code
+#| tbl-cap: "Highest variance in scores"
+#| warning: false
+#| message: false
+#| eval: false
+
+clean_data |> 
+  group_by(sentence_coal) |> 
+  mutate(variance = var(score)) |> 
+  ungroup() |> 
+  slice_max(order_by = variance, n = 7) |> 
+  gt::gt()|> 
+  gt::cols_label(
+    party = md("**Party**"), 
+    sentence = md("*Party \nProgram*"),
+    sentence_coal = md("*Coalition \nAgreement*"),
+    score = md("**Cosine \nSimilarity**"),
+    variance = md("**Variance**"),
+  ) |> 
+  gt::tab_header(title = md("**Highest variance in scores**"), subtitle = "by variance of cosine similarity") |> 
+  tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
+  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+```
+:::
+
+
+If we look at the sentences with the lowest variance, we would expect the estimation of perform even worse. When there is three sentences that are equally similar, it might not be possibly to predict from this a perfect match, the resulting sentence might be a mix of different sentences or be completely void of content or unrelated to any of the party programs. This is the case in the below three cases. 
+
+
+::: {.panel-tabset}
+
+## Table
+
+```{r}
+#| label: tbl-lowest-variance_table
+#| tbl-cap: "Lowest variance in scores"
+#| warning: false
+#| message: false
+#| echo: false
+
+clean_data |> 
+  group_by(sentence_coal) |> 
+  mutate(variance = var(score)) |> 
+  ungroup() |> 
+  slice_min(order_by = variance, n = 7) |> 
+  gt::gt()|> 
+  gt::cols_label(
+    party = md("**Party**"), 
+    sentence = md("*Party \nProgram*"),
+    sentence_coal = md("*Coalition \nAgreement*"),
+    score = md("**Cosine \nSimilarity**"),
+    variance = md("**Variance**"),
+  ) |> 
+  gt::tab_header(title = md("**Lowest variance in scores**"), subtitle = "by variance of cosine similarity") |> 
+  tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
+  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+
+```
+
+## Code
+
+```{r}
+#| label: tbl-lowest-variance_code
+#| tbl-cap: "Lowest variance in scores"
+#| warning: false
+#| message: false
+#| eval: false
+
+clean_data |> 
+  group_by(sentence_coal) |> 
+  mutate(variance = var(score)) |> 
+  ungroup() |> 
+  slice_min(order_by = variance, n = 7) |> 
+  gt::gt()|> 
+  gt::cols_label(
+    party = md("**Party**"), 
+    sentence = md("*Party \nProgram*"),
+    sentence_coal = md("*Coalition \nAgreement*"),
+    score = md("**Cosine \nSimilarity**"),
+    variance = md("**Variance**"),
+  ) |> 
+  gt::tab_header(title = md("**Lowest variance in scores**"), subtitle = "by variance of cosine similarity") |> 
+  tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
+  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+
+```
+:::
+
+Hence we need to draw the conclusion that our metric of looking at a winner across the three parties probably overestimates the contribution of the greens by far, by artificially introducing a sort of winner takes it all mechanism that benefits longer party programs and larger lexical diversity. 
+
+Nonetheless, we can say that the greens have, even though they were only the second largest coalition partner greatly contributed to the wording of the coalition agreement. 
+
+In a follow-up blog entry, I will look at the issues at stake and look at how we can possibly extend this analysis. 
