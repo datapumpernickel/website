@@ -472,7 +472,7 @@ and
 
 - *`{r} py$t_sentence2`*
 
-are not evaluated as very similar (cosine similarity of `r py$diff1`), because they are quite different, but still a lot more similar than the following comparison. 
+are evaluated as relatively similar (cosine similarity of `r py$diff1`), even though they are textually quite different. A simple metric, like the Jaccard difference might have underestimated the shared common semantic meaning between "Ausgründungen" and "Gründungsinfrastruktur".
 
 - *`{r} py$t_sentence1`*
 
@@ -480,7 +480,7 @@ and
 
 - *`{r} py$t_sentence3`*
 
-yields a lower cosine similarity of `r py$diff2`, as these are semantically quite different. 
+yield a mnuch lower cosine similarity of `r py$diff2`, as these are semantically quite different. 
 
 
 ### Encoding all texts and comparing them
@@ -545,14 +545,6 @@ data.to_csv("data.csv")
 data = pd.read_csv("data.csv")
 
 ```
-
-
-
-Looking at the most similar sentences, this has worked remarkably well, the model has identified almost identical sentences that seem to have come from individual party programs. 
-
-What is clearly visible from this extract is also one large caveat about what we can infer from these metrics. Just because a sentence was copied almost identically from a party program does not mean that the sentence has a high impact on policies. 
-
-For example the sentence: "die prinzipien offenen regierungshandelns - transparenz, partizipation und zusammenarbeit sind für uns handlungsleitend." - the principles of open government action - transparency, participation and cooperation are our guiding principles - is not policy related. This related to the above mentioned caveats. So we need to take care in the conclusions we draw from the following results. 
 
 
 ::: {.panel-tabset}
@@ -642,8 +634,14 @@ clean_data |>
 
 ::: 
 
+Looking at the most similar sentences, this has worked remarkably well, the model has identified almost identical sentences that seem to have come from individual party programs. 
 
-# Results 
+What is clearly visible from this extract is also one large caveat about what we can infer from these metrics. Just because a sentence was copied almost identically from a party program does not mean that the sentence has a high impact on policies. 
+
+For example the sentence: "die prinzipien offenen regierungshandelns - transparenz, partizipation und zusammenarbeit sind für uns handlungsleitend." - the principles of open government action - transparency, participation and cooperation are our guiding principles - is not policy related. This related to the above mentioned caveats. So we need to take care in the conclusions we draw from the following results. 
+
+
+# Measuring party contributions 
 
 To systematically evaluate the impact of different party programs on the coalition agreement, I will take two simple metrics. 
 
@@ -775,9 +773,15 @@ ggplot(clean_data)+
 
 :::
 
-If we want to validate this a bit further it makes sense to look at two groups of sentences. One, where the variance of scores in between the most similar sentence for each party is high, hence we would explain a clear winner of one party program that contributed. Two, where the variance is very little, to see how well our sentence similarity scores for cases where all three party programs are all related to the coalition agreement to a similar degree. 
+If we want to validate this a bit further it makes sense to look at two groups of sentences. 
 
-For the first case, we look at three sentences, where the variance is high. In two, the greens win by far, because they simply contributed this specific sentence which does not even appear remotely related to any sentence in the other party programs. In the third case, related to a minimum wage, the SPD takes the crown by a small margin. This is actually not really true. Qualitatively the sentence of the greens is more similar, as it simply states the raising of a minimum wage to 12€ (although it mentions to so immediately, which is absent from the coalition agreement), the SPD goes much further to imply that they want to raise it beyond 12€ eventually, which in the wording of the coalition agreement is clearly ruled out (one-time raise). Hence I would qualitatively say the greens are closer, however this is an edge case where both parties have clearly contributed to the agreement. 
+Firstly, a group where the variance of scores in between the most similar sentence for each party is high, hence we would explain a clear winner of one party program that contributed - a sort of best case scenario. 
+
+Secondly, a group where the variance is very little, to see how well our sentence similarity scores for cases where all three party programs are all related to the coalition agreement to a similar degree. 
+
+### Best-case scenario validation
+
+For the first case, we look at three sentences from the coalition agreement, where the variance is high. In two, the greens win by far, because they simply contributed this specific sentence which does not even appear remotely related to any sentence in the other party programs (in [**dark green**]{style="color:#6D8325FF;"}). In the third case, related to a minimum wage, the SPD takes the crown by a small margin (in [**light red**]{style="color:#BD5630FF;"}). This is actually not really true. Qualitatively the sentence of the greens is more similar, as it simply states the raising of a minimum wage to 12€ (although it mentions to so immediately, which is absent from the coalition agreement), the SPD goes much further to imply that they want to raise it beyond 12€ eventually, which in the wording of the coalition agreement is clearly ruled out (one-time raise). Hence I would qualitatively say the greens are closer, however this is an edge case where both parties have clearly contributed to the agreement. 
 
 ::: {.panel-tabset}
 
@@ -793,20 +797,24 @@ For the first case, we look at three sentences, where the variance is high. In t
 
 clean_data |> 
   group_by(sentence_coal) |> 
+  relocate(sentence_coal, .after = party) |> 
   mutate(variance = var(score)) |> 
   ungroup() |> 
   slice_max(order_by = variance, n = 7) |> 
   gt::gt()|> 
   gt::cols_label(
     party = md("**Party**"), 
+        sentence_coal = md("*Coalition \nAgreement*"),
+
     sentence = md("*Party \nProgram*"),
-    sentence_coal = md("*Coalition \nAgreement*"),
     score = md("**Cosine \nSimilarity**"),
     variance = md("**Variance**"),
   ) |> 
   gt::tab_header(title = md("**Highest variance in scores**"), subtitle = "by variance of cosine similarity") |> 
   tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
-  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+  tab_spanner(label = md("**Texts**"), columns = c("sentence_coal", "sentence")) |> 
+  gt_highlight_rows(rows = c(3,6), fill = paletteer::paletteer_d("lisa::FridaKahlo")[2])|> 
+  gt_highlight_rows(rows = c(8), fill = paletteer::paletteer_d("lisa::FridaKahlo")[5])
 ```
 
 ## Code
@@ -820,25 +828,31 @@ clean_data |>
 
 clean_data |> 
   group_by(sentence_coal) |> 
+  relocate(sentence_coal, .after = party) |> 
   mutate(variance = var(score)) |> 
   ungroup() |> 
   slice_max(order_by = variance, n = 7) |> 
   gt::gt()|> 
   gt::cols_label(
     party = md("**Party**"), 
-    sentence = md("*Party \nProgram*"),
     sentence_coal = md("*Coalition \nAgreement*"),
+    sentence = md("*Party \nProgram*"),
     score = md("**Cosine \nSimilarity**"),
     variance = md("**Variance**"),
   ) |> 
   gt::tab_header(title = md("**Highest variance in scores**"), subtitle = "by variance of cosine similarity") |> 
   tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
-  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+  tab_spanner(label = md("**Texts**"), columns = c("sentence_coal", "sentence")) |> 
+  gt_highlight_rows(rows = c(3,6), fill = paletteer::paletteer_d("lisa::FridaKahlo")[2])|> 
+  gt_highlight_rows(rows = c(8), fill = paletteer::paletteer_d("lisa::FridaKahlo")[5])|> 
+  data_color(columns = "sentence_coal",
+             palette = paletteer_d("lisa::C_M_Coolidge"))
 ```
 :::
 
+### Worst-case scenario validation
 
-If we look at the sentences with the lowest variance, we would expect the estimation of perform even worse. When there is three sentences that are equally similar, it might not be possibly to predict from this a perfect match, the resulting sentence might be a mix of different sentences or be completely void of content or unrelated to any of the party programs. This is the case in the below three cases. 
+If we look at the sentences with the lowest variance, we would expect the estimation to perform worse. When there is three sentences that are equally similar, it might not be possibly to predict a perfect match, the resulting sentence might be a mix of different sentences or be completely void of content or unrelated to any of the party programs. This is the case in the below three cases. 
 
 
 ::: {.panel-tabset}
@@ -860,14 +874,16 @@ clean_data |>
   gt::gt()|> 
   gt::cols_label(
     party = md("**Party**"), 
-    sentence = md("*Party \nProgram*"),
     sentence_coal = md("*Coalition \nAgreement*"),
+    sentence = md("*Party \nProgram*"),
     score = md("**Cosine \nSimilarity**"),
     variance = md("**Variance**"),
   ) |> 
   gt::tab_header(title = md("**Lowest variance in scores**"), subtitle = "by variance of cosine similarity") |> 
   tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
-  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
+  tab_spanner(label = md("**Texts**"), columns = c("sentence_coal", "sentence")) |> 
+  data_color(columns = "sentence_coal",
+             palette = paletteer_d("lisa::C_M_Coolidge"))
 
 ```
 
@@ -880,6 +896,7 @@ clean_data |>
 #| message: false
 #| eval: false
 
+
 clean_data |> 
   group_by(sentence_coal) |> 
   mutate(variance = var(score)) |> 
@@ -888,21 +905,30 @@ clean_data |>
   gt::gt()|> 
   gt::cols_label(
     party = md("**Party**"), 
-    sentence = md("*Party \nProgram*"),
     sentence_coal = md("*Coalition \nAgreement*"),
+    sentence = md("*Party \nProgram*"),
     score = md("**Cosine \nSimilarity**"),
     variance = md("**Variance**"),
   ) |> 
   gt::tab_header(title = md("**Lowest variance in scores**"), subtitle = "by variance of cosine similarity") |> 
   tab_footnote(md("*Excluding sentences shorter than 20 characters.*"))|>
-  tab_spanner(label = md("**Texts**"), columns = c("sentence", "sentence_coal"))
-
+  tab_spanner(label = md("**Texts**"), columns = c("sentence_coal", "sentence")) |> 
+  data_color(columns = "sentence_coal",
+             palette = paletteer_d("lisa::C_M_Coolidge"))
 ```
 :::
 
 Hence we need to draw the conclusion that our metric of looking at a winner across the three parties probably overestimates the contribution of the greens by far, by artificially introducing a sort of winner takes it all mechanism that benefits longer party programs and larger lexical diversity. 
 
-Nonetheless, we can say that the greens have, even though they were only the second largest coalition partner greatly contributed to the wording of the coalition agreement. 
+# Conclusions
 
-In a follow-up blog entry, I will look at the issues at stake and look at how we can possibly extend this analysis. 
+We have succesfully read out the coalition agreement and party programs. We also managed to properly embed the sentence with an appropriate library and detect very similar sentences that were certainly or highly likely copied from one of the party programs. 
+
+Our initial metric for establishing which party wrote how much of the coalition agreement probably over-estimates the share of the greens. 
+
+Nonetheless, we can say that the greens have, even though they were only the second largest coalition partner, greatly contributed to the wording of the coalition agreement. 
+
+This raises a number of interesting follow-up questions about the determinants of this contribution to the coalition agreement. Do we expect parties with a larger vote-share to contribute more to the agreement? How could we measure the importance of different wordings in terms of their policy relevance? Can parties with a more narrow issue focus on specific areas dominate specific topics? What about king-maker parties that make or break a coalition? 
+
+In a follow-up blog entry, I will look at the thematic issues at stake and try to extend this analysis with an automated classification based on pre-trained models. 
 
