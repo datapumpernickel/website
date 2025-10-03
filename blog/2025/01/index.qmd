@@ -1,0 +1,457 @@
+---
+title: "Part II: Who wrote the last coalition agreement in Germany?"
+date: 2025-09-28
+description: "After discovering the limitations of pretrained topic classification, I pivot to using actual Manifesto Project data to trace party contributions through embeddings and cosine similarity."
+image: "index_files/figure-html/fig-1-density-plot-1.png"
+categories:
+  - r
+  - python
+  - sentence-transformer
+  - nlp
+format:
+  html: 
+    shift-heading-level-by: 1
+execute:
+  code-fold: true
+citation: true
+bibliography: references.bib
+---
+
+**Please see [Part I](../../2024/03/index.qmd) of this blog entry for an introduction to the topic.**
+
+## The Original Plan (And Why It Failed)
+
+In [Part I](../../2024/03/index.qmd), I used sentence embeddings and cosine similarity to identify which party programs were most similar to each sentence in the coalition agreement. The next logical step seemed straightforward: classify each sentence by policy topic using a pretrained transformer model trained on Manifesto Project data, then see whether sentences attributed to each party actually fell into their core issue areas.
+
+The theory was sound. If the Greens dominated sentences about environmental protection, or the SPD controlled welfare policy language, this would validate both the attribution method and reveal each party's negotiating influence.
+
+So I loaded the `manifestoberta-xlm-roberta-56policy-topics-sentence-2024-1-1` model and classified every sentence in the coalition agreement and party programs.
+
+The results were... not great.
+
+
+```{r}
+#| label: loading libraries
+#| message: false
+#| warning: false
+#| include: false
+library(tidyverse)
+library(purrr)
+library(tidytext)
+library(quanteda)
+library(quanteda.textstats)
+library(tabulapdf)
+library(gt)
+library(gtExtras)
+library(paletteer)
+library(glue)
+library(reticulate)
+
+```
+
+
+
+```{r}
+#| label: descriptives
+#| echo: true
+#| message: false
+#| warning: false
+#| include: false
+
+
+## get a list of pdf files
+pdfs <- list.files('raw_data', full.names = T, pattern = ".pdf")
+
+## read in each of the pdfs
+texts <-
+  map_dfr(pdfs, ~ {
+    tabulapdf::extract_text(.x) %>% tibble(text = ., party = .x)
+  })
+
+clean_text <- function(text) {
+  # First, replace only the problematic "- " cases with a placeholder
+  text <- str_replace_all(text, "- (?=[a-z])", "PLACEHOLDER")
+  
+  # Restore legitimate cases where it should be retained
+  text <- str_replace_all(text, "PLACEHOLDER(?=als\\b|auch\\b|sondern\\b|oder\\b|noch\\b|wie\\b|und\\b)", "- ")
+  
+  # Remove the placeholder from other positions
+  text <- str_replace_all(text, "PLACEHOLDER", "")
+  
+  return(text)
+}
+
+texts_clean <- texts %>%
+  mutate(text = str_squish(text) |> 
+           str_trim() |> 
+           str_remove_all('Bereit, weil Ihr es seid.') |> 
+           str_remove_all('Bundestagswahlprogramm 2021') |> 
+           str_remove_all('Das Zukunftsprogramm der SPD') |> 
+           str_remove_all('BÜNDNIS 90 / DIE GRÜNEN') |> 
+           str_remove_all('SPD-Parteivorstand 2021') |> 
+           clean_text()
+  ) %>%
+  mutate(party = str_remove_all(party, '^raw_data/') %>% str_remove(.,'\\.pdf'))
+
+sentences <- texts_clean |> 
+  tidytext::unnest_sentences(output = "text", ## specify the name of the output column
+                             input = "text",to_lower = FALSE) 
+
+sentence_samples <- sentences |> 
+                            slice_sample(n = 500)
+
+```
+
+
+
+
+```{python}
+#| label: classify_topics_sentences
+#| message: false
+#| warning: false
+#| eval: true
+
+import os
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+import pandas as pd
+from tqdm import tqdm
+
+output_path = "sentences_with_topics.csv"
+
+if os.path.exists(output_path):
+    df = pd.read_csv(output_path)
+else:
+    # Load model & tokenizer
+    model = AutoModelForSequenceClassification.from_pretrained("manifesto-project/manifestoberta-xlm-roberta-56policy-topics-sentence-2024-1-1")
+    tokenizer = AutoTokenizer.from_pretrained("xlm-roberta-large")
+    device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+    model.to(device)
+
+    # Read sentences
+    df = r.sentence_sample
+    def get_topic(sentence):
+        inputs = tokenizer(
+            str(sentence),
+            return_tensors="pt",
+            max_length=200,
+            padding="max_length",
+            truncation=True
+        )
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        with torch.no_grad():
+            logits = model(**inputs).logits
+        predicted_class = model.config.id2label[logits.argmax().item()]
+        return predicted_class
+
+    tqdm.pandas()
+    df['topic'] = df['text'].progress_apply(get_topic)
+
+    df.to_csv(output_path, index=False)
+    print(f"Saved results to {output_path}")
+```
+
+```{r}
+library(gt)
+library(paletteer)
+library(dplyr)
+library(stringr)
+
+# Prepare examples dataset (assuming you have columns sentence_coal and sentence)
+examples <- read_csv("sentences_with_topics.csv") %>%
+  mutate(party = if_else(str_detect(party, "koalition"), "KOALITION", toupper(party))) %>%
+  group_by(party) %>%
+  slice_sample(n = 5) %>%
+  ungroup() %>%
+  select(party, topic, text)  # Ensure these columns exist in your data
+
+# Create gt table in your style:
+examples %>%
+  gt() |>
+  cols_label(
+    party = md("**Party**"),
+    text = md("*Text*"),
+    topic = md("**Topic**")
+  ) |>
+  tab_header(
+    title = md("**Example Sentences by Top 3 Topics per Party**"),
+    subtitle = "Selected examples from coalition and party programs"
+  ) |>
+  tab_footnote(md("*Showing a few sample classifications per party*")) 
+
+```
+
+### Validate, validate, validate
+
+As Grimmer and Stewart (2013) famously emphasize, when working with automatically classified texts you must "validate, validate, validate." For example, the ManifestoBERTa sentence model authors report a top-1 accuracy of 57% and an F1 macro score of 0.45; while seemingly reasonable, these aggregate metrics may mask idiosyncratic errors and biases when applied to new texts or domains [@burst]. Hence, thorough validation—including comparison to manual coding, qualitative inspection, and robustness checks—is essential to ensure trustworthy inferences. Without such validation, reliance solely on published performance measures risks drawing misleading conclusions from noisy or systematically biased automatic classifications [@grimmer2013text].
+
+The classification results demonstrate several clear misclassifications that highlight limitations of the pretrained topic model in this context. For instance, sentences labeled as “416 - Anti-Growth Economy: Positive” for the FDP discuss hunting and wildlife management, topics unrelated to that category, indicating inaccurate topic assignment. Similarly, the category “303 - Governmental and Administrative Efficiency” includes sentences from both the Greens and FDP that cover a broad range of unrelated subjects, reflecting overlapping or poorly defined boundaries between topic categories. The coalition agreement’s sentences classified under “413 - Nationalisation” and “106 - Peace” encompass diverse content that does not align cleanly with distinct parties or thematic areas. 
+
+**Why did this happen?** Pretrained models work brilliantly when applied to data similar to their training corpus. But the manifestoberta model was trained on a specific structure: coded sentences from official party manifestos in the Manifesto Project database. Our documents—extracted from PDFs, split by `tidytext`, with all their formatting quirks—were different enough that the model couldn't reliably generalize. Also an Accurary score of 57%, while amazing across 56 domains, is not really that great anyways. 
+
+## The Pivot: Using Actual Manifesto Project Data
+
+Rather than fighting with the pretrained classifier, since a few years have passed, by now the Manifesto Project provides the actual coded sentences from these same party programs, already classified by trained human coders.
+
+This approach has several advantages:
+
+1. **Reliability**: Human-coded classifications from the Manifesto Project are the gold standard for this type of analysis
+2. **Comparability**: The data uses the same coding scheme the model was supposedly trained on
+3. **Completeness**: The Manifesto Project includes the 2021 German party manifestos and coalition agreement
+
+The trade-off is that I need to re-do the embedding and similarity matching using the Manifesto Project's sentence-level data rather than my PDF extractions. But this actually improves the analysis—the Manifesto data is cleaner and more consistently structured.
+
+## Loading the Manifesto Project Data
+
+
+```{r}
+#| label: load-manifesto-data
+#| message: false
+#| warning: false
+
+library(manifestoR)
+library(manifestoEnhanceR)
+library(tidyverse)
+library(reticulate)
+
+# Load German documents from 2021
+key <- Sys.getenv("manifestoAPIkey")
+ger_corpus <- mp_corpus(
+  countryname == "Germany" & edate > as.Date("2020-01-01"),
+  apikey = key
+)
+
+ger_docs <- as_tibble(ger_corpus)
+
+# Get metadata
+cmp <- mp_maindataset(south_america = FALSE)
+meta <- cmp %>%
+  filter(countryname == "Germany" & edate > as.Date("2020-01-01")) %>%
+  transmute(
+    manifesto_id = paste0(party, "_", date), 
+    party, 
+    partyname, 
+    partyabbrev
+  ) %>%
+  unique()
+
+ger_docs <- left_join(ger_docs, meta)
+
+# Extract sentence-level data with topic codes
+ger_enhanced <- ger_docs %>%
+  mutate(data = map(data, enhance_manifesto_df)) %>%
+  unnest(data)
+```
+
+The `manifestoEnhanceR` package provides sentence-level granularity with topic classifications already attached. Each sentence has a `cmp_code` indicating its policy domain according to the Manifesto coding scheme.
+
+## Re-embedding with Manifesto Data
+
+Now I repeat the embedding process from Part I, but using the Manifesto Project sentences instead of my PDF extractions:
+
+```{python}
+#| label: embed-and-compare-with-cmp-code
+#| message: false
+#| warning: false
+#| eval: true
+
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+import torch
+from tqdm import tqdm
+
+device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+
+
+# Load model
+model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2').to(device)
+
+# Encode coalition sentences
+coalition_text = r.sentences[r.sentences['party'] == 'koalition'].reset_index(drop=True).text.values
+embedding_coal = model.encode(
+    coalition_text,
+    convert_to_tensor=True,
+    show_progress_bar=True,
+    device = device
+)
+
+# Prepare output DataFrame
+data = pd.DataFrame()
+
+# Define parties to process
+parties = ['SPD', '90/Greens', 'FDP']
+target_date = 202109
+
+for party in tqdm(parties, desc="Processing Parties"):
+    # Get party sentences and reset index
+    party_sentences = r.ger_enhanced[
+            (r.ger_enhanced['partyabbrev'] == party) & 
+            (r.ger_enhanced['date'] == target_date)
+        ].reset_index(drop=True)
+    
+    party_text = party_sentences['text'].values
+    party_codes = party_sentences['cmp_code'].values
+    # Encode party sentences
+    embedding_party = model.encode(
+        party_text,
+        convert_to_tensor=True,
+        show_progress_bar=True,
+        device = device
+    )
+    
+    # Compute cosine similarity matrix (party sentences × coalition sentences)
+    cosine_scores = util.pytorch_cos_sim(embedding_party, embedding_coal).cpu().numpy()
+    
+    # Prepare DataFrame for all pairwise combinations including cmp_code
+    rows, cols = cosine_scores.shape
+    results = pd.DataFrame({
+        'party': party,
+        'party_sentence': party_text.repeat(cols),
+        'topic_code': party_codes.repeat(cols),   # repeat to match sentences
+        'coalition_sentence': list(coalition_text) * rows,
+        'similarity_score': cosine_scores.flatten()
+    })
+    
+    # Filter to keep only the best party sentence match per coalition sentence
+    top_matches = (
+        results.sort_values('similarity_score', ascending=False)
+               .groupby(['party', 'coalition_sentence'])
+               .head(1)
+    )
+    
+    data = pd.concat([data, top_matches], ignore_index=True)
+
+# Save combined results with topic codes
+data.to_csv("manifesto_similarity_results.csv", index=False)
+
+```
+
+## Mapping Topics to Party Strengths
+
+Now we can ask the interesting questions: Do sentences attributed to each party fall into their expected policy domains?
+
+The Manifesto coding scheme groups topics into seven main domains:
+
+1. **External Relations** (Foreign policy, military, international cooperation)
+2. **Freedom & Democracy** (Civil rights, democracy, constitutionalism)
+3. **Political System** (Government efficiency, decentralization, political authority)
+4. **Economy** (Market regulation, planning, protectionism, corporatism)
+5. **Welfare & Quality of Life** (Social justice, education, environment)
+6. **Fabric of Society** (National identity, multiculturalism, tradition)
+7. **Social Groups** (Labor, agriculture, demographic groups)
+
+We'd expect:
+- **Greens**: Strong in Domain 5 (especially environmental protection)
+- **SPD**: Strong in Domains 5 and 7 (welfare expansion, labor groups)
+- **FDP**: Strong in Domain 4 (free market economy, deregulation)
+
+```{r}
+#| label: analyze-topic-distributions
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(paletteer)
+
+# Load results
+results <- read_csv("manifesto_similarity_results.csv")
+
+# For each coalition sentence, identify which party had highest similarity
+best_matches <- results %>%
+  group_by(coalition_sentence) %>%
+  slice_max(similarity_score, n = 1) %>%
+  ungroup()
+
+# Map codes to domains
+get_domain <- function(code) {
+  domain_num <- substr(as.character(code), 1, 1)
+  case_when(
+    domain_num == "1" ~ "1 External Relations",
+    domain_num == "2" ~ "2 Freedom & Democracy",
+    domain_num == "3" ~ "3 Political System",
+    domain_num == "4" ~ "4 Economy",
+    domain_num == "5" ~ "5 Welfare & Quality of Life",
+    domain_num == "6" ~ "6 Fabric of Society",
+    domain_num == "7" ~ "7 Social Groups",
+    TRUE ~ "Other"
+  )
+}
+
+best_matches <- best_matches %>%
+  mutate(domain = get_domain(topic_code))
+
+#| label: analyze-stacked-topic-distribution-frida-palette
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(paletteer)
+library(readr)
+
+# Load similarity results
+results <- read_csv("manifesto_similarity_results.csv")
+
+# Select the best match (highest similarity) for each coalition sentence
+best_matches <- results %>%
+  group_by(coalition_sentence) %>%
+  slice_max(similarity_score, n = 1) %>%
+  ungroup()
+
+# Map topic codes to broader domains
+get_domain <- function(code) {
+  domain_num <- substr(as.character(code), 1, 1)
+  case_when(
+    domain_num == "1" ~ "1 External Relations",
+    domain_num == "2" ~ "2 Freedom & Democracy",
+    domain_num == "3" ~ "3 Political System",
+    domain_num == "4" ~ "4 Economy",
+    domain_num == "5" ~ "5 Welfare & Quality of Life",
+    domain_num == "6" ~ "6 Fabric of Society",
+    domain_num == "7" ~ "7 Social Groups",
+    TRUE ~ "Other"
+  )
+}
+
+best_matches <- best_matches %>%
+  mutate(domain = get_domain(topic_code))
+
+# Calculate proportions by domain and party grouped within each domain
+domain_party_props <- best_matches %>%
+  count(domain, party) %>%
+  ungroup() |>
+  mutate(total = sum(n)) |> 
+  group_by(party, domain) |> 
+  mutate(prop = n / total) %>%
+  ungroup()
+
+# Use Frida Kahlo palette colors from paletteer for the parties
+frida_colors <- c(
+  "FDP" = paletteer::paletteer_d("lisa::FridaKahlo")[4],
+  "90/Greens" = paletteer::paletteer_d("lisa::FridaKahlo")[2],
+  "SPD" = paletteer::paletteer_d("lisa::FridaKahlo")[5]
+)
+
+# Plot stacked bar chart with Frida Kahlo colors
+ggplot(domain_party_props, aes(x = prop, y = domain, fill = party)) +
+  geom_col(position = "stack", width = 0.75) +
+  scale_fill_manual(values = frida_colors) +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "Topic Domain Distribution in Coalition Agreement",
+    subtitle = "by party according to best match between program and agreement",
+    x = "Proportion within domain",
+    y = NULL,
+    fill = "Party"
+  )
+
+
+```
+
+
+## Findings and Conclusions
+
+[This section would contain your analysis of whether parties dominated their expected issue areas, what surprises emerged, and what this tells us about coalition negotiation dynamics]
+
+## Lessons Learned
+
+This detour taught me something valuable: **don't assume a pretrained model will work just because it was trained on similar data**. The gap between "party manifestos in a database" and "party manifestos extracted from PDFs and tokenized" was enough to break the classifier.
