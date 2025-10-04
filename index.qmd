@@ -9,7 +9,7 @@ pagetitle: "Paul Bochtler"
 :::{#hero-heading}
 
 ## Paul Bochtler 
-Hi, I am Paul. I am Head of the Department of Digital Services and Open Science at the German Institute for International and Security Affairs. There we do data science, open science, knowledge management and all things digital at the intersection of political science and data science. 
+Hi, I am Paul. I am Head of the Department of Digital Services and Open Science at the German Institute for International and Security Affairs. We do Data Science, Open Science, Knowledge Management and all things Digital at the intersection of political science and data science. 
 
 My general interests lie in the area of authoritarian regimes and their behavior on the international stage, such as at the United Nations. I am convinced that qualitative and quantitative methods should go hand in hand, within the latter I oftentimes use text analysis. 
 

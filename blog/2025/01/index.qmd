@@ -412,7 +412,7 @@ We can see that overall, the topics Welfare and Quality of Life and External Rel
 ## Plot 
 
 ```{r}
-#| label: fig-1-topic-plot-combined
+#| label: fig-1-topic-plot
 #| message: false
 #| warning: false
 #| fig-width: 10
